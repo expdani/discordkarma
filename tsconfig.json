@@ -1,18 +1,18 @@
 {
     "compilerOptions": {
+        "allowJs": true,
         "outDir": "build",
         "rootDir": "src",
         "sourceMap": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "module": "ESNext",
-        "target": "ESNext",
+        "module": "commonjs",
         "strict": true,
-        "typeRoots": ["node_modules/@types", "src/custom-types"], 
+        "typeRoots": ["node_modules/@types", "src/custom-types"],
         "moduleResolution": "node",
         "esModuleInterop": true,
-        "baseUrl": ".",
+        "baseUrl": "."
     },
     "include": ["./src/**/*"],
     "exclude": ["node_modules"]
