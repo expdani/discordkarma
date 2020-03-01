@@ -25,7 +25,7 @@ The bot is written using `TypeScript` and the `Discord.JS` library.
 -   **_DATABASE_PASSWORD_**: This is the password of the user that has access.
 -   **_DATABASE_NAME_**: This is the name of the database you want to connect to.
 
-We use database migrations to make maintaining the database as easy as possible. Run `yarn migrate` to run all migrations. This creates the database with all it's tables. New migrations can be added with the commands: `npx knex migrate:make MIGRATION_NAME -x ts --knexfile ./src/database/knexFile.ts`. Make sure that the migration name is descriptive of what it does. A good example is: `create_currency_table` or `add_id_current_table`. A bad example is `currency_table` or `edit_currency_table`.
+We use database migrations to make maintaining the database as easy as possible. Run `yarn migrate` to run all migrations. This creates the database with all it's tables. New migrations can be added with the commands: `npx knex migrate:make MIGRATION_NAME -x ts --knexfile ./src/database/knexFile.ts`. Make sure that the migration name is descriptive of what it does. A good example is: `create_currency_table` or `add_id_currency_table`. A bad example is `currency_table` or `edit_currency_table`.
 
 4. Run `yarn dev` to start a development server. the terminal logs: `Logged in as NAME_OF_YOUR_BOT!` and you see that your bot is online in your server (can take a minute). You can also choose to make a production build using `yarn build`. The production build will be available in the `./build` folder.
 

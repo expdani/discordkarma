@@ -1,5 +1,4 @@
-// This is required for the migrate commands
-require("dotenv").config({path: "../../.env"});
+import {env} from "../../environment";
 
 /**
  * Configuration for the knex library
@@ -7,11 +6,11 @@ require("dotenv").config({path: "../../.env"});
 module.exports = {
     client: "mysql",
     connection: {
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE_NAME,
-        port: process.env.DATABASE_PORT || "3306",
+        host: env.DATABASE_HOST,
+        user: env.DATABASE_USER,
+        password: env.DATABASE_PASSWORD,
+        database: env.DATABASE_NAME,
+        port: env.DATABASE_PORT || "3306",
     },
     migrations: {
         tableName: "migrations",
