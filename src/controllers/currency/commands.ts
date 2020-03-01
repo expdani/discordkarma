@@ -1,6 +1,6 @@
 import {Message} from "discord.js";
 import {getCurrency, initiateCurrency} from "./";
-import {CURRENCY_COMMANDS} from "../../types/commands/currency";
+import {CURRENCY_COMMANDS} from "../../types/currency";
 import {Channel} from "../../types/discord";
 
 /**
