@@ -10,7 +10,7 @@ The bot is written using `TypeScript` and the `Discord.JS` library.
 -   [Yarn](https://classic.yarnpkg.com/en/docs/install/)
 -   [Node](https://nodejs.org/en/download/) (preferably V10)
 
-## Installation
+## Getting started
 
 1. Open the project and install all dependencies using: `yarn`
 2. Copy the `.env-example` file in the root of the project and rename it to `.env`. Fill the requested data.

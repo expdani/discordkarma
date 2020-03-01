@@ -1,6 +1,10 @@
 {
     "parser": "@typescript-eslint/parser",
-    "extends": ["eslint:recommended", "google", "plugin:@typescript-eslint/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "google",
+        "plugin:@typescript-eslint/recommended"
+    ],
     "rules": {
         "no-unused-vars": "off",
         "max-lines": [
@@ -14,7 +18,7 @@
         "max-len": [
             "error",
             {
-                "code": 80
+                "code": 120
             }
         ],
         "max-lines-per-function": [
