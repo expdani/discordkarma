@@ -1,6 +1,6 @@
 import {client} from "../";
 import {setupCurrencyCommands} from "../controllers/currency/commands";
-import Dialogflow from "../controllers/dialogflow";
+import {addEvent, useDialogflow} from "../controllers/dialogflow";
 import {testDialog} from "../controllers/dialogflow/test";
 import {COMMAND_PREFIX} from "../types/contants";
 
@@ -8,8 +8,6 @@ import {COMMAND_PREFIX} from "../types/contants";
  * Listener that listens to messages send in a server
  */
 export default function setupMessageListeners() {
-    const dialogflow = new Dialogflow();
-
     client.on("message", (message) => {
         // Ignore the message if: it does not start with the command prefix
         //  or if it's send by another bot
@@ -27,7 +25,7 @@ export default function setupMessageListeners() {
 
         setupCurrencyCommands(newMessage);
 
-        dialogflow.addEvent(testDialog);
-        dialogflow.useDialogflow(newMessage);
+        addEvent(testDialog);
+        useDialogflow(newMessage);
     });
 }
