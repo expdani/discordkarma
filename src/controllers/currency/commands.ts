@@ -2,6 +2,8 @@ import {Message} from "discord.js";
 import {getCurrency, initiateCurrency} from "./";
 import {CURRENCY_COMMANDS} from "../../types/currency";
 import {Channel} from "../../types/discord";
+import Discord = require("discord.js");
+import {client} from "../../index";
 
 /**
  * The bot tells the user the amount of money he has.
@@ -11,16 +13,20 @@ async function sayUserBalance(channel: Channel, userID: string) {
         const currency = await getCurrency(userID);
         const wallet = (currency && currency.wallet) || 0;
         const bank = (currency && currency.bank) || 0;
+        const user = client.users.get(userID) || (await client.fetchUser(userID));
 
         // Add a currency record to the database if this is the first time that the user
         // requests something currency related
         if (!currency) {
             await initiateCurrency(userID);
         }
-
-        channel.send(`You have $${bank} in your bank, and $${wallet} in your wallet!`);
+        const embed = new Discord.RichEmbed()
+            .setAuthor(`${user.username}'s balance`, `${user.avatarURL}`)
+            .setDescription(`**Wallet:** ${wallet}\n**Bank:** ${bank}`)
+            .setColor("#fffff");
+        channel.send(embed);
     } catch (err) {
-        channel.send("Oops something went wrong while requesting your balance");
+        channel.send("Oops, something went wrong while requesting your balance.");
     }
 }
 
