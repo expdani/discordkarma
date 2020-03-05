@@ -1,13 +1,12 @@
-import {Message} from "discord.js";
+import {Message, RichEmbed, User} from "discord.js";
 import {getCurrency, initiateCurrency} from "./";
 import {CURRENCY_COMMANDS} from "../../types/currency";
 import {Channel} from "../../types/discord";
-import Discord = require("discord.js");
 
 /**
  * The bot tells the user the amount of money he has.
  */
-async function sayUserBalance(channel: Channel, user: Discord.User) {
+async function sayUserBalance(channel: Channel, user: User) {
     try {
         const currency = await getCurrency(user.id);
         const wallet = (currency && currency.wallet) || 0;
@@ -18,7 +17,7 @@ async function sayUserBalance(channel: Channel, user: Discord.User) {
         if (!currency) {
             await initiateCurrency(user.id);
         }
-        const embed = new Discord.RichEmbed()
+        const embed = new RichEmbed()
             .setAuthor(`${user.username}'s balance`, `${user.avatarURL}`)
             .setDescription(`**Wallet:** ${wallet}\n**Bank:** ${bank}`)
             .setColor("#fffff");
