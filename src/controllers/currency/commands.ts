@@ -1,4 +1,4 @@
-import {Message} from "discord.js";
+import {Message, RichEmbed, User} from "discord.js";
 import {getCurrency, initiateCurrency} from "./";
 import {CURRENCY_COMMANDS} from "../../types/currency";
 import {Channel} from "../../types/discord";
@@ -6,21 +6,24 @@ import {Channel} from "../../types/discord";
 /**
  * The bot tells the user the amount of money he has.
  */
-async function sayUserBalance(channel: Channel, userID: string) {
+async function sayUserBalance(channel: Channel, user: User) {
     try {
-        const currency = await getCurrency(userID);
+        const currency = await getCurrency(user.id);
         const wallet = (currency && currency.wallet) || 0;
         const bank = (currency && currency.bank) || 0;
 
         // Add a currency record to the database if this is the first time that the user
         // requests something currency related
         if (!currency) {
-            await initiateCurrency(userID);
+            await initiateCurrency(user.id);
         }
-
-        channel.send(`You have $${bank} in your bank, and $${wallet} in your wallet!`);
+        const embed = new RichEmbed()
+            .setAuthor(`${user.username}'s balance`, `${user.avatarURL}`)
+            .setDescription(`**Wallet:** ${wallet}\n**Bank:** ${bank}`)
+            .setColor("#fffff");
+        channel.send(embed);
     } catch (err) {
-        channel.send("Oops something went wrong while requesting your balance");
+        channel.send("Oops, something went wrong while requesting your balance.");
     }
 }
 
@@ -38,6 +41,6 @@ export function setupCurrencyCommands(message: Message) {
     // const commandArgs = wordsInCommand.length > 1 ? wordsInCommand.slice(1, wordsInCommand.length + 1) : undefined;
 
     if (command === CURRENCY_COMMANDS.bal || command === CURRENCY_COMMANDS.balance) {
-        sayUserBalance(messageChannel, message.author.id);
+        sayUserBalance(messageChannel, message.author);
     }
 }
