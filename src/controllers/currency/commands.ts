@@ -3,22 +3,20 @@ import {getCurrency, initiateCurrency} from "./";
 import {CURRENCY_COMMANDS} from "../../types/currency";
 import {Channel} from "../../types/discord";
 import Discord = require("discord.js");
-import {client} from "../../index";
 
 /**
  * The bot tells the user the amount of money he has.
  */
-async function sayUserBalance(channel: Channel, userID: string) {
+async function sayUserBalance(channel: Channel, user: Discord.User) {
     try {
-        const currency = await getCurrency(userID);
+        const currency = await getCurrency(user.id);
         const wallet = (currency && currency.wallet) || 0;
         const bank = (currency && currency.bank) || 0;
-        const user = client.users.get(userID) || (await client.fetchUser(userID));
 
         // Add a currency record to the database if this is the first time that the user
         // requests something currency related
         if (!currency) {
-            await initiateCurrency(userID);
+            await initiateCurrency(user.id);
         }
         const embed = new Discord.RichEmbed()
             .setAuthor(`${user.username}'s balance`, `${user.avatarURL}`)
@@ -44,6 +42,6 @@ export function setupCurrencyCommands(message: Message) {
     // const commandArgs = wordsInCommand.length > 1 ? wordsInCommand.slice(1, wordsInCommand.length + 1) : undefined;
 
     if (command === CURRENCY_COMMANDS.bal || command === CURRENCY_COMMANDS.balance) {
-        sayUserBalance(messageChannel, message.author.id);
+        sayUserBalance(messageChannel, message.author);
     }
 }
