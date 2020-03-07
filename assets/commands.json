@@ -1,0 +1,22 @@
+{
+    "commands": [
+        {
+            "command": "bal",
+            "aliases": ["balance"],
+            "description": "Get current balance",
+            "usage": "!bal"
+        },
+        {
+            "command": "weather",
+            "description": "Get weather",
+            "usage": "!weather {location}",
+            "intent": "weather"
+        },
+        {
+            "command": "hello there",
+            "description": "General kenobi",
+            "usage": "!hello there",
+            "intent": "Hello there"
+        }
+    ]
+}

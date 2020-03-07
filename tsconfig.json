@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "allowJs": true,
+        "resolveJsonModule": true,
         "outDir": "build",
         "rootDir": "src",
         "sourceMap": true,
