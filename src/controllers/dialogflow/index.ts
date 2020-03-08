@@ -5,7 +5,7 @@ import {v4} from "uuid";
 // TODO: remove type package when dialogflow v2 releases
 const sessionId = v4();
 const sessionClient = new dialogflow.SessionsClient();
-const sessionPath = sessionClient.sessionPath("discordbot-hnifri", sessionId);
+const sessionPath = sessionClient.sessionPath(process.env.DIALOGFLOW_PROJECT_ID, sessionId);
 
 /**
  * Use dialogflow to calculate a response

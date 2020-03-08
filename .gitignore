@@ -108,4 +108,4 @@ build
 .vscode-test
 
 # Google cloud access
-GoogleCoudAccess.json
+GoogleCloudAccess.json

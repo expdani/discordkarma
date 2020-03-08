@@ -7,22 +7,22 @@ import {useDialogflow} from "./controllers/dialogflow";
  * Check if command is een regsitered command
  */
 function getCommand(text: string) {
-    return commands.find((cmd) => {
-        const {command, aliases, intent} = cmd;
+    return commands.find((input) => {
+        const {command, aliases, intent} = input;
 
+        // Find command based on "name", aliases or intent
         if (command === text || (aliases && aliases.includes(text)) || intent === text) {
-            return cmd;
+            return input;
         }
     });
 }
 
-// TODO: type response
 /**
  * Calculate response
  */
 export async function calculateResponse(message: Message) {
     // Ignore the message if: it does not start with the command prefix
-    //  or if it's send by another bot
+    // or if it's send by another bot
     if (!message.content.startsWith(COMMAND_PREFIX) || message.author.bot) {
         return;
     }
