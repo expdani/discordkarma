@@ -48,7 +48,7 @@ We use Dialogflow to add natural language support to commands. This means users 
 
 ### Be aware
 
--   It's possible that your environment variable reset after a reboot. This means you have to re-add the environment variable after every reboot [Setting the environment variable](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable)
+-   Your environment variable will reset after a reboot of your device. This means you have to re-add the environment variable after every reboot [Setting the environment variable](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable)
 
 ## Pull requests
 
