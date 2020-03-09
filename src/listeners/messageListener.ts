@@ -1,6 +1,6 @@
 import {Message} from "discord.js";
 import {client} from "../";
-// import {setupCurrencyCommands} from "../controllers/currency/commands";
+import {setupCurrencyCommands} from "../controllers/currency/commands";
 import {calculateResponse} from "../commandHandler";
 
 /**
@@ -10,7 +10,14 @@ export default function setupMessageListeners() {
     client.on("message", async (message: Message) => {
         const response = await calculateResponse(message);
 
-        // TODO: do something based on response
-        // setupCurrencyCommands(response);
+        if (response) {
+            switch (response.command?.command) {
+                case "bal":
+                    setupCurrencyCommands(message);
+                    break;
+                default:
+                    message.channel.send(response.response);
+            }
+        }
     });
 }

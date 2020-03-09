@@ -46,7 +46,7 @@ We use Dialogflow to add natural language support to commands. This means users 
 5.  [Set up authentication with a service account](https://cloud.google.com/docs/authentication/getting-started) so you can access the API from your local workstation (as role choose `Dialogflow API Admin`).
 6.  Add your `Project ID` to the `.env` file (after `DIALOGFLOW_PROJECT_ID`).
 
-### Known issues
+### Be aware
 
 -   It's possible that your environment variable reset after a reboot. This means you have to re-add the environment variable after every reboot [Setting the environment variable](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable)
 

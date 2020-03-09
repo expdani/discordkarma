@@ -40,31 +40,29 @@ export async function calculateResponse(message: Message) {
     // Remove the first element from attributes (the command)
     attributes.shift();
 
-    let response = {
-        input: {
-            text: commandText,
-            attributes,
-            fullCommand,
-        },
-        response: "",
-    };
-
     let command = getCommand(commandText);
+    let parameters;
+    let response;
 
-    if (!command) {
+    if (!command && process.env.DIALOGFLOW_PROJECT_ID) {
         const data = await useDialogflow(fullCommand);
         const {queryResult} = data[0];
 
         if (queryResult) {
             command = getCommand(queryResult.intent.displayName);
-            response.response = queryResult.fulfillmentText;
-            response = Object.assign(response, {parameters: queryResult.parameters});
+            response = queryResult.fulfillmentText;
+            parameters = queryResult.parameters;
         }
     }
 
-    if (command) {
-        response = Object.assign(response, {command});
-    }
-
-    return response;
+    return {
+        input: {
+            text: commandText,
+            attributes,
+            fullCommand,
+        },
+        parameters,
+        response,
+        command,
+    };
 }
