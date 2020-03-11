@@ -13,9 +13,13 @@ export async function up(knex: Knex): Promise<any> {
          */
         table.string("userID").notNullable();
         /**
-         * The amount of money the user has
+         * The amount of money the user has in his bank
          */
-        table.integer("amount").notNullable();
+        table.integer("bank").notNullable();
+        /**
+         * The amount of money the user has in his wallet
+         */
+        table.integer("wallet").notNullable();
         /**
          * Created_at and deleted_at
          */

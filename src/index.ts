@@ -1,12 +1,12 @@
 import Discord from "discord.js";
 import setupMessageListeners from "./listeners/messageListener";
-require("dotenv").config();
+import {env} from "../environment";
 
 /**
  * Setup Discord.JS client
  */
 export const client = new Discord.Client();
-client.login(process.env.DISCORD_API_KEY);
+client.login(env.DISCORD_API_KEY);
 
 /**
  * Setup listeners

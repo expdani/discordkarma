@@ -1,10 +1,6 @@
 {
     "parser": "@typescript-eslint/parser",
-    "extends": [
-        "eslint:recommended",
-        "google",
-        "plugin:@typescript-eslint/recommended"
-    ],
+    "extends": ["eslint:recommended", "google", "plugin:@typescript-eslint/recommended"],
     "rules": {
         "no-unused-vars": "off",
         "max-lines": [
@@ -61,7 +57,8 @@
             }
         ],
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/no-unused-vars": "off"
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/camelcase": "off"
     },
     "env": {
         "browser": false,
