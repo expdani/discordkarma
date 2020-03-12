@@ -28,3 +28,23 @@ export function shuffleArray(array: Array<any>) {
 
     return array;
 }
+
+/**
+ * Function that translates seconds to a readable string
+ */
+export default function secondsToReadableString(unParsedSeconds: number) {
+    if (unParsedSeconds < 0) {
+        throw new Error("Unable to get readable string when seconds is a negative number");
+    }
+
+    let readableString = "";
+    const hours = Math.floor(unParsedSeconds / 3600);
+    const minutes = Math.floor((unParsedSeconds - hours * 3600) / 60);
+    const seconds = Math.ceil(unParsedSeconds - hours * 3600 - minutes * 60) || 0;
+
+    if (hours) readableString += hours > 1 ? `${hours} hours ` : `${hours} hour `;
+    if (minutes) readableString += minutes > 1 ? `${minutes} minutes ` : `${minutes} minute `;
+    if (seconds) readableString += seconds > 1 ? `${seconds} seconds ` : `${seconds} second `;
+
+    return readableString;
+}

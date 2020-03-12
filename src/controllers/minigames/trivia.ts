@@ -1,6 +1,6 @@
 import {Channel} from "../../types/discord";
 import {TRIVIA_API_URL, TriviaQuestion, TRIVIA_PAYOUT} from "../../types/trivia";
-import {getAmountOfSecondsBetweenDates, shuffleArray} from "../../helpers";
+import secondsToReadableString, {getAmountOfSecondsBetweenDates, shuffleArray} from "../../helpers";
 import fetch from "node-fetch";
 import {Message, Collection, RichEmbed, User} from "discord.js";
 import {decodeHTML} from "entities";
@@ -117,7 +117,7 @@ export function requestTriviaQuestion(channel: Channel, user: User) {
 
         if (secondsBetweenLastRequest < TRIVIA_TIMEOUT) {
             const secondsWaiting = Math.round(TRIVIA_TIMEOUT - secondsBetweenLastRequest);
-            channel.send(`You have to wait ${secondsWaiting} seconds before you can use trivia again`);
+            channel.send(`You have to wait ${secondsToReadableString(secondsWaiting)}before you can use trivia again`);
             return;
         }
     }
