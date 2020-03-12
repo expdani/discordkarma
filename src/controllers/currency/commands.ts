@@ -19,7 +19,7 @@ async function sayUserBalance(channel: Channel, user: User) {
         }
         const embed = new RichEmbed()
             .setAuthor(`${user.username}'s balance`, `${user.avatarURL}`)
-            .setDescription(`**Wallet:** ${wallet}\n**Bank:** ${bank}`)
+            .setDescription(`**Wallet:** $${wallet}\n**Bank:** $${bank}`)
             .setColor("#fffff");
         channel.send(embed);
     } catch (err) {
