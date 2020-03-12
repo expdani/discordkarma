@@ -1,4 +1,4 @@
-name: Node CI
+name: Build project
 
 on: [push]
 
@@ -12,7 +12,7 @@ jobs:
 
         steps:
             - uses: actions/checkout@v1
-            - name: Build code
+            - name: Setup Node
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
