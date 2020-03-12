@@ -65,7 +65,9 @@ async function handleUserAnswer(
             await changeCurrency(userID, payout);
             channel.send("You gave the correct answer! Big brain! :nerd:");
         } else {
-            channel.send(`Whoops that's not correct :man_facepalming:. The right answer is: **${correctAnswer}**`);
+            channel.send(
+                `Whoops that's not correct :man_facepalming:. The right answer is: **${decodeHTML(correctAnswer)}**`,
+            );
         }
     } catch (err) {
         channel.send("Whoops something went wrong while processing your answer");
@@ -80,7 +82,7 @@ async function askQuestion(channel: Channel, user: User) {
     const {answers, payout, difficulty, question, correctAnswer} = await getQuestion();
 
     // Compose a question with all it's answers.
-    answers.forEach((answer, index) => (answerList += `\n${index + 1}) ${answer}`));
+    answers.forEach((answer, index) => (answerList += `\n${index + 1}) ${decodeHTML(answer)}`));
     const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:** ${difficulty} \n **Payout:** $${payout}`;
 
     // Send the question in the chat
