@@ -1,6 +1,7 @@
 import {client} from "../";
 import {setupCurrencyCommands} from "../controllers/currency/commands";
 import {COMMAND_PREFIX} from "../types/contants";
+import setupMinigameCommands from "../controllers/minigames";
 
 /**
  * Listener that listens to messages send in a server
@@ -14,5 +15,6 @@ export default function setupMessageListeners() {
         }
 
         setupCurrencyCommands(message);
+        setupMinigameCommands(message);
     });
 }
