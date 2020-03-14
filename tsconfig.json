@@ -3,7 +3,7 @@
         "allowJs": true,
         "resolveJsonModule": true,
         "outDir": "build",
-        "rootDir": "src",
+        "rootDir": "./",
         "sourceMap": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,

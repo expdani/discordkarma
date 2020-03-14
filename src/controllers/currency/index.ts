@@ -34,3 +34,27 @@ export async function initiateCurrency(userID: string): Promise<TypeCurrency> {
 
     return currency;
 }
+
+/**
+ * Edit the currency of the user.
+ * - A positive number adds money to the user
+ * - A negative number removed money from the user
+ */
+export async function changeCurrency(userID: string, addedValueToWallet = 0, addedValueTobank = 0) {
+    let currency = await getCurrency(userID);
+    if (!currency) {
+        currency = await initiateCurrency(userID);
+    }
+
+    const newCurrency = {
+        ...currency,
+        wallet: currency.wallet + addedValueToWallet,
+        bank: currency.bank + addedValueTobank,
+    };
+
+    await database("currency")
+        .where({userID})
+        .update(newCurrency);
+
+    return newCurrency;
+}

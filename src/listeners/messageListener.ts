@@ -2,6 +2,7 @@ import {Message} from "discord.js";
 import {client} from "../";
 import {setupCurrencyCommands} from "../controllers/currency/commands";
 import {calculateResponse} from "../commandHandler";
+import setupMinigameCommands from "../controllers/minigames";
 
 /**
  * Listener that listens to messages send in a server
@@ -15,6 +16,8 @@ export default function setupMessageListeners() {
                 case "bal":
                     setupCurrencyCommands(message);
                     break;
+                case "trivia":
+                    setupMinigameCommands(message);
                 default:
                     message.channel.send(response.response);
             }
