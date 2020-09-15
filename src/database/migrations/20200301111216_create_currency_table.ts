@@ -5,7 +5,7 @@ const TABLE_NAME = "currency";
 /**
  * Method that creates the curreny table when migrations are run
  */
-export async function up(knex: Knex): Promise<any> {
+export async function up(knex: Knex): Promise<unknown> {
     return knex.schema.createTable(TABLE_NAME, function(table) {
         table.increments("id");
         /**
@@ -30,6 +30,6 @@ export async function up(knex: Knex): Promise<any> {
 /**
  * Method that drops the table
  */
-export async function down(knex: Knex): Promise<any> {
+export async function down(knex: Knex): Promise<unknown> {
     return knex.schema.dropTable(TABLE_NAME);
 }
