@@ -9,7 +9,7 @@ export function getAmountOfSecondsBetweenDates(date1: Date, date2: Date) {
 /**
  * Function that shuffles the items in an array
  */
-export function shuffleArray(array: Array<unknown>) {
+export function shuffleArray(array: Array<any>) {
     let currentIndex = array.length;
     let temporaryValue;
     let randomIndex;
