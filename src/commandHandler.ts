@@ -1,7 +1,7 @@
-import { Message } from "discord.js";
-import { COMMAND_PREFIX } from "./types/constants";
-import { commands } from "../assets/commands.json";
-import { useDialogflow } from "./controllers/dialogflow";
+import {Message} from "discord.js";
+import {COMMAND_PREFIX} from "./types/constants";
+import {commands} from "../assets/commands.json";
+import {useDialogflow} from "./controllers/dialogflow";
 
 /**
  * Check if command is een regsitered command
