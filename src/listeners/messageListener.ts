@@ -13,14 +13,14 @@ export default function setupMessageListeners() {
 
         if (response) {
             switch (response.command?.command) {
-                case "bal":
-                    setupCurrencyCommands(message);
-                    break;
-                case "trivia":
-                    setupMinigameCommands(message);
-                    break;
-                default:
-                    message.channel.send(response.response);
+            case "bal":
+                setupCurrencyCommands(message);
+                break;
+            case "trivia":
+                setupMinigameCommands(message);
+                break;
+            default:
+                message.channel.send(response.response);
                 break;
             }
         }
