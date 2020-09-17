@@ -1,28 +1,11 @@
 {
     "parser": "@typescript-eslint/parser",
-    "extends": ["eslint:recommended", "google", "plugin:@typescript-eslint/recommended"],
+    "extends": ["eslint:recommended", "google", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
     "rules": {
         "no-unused-vars": "off",
-        "max-lines": [
-            "error",
-            {
-                "max": 200,
-                "skipBlankLines": true,
-                "skipComments": true
-            }
-        ],
-        "max-len": [
-            "error",
-            {
-                "code": 120
-            }
-        ],
-        "max-lines-per-function": [
-            "warn",
-            {
-                "max": 50
-            }
-        ],
+        "max-lines": ["error", {"max": 200, "skipBlankLines": true, "skipComments": true}],
+        "max-len": ["error", {"code": 120}],
+        "max-lines-per-function": ["warn", {"max": 50, "skipBlankLines": true, "skipComments": true}],
         "prefer-const": [
             "error",
             {
@@ -58,7 +41,8 @@
         ],
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/camelcase": "off"
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/camelcase": "warn"
     },
     "env": {
         "browser": false,
@@ -73,5 +57,5 @@
             "jsx": true
         }
     },
-    "plugins": ["babel", "promise", "jsdoc", "typescript"]
+    "plugins": ["babel", "promise", "jsdoc", "typescript", "prettier"]
 }

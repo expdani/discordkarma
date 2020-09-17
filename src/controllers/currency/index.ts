@@ -5,9 +5,7 @@ import {TypeCurrency, TypeCurrencyInput} from "../../types/currency";
  * Get the current balance for the user
  */
 export async function getCurrency(userID: string): Promise<TypeCurrency | void> {
-    return database("currency")
-        .where({userID})
-        .first();
+    return database("currency").where({userID}).first();
 }
 
 /**
@@ -52,9 +50,7 @@ export async function changeCurrency(userID: string, addedValueToWallet = 0, add
         bank: currency.bank + addedValueTobank,
     };
 
-    await database("currency")
-        .where({userID})
-        .update(newCurrency);
+    await database("currency").where({userID}).update(newCurrency);
 
     return newCurrency;
 }
