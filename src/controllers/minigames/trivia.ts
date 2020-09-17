@@ -24,15 +24,15 @@ const TIME_TO_ANSWER = 10; // seconds
 async function getQuestion() {
     const apiCall = await fetch(TRIVIA_API_URL);
     const data: {results: Array<TriviaQuestion>} = await apiCall.json();
-    const {difficulty, correct_answer, incorrect_answers, question} = data.results[0];
+    const {difficulty, correct_answer: correctAnswer, incorrect_answers: incorrectAnswers, question} = data.results[0];
     const payout = TRIVIA_PAYOUT[difficulty];
     // Merge the incorrect answers with the correct answer and shuffle the answers
-    const answers: Array<string> = shuffleArray([...incorrect_answers, correct_answer]);
+    const answers: Array<string> = shuffleArray([...incorrectAnswers, correctAnswer]);
 
     return {
         payout,
         answers,
-        correctAnswer: correct_answer,
+        correctAnswer,
         difficulty,
         question,
     };
