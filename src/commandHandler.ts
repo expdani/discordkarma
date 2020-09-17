@@ -8,7 +8,7 @@ import {useDialogflow} from "./controllers/dialogflow";
  */
 function getCommand(text: string) {
     return commands.find((input) => {
-        const { command, aliases, intent } = input;
+        const {command, aliases, intent} = input;
 
         // Find command based on "name", aliases or intent
         if (command === text || (aliases && aliases.includes(text)) || intent === text) {
@@ -46,7 +46,7 @@ export async function calculateResponse(message: Message) {
 
     if (!command && process.env.DIALOGFLOW_PROJECT_ID) {
         const data = await useDialogflow(fullCommand);
-        const { queryResult } = data[0];
+        const {queryResult} = data[0];
 
         if (queryResult) {
             command = getCommand(queryResult.intent.displayName);
