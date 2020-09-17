@@ -29,6 +29,29 @@ We use database migrations to make maintaining the database as easy as possible.
 
 4. Run `yarn dev` to start a development server. the terminal logs: `Logged in as NAME_OF_YOUR_BOT!` and you see that your bot is online in your server (can take a minute). You can also choose to make a production build using `yarn build`. The production build will be available in the `./build` folder.
 
+## Dialogflow (optional)
+
+We use Dialogflow to add natural language support to commands. This means users are able to write complete sentences to execute a command. This provides us with multiple benefits such as:
+
+-   Multiple inputs for commands (example: `!Can you show me the weather` or `!What's the weather today`)
+-   Multiple responses for commands.
+-   Variable parameter detection (example: `today` in `!What's the weather today` or `tomorrow` and `London` in `!What temperature will it be tomorrow in London?`.
+
+Dialogflow will be used when you provide a `DIALOGFLOW_PROJECT_ID` inside the `.env` file. To setup dialogflow follow the steps below.
+
+### Setup Dialogflow
+
+1.  [Select or create a Cloud Platform project](https://console.cloud.google.com/project).
+2.  [Enable the Dialogflow API](https://console.cloud.google.com/flows/enableapi?apiid=dialogflow.googleapis.com).
+3.  Go to the [Dialogflow console](https://dialogflow.cloud.google.com/) and create a new agent and select the previously created Cloud Platform project.
+4.  Import the provided intents by going to your agent's settings and navigate to `Export and import`. Choose `import from zip` and upload the provided zipfile in `assets`.
+5.  [Set up authentication with a service account](https://cloud.google.com/docs/authentication/getting-started) so you can access the API from your local workstation (as role choose `Dialogflow API Admin`). To not commit the json file please rename this file to `GoogleCloudAccess.json`.
+6.  Add your `Project ID` to the `.env` file (after `DIALOGFLOW_PROJECT_ID`).
+
+### Be aware
+
+-   Your environment variable will reset after a reboot of your device. This means you have to re-add the environment variable after every reboot [Setting the environment variable](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable)
+
 ## Pull requests
 
 Pull requests are required to add a new feature or bug fix to the bot. The project is using `Eslint` and `Prettier` to enforce a codestyle and these tests are required to merge to the `master` branch.

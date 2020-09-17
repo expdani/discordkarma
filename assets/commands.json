@@ -1,0 +1,22 @@
+{
+    "commands": [
+        {
+            "command": "bal",
+            "aliases": ["balance", "money"],
+            "description": "Get current balance",
+            "usage": "!bal"
+        },
+        {
+            "command": "trivia",
+            "aliases": ["question", "q"],
+            "description": "Get a random trivia question",
+            "usage": "!trivia"
+        },
+        {
+            "command": "hello there",
+            "description": "General kenobi",
+            "usage": "!hello there",
+            "intent": "Hello there"
+        }
+    ]
+}

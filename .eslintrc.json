@@ -21,7 +21,7 @@
         "valid-jsdoc": "off",
         "no-invalid-this": "off",
         "promise/always-return": "off",
-        "indent": ["error", 4],
+        "indent": ["error", 4, {"SwitchCase": 1}],
         "linebreak-style": "off",
         "no-debugger": 2,
         "jsdoc/no-types": 2,
