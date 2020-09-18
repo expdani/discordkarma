@@ -1,10 +1,10 @@
 {
     "commands": [
         {
-            "command": "bal",
-            "aliases": ["balance", "money"],
+            "command": "balance",
+            "aliases": ["bal", "money"],
             "description": "Get current balance",
-            "usage": "!bal"
+            "usage": "!balance"
         },
         {
             "command": "trivia",
