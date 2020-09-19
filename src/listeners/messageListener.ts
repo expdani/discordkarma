@@ -11,10 +11,10 @@ export default function setupMessageListener() {
         const result = await calculateResponse(message);
 
         if (result) {
-            const resolver = commandResolver[result.command?.text || ""];
+            const resolver = commandResolver[result.command?.text.replace(" ", "_") || ""];
 
             if (resolver) {
-                resolver(message);
+                resolver(message, result);
             } else if (result.response) {
                 message.channel.send(result.response);
             }

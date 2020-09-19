@@ -1,25 +1,18 @@
 import {Message} from "discord.js";
 import {COMMAND_PREFIX} from "./types/constants";
+import {TypeCommand} from "./types/response";
 import {commands} from "../assets/commands.json";
 import {useDialogflow} from "./controllers/dialogflow";
-
-type command = {
-    text: string;
-    aliases?: Array<string>;
-    description: string;
-    usage: string;
-    intent?: string;
-};
 
 /**
  * Check if command is een regsitered command
  */
-function getCommand(messsage: string) {
-    return commands.find((input: command) => {
+function getCommand(command: string, fullCommand: string) {
+    return commands.find((input: TypeCommand) => {
         const {text, aliases, intent} = input;
 
-        // Find command based on "name", aliases or intent
-        if (text === messsage || (aliases && aliases.includes(messsage)) || intent === messsage) {
+        // Find command based on "text", "full command (including args)", aliases or intent
+        if (intent === command || text === command || text === fullCommand || aliases?.includes(command)) {
             return input;
         }
     });
@@ -48,19 +41,23 @@ export async function calculateResponse(message: Message) {
     // Remove the first element from attributes (the command)
     attributes.shift();
 
-    let command = getCommand(commandText);
+    let command;
     let parameters;
     let response;
 
-    if (!command && process.env.DIALOGFLOW_PROJECT_ID) {
+    if (process.env.DIALOGFLOW_PROJECT_ID) {
         const data = await useDialogflow(fullCommand);
         const {queryResult} = data[0];
 
         if (queryResult.intent) {
-            command = getCommand(queryResult.intent.displayName);
+            command = getCommand(queryResult.intent.displayName, fullCommand);
             response = queryResult.fulfillmentText;
             parameters = queryResult.parameters;
         }
+    }
+
+    if (!command) {
+        command = getCommand(commandText, fullCommand);
     }
 
     return {
