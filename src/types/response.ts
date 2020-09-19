@@ -6,7 +6,7 @@ export type TypeCommandInputResponse = {
     };
     parameters?: {};
     response?: string;
-    command: TypeCommand | null;
+    command: TypeCommand | null | undefined;
 };
 
 export type TypeCommand = {
