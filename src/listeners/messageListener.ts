@@ -10,6 +10,7 @@ import commandResolver from "../commandResolver";
 export default function setupMessageListener() {
     client.on("message", async (message: Message) => {
         addKarmaReactions(message);
+
         const result = await calculateResponse(message);
 
         if (result) {
@@ -17,6 +18,8 @@ export default function setupMessageListener() {
 
             if (resolver) {
                 resolver(message);
+            } else if (result.response) {
+                message.channel.send(result.response);
             }
         }
     });
