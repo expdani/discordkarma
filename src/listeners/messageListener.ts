@@ -8,16 +8,15 @@ import commandResolver from "../commandResolver";
  */
 export default function setupMessageListener() {
     client.on("message", async (message: Message) => {
-        const response = await calculateResponse(message);
+        const result = await calculateResponse(message);
 
-        if (response) {
-            const command = response.command?.command || "";
-            const resolver = commandResolver[command];
+        if (result) {
+            const resolver = commandResolver[result.command?.text || ""];
 
             if (resolver) {
                 resolver(message);
-            } else {
-                message.channel.send(response.response);
+            } else if (result.response) {
+                message.channel.send(result.response);
             }
         }
     });

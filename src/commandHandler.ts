@@ -3,15 +3,23 @@ import {COMMAND_PREFIX} from "./types/constants";
 import {commands} from "../assets/commands.json";
 import {useDialogflow} from "./controllers/dialogflow";
 
+type command = {
+    text: string;
+    aliases?: Array<string>;
+    description: string;
+    usage: string;
+    intent?: string;
+};
+
 /**
  * Check if command is een regsitered command
  */
-function getCommand(text: string) {
-    return commands.find((input) => {
-        const {command, aliases, intent} = input;
+function getCommand(messsage: string) {
+    return commands.find((input: command) => {
+        const {text, aliases, intent} = input;
 
         // Find command based on "name", aliases or intent
-        if (command === text || (aliases && aliases.includes(text)) || intent === text) {
+        if (text === messsage || (aliases && aliases.includes(messsage)) || intent === messsage) {
             return input;
         }
     });
@@ -48,7 +56,7 @@ export async function calculateResponse(message: Message) {
         const data = await useDialogflow(fullCommand);
         const {queryResult} = data[0];
 
-        if (queryResult) {
+        if (queryResult.intent) {
             command = getCommand(queryResult.intent.displayName);
             response = queryResult.fulfillmentText;
             parameters = queryResult.parameters;

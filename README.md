@@ -48,9 +48,10 @@ Dialogflow will be used when you provide a `DIALOGFLOW_PROJECT_ID` inside the `.
 5.  [Set up authentication with a service account](https://cloud.google.com/docs/authentication/getting-started) so you can access the API from your local workstation (as role choose `Dialogflow API Admin`). To not commit the json file please rename this file to `GoogleCloudAccess.json`.
 6.  Add your `Project ID` to the `.env` file (after `DIALOGFLOW_PROJECT_ID`).
 
-### Be aware
+### Be aware (Windows)
 
--   Your environment variable will reset after a reboot of your device. This means you have to re-add the environment variable after every reboot [Setting the environment variable](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable)
+-   Your environment variable will reset after a reboot of your device if you set them through a terminal. This means you have to re-add the environment variable after every reboot of your device [Setting the environment variable](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable)
+-   I would recommend you set it manually through the environment variables window available in Windows.
 
 ## Pull requests
 
