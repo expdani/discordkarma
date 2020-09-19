@@ -1,25 +1,18 @@
 import {Message} from "discord.js";
 import {COMMAND_PREFIX} from "./types/constants";
+import {TypeCommand} from "./types/response";
 import {commands} from "../assets/commands.json";
 import {useDialogflow} from "./controllers/dialogflow";
-
-type command = {
-    text: string;
-    aliases?: Array<string>;
-    description: string;
-    usage: string;
-    intent?: string;
-};
 
 /**
  * Check if command is een regsitered command
  */
-function getCommand(messsage: string) {
-    return commands.find((input: command) => {
+function getCommand(command: string) {
+    return commands.find((input: TypeCommand) => {
         const {text, aliases, intent} = input;
 
         // Find command based on "name", aliases or intent
-        if (text === messsage || (aliases && aliases.includes(messsage)) || intent === messsage) {
+        if (text === command || aliases?.includes(command) || intent === command) {
             return input;
         }
     });
