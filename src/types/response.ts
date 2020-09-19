@@ -1,4 +1,4 @@
-export type TypeCommandInputResponse = {
+export type TypeMessageResponse = {
     input: {
         text: string;
         attributes: Array<string>;

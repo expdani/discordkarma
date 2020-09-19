@@ -23,6 +23,12 @@
             "aliases": ["karma"],
             "description": "Get user karma",
             "usage": "!karma"
+        },
+        {
+            "text": "say",
+            "aliases": ["repeat"],
+            "description": "Bot says what you're saying",
+            "usage": "!say"
         }
     ]
 }

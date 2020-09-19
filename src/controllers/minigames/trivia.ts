@@ -63,14 +63,14 @@ async function handleUserAnswer(
 
         if (isAnswerCorrect) {
             await changeCurrency(userID, payout);
-            channel.send("You gave the correct answer! Big brain! :nerd:");
+            channel.send("That answer is correct! It's big brain time :nerd:.");
         } else {
             channel.send(
-                `Whoops that's not correct :man_facepalming:. The right answer is: **${decodeHTML(correctAnswer)}**`,
+                `Whoops, that's not correct :man_facepalming:. The right answer is **${decodeHTML(correctAnswer)}**.`,
             );
         }
     } catch (err) {
-        channel.send("Whoops something went wrong while processing your answer");
+        channel.send("Whoops, something went wrong while processing your answer.");
     }
 }
 
@@ -105,7 +105,7 @@ async function askQuestion(channel: Channel, user: User) {
             const questionData = {answers, correctAnswer, payout};
             handleUserAnswer(collectedMessages, channel, questionData, user.id);
         })
-        .catch(() => channel.send("You did not respond to the question :confused:"));
+        .catch(() => channel.send("You did not respond to the question :confused:."));
 }
 
 /**
@@ -119,7 +119,9 @@ export function requestTriviaQuestion(channel: Channel, user: User) {
 
         if (secondsBetweenLastRequest < TRIVIA_TIMEOUT) {
             const secondsWaiting = Math.round(TRIVIA_TIMEOUT - secondsBetweenLastRequest);
-            channel.send(`You have to wait ${secondsToReadableString(secondsWaiting)}before you can use trivia again`);
+            channel.send(
+                `You have to wait ${secondsToReadableString(secondsWaiting)} before you can use trivia again.`,
+            );
             return;
         }
     }
