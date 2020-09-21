@@ -11,7 +11,7 @@ export default function setupMessageListener() {
         const result = await calculateResponse(message);
 
         if (result) {
-            const resolver = commandResolver[result.command?.text];
+            const resolver = commandResolver[result.command?.text || ""];
 
             if (resolver) {
                 resolver(message);
