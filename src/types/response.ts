@@ -1,7 +1,7 @@
-export type TypeMessageResponse = {
+export type TypeCommandInputResponse = {
     input: {
         text: string;
-        attributes: string[];
+        attributes: Array<string>;
         fullCommand: string;
     };
     parameters?: {};
@@ -10,8 +10,8 @@ export type TypeMessageResponse = {
 };
 
 export type TypeCommand = {
-    command: string;
-    aliases?: string[];
+    text: string;
+    aliases?: Array<string>;
     description: string;
     usage: string;
     intent?: string;

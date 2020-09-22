@@ -1,19 +1,19 @@
 {
     "commands": [
         {
-            "command": "bal",
-            "aliases": ["balance", "money"],
+            "text": "balance",
+            "aliases": ["bal", "money"],
             "description": "Get current balance",
-            "usage": "!bal"
+            "usage": "!balance"
         },
         {
-            "command": "trivia",
+            "text": "trivia",
             "aliases": ["question", "q"],
             "description": "Get a random trivia question",
             "usage": "!trivia"
         },
         {
-            "command": "hello there",
+            "text": "hello there",
             "description": "General kenobi",
             "usage": "!hello there",
             "intent": "Hello there"

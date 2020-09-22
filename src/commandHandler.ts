@@ -1,17 +1,18 @@
 import {Message} from "discord.js";
 import {COMMAND_PREFIX} from "./types/constants";
+import {TypeCommand} from "./types/response";
 import {commands} from "../assets/commands.json";
 import {useDialogflow} from "./controllers/dialogflow";
 
 /**
  * Check if command is een regsitered command
  */
-function getCommand(text: string) {
-    return commands.find((input) => {
-        const {command, aliases, intent} = input;
+function getCommand(command: string) {
+    return commands.find((input: TypeCommand) => {
+        const {text, aliases, intent} = input;
 
         // Find command based on "name", aliases or intent
-        if (command === text || (aliases && aliases.includes(text)) || intent === text) {
+        if (text === command || aliases?.includes(command) || intent === command) {
             return input;
         }
     });
@@ -48,7 +49,7 @@ export async function calculateResponse(message: Message) {
         const data = await useDialogflow(fullCommand);
         const {queryResult} = data[0];
 
-        if (queryResult) {
+        if (queryResult.intent) {
             command = getCommand(queryResult.intent.displayName);
             response = queryResult.fulfillmentText;
             parameters = queryResult.parameters;
