@@ -13,10 +13,10 @@
             "usage": "!trivia"
         },
         {
-            "text": "hello there",
-            "description": "General kenobi",
-            "usage": "!hello there",
-            "intent": "Hello there"
+            "text": "karma",
+            "aliases": ["karma", "points"],
+            "description": "Get user karma",
+            "usage": "!karma"
         }
     ]
 }

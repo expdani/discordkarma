@@ -2,7 +2,7 @@ import {Channel} from "../../types/discord";
 import {TRIVIA_API_URL, TriviaQuestion, TRIVIA_PAYOUT} from "../../types/trivia";
 import secondsToReadableString, {getAmountOfSecondsBetweenDates, shuffleArray} from "../../helpers";
 import fetch from "node-fetch";
-import {Message, Collection, RichEmbed, User} from "discord.js";
+import {Message, Collection, MessageEmbed, User} from "discord.js";
 import {decodeHTML} from "entities";
 import {changeCurrency} from "../currency";
 
@@ -86,8 +86,8 @@ async function askQuestion(channel: Channel, user: User) {
     const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:** ${difficulty} \n **Payout:** $${payout}`;
 
     // Send the question in the chat
-    const embed = new RichEmbed()
-        .setAuthor(`${user.username}'s trivia question`, user.avatarURL)
+    const embed = new MessageEmbed()
+        .setAuthor(`${user.username}'s trivia question`, `${user.avatarURL}`)
         .setDescription(decodeHTML(questionMessage))
         .setColor("#fffff");
     channel.send(embed);

@@ -1,9 +1,9 @@
 import * as Knex from "knex";
 
-const TABLE_NAME = "currency";
+const TABLE_NAME = "karma_total";
 
 /**
- * Method that creates the curreny table when migrations are run
+ * Method that creates the karma_total table when migrations are run
  */
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(TABLE_NAME, function (table) {
@@ -13,22 +13,26 @@ export async function up(knex: Knex): Promise<void> {
          */
         table.string("userID").notNullable();
         /**
-         * The amount of money the user has in his bank
+         * The id of the Discord server
          */
-        table.double("bank").notNullable();
+        table.string("serverID").notNullable();
         /**
-         * The amount of money the user has in his wallet
+         * The amount of karma the user has
          */
-        table.double("wallet").notNullable();
+        table.integer("total").notNullable();
         /**
          * Created_at and deleted_at
          */
         table.timestamps();
+        /**
+         * These columns must be unique together
+         */
+        table.unique(["userID", "serverID"]);
     });
 }
 
 /**
- * Method that creates the curreny table when migrations are run
+ * Method that drops the table
  */
 export async function down(knex: Knex): Promise<void> {
     return knex.schema.dropTable(TABLE_NAME);

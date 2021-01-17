@@ -7,5 +7,7 @@ import {requestTriviaQuestion} from "./trivia";
 export default function setupMinigameCommands(message: Message) {
     const messageChannel = message.channel;
 
-    requestTriviaQuestion(messageChannel, message.author);
+    if (messageChannel.type == "text" || messageChannel.type == "news") {
+        requestTriviaQuestion(messageChannel, message.author);
+    }
 }
