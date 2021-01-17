@@ -1,4 +1,4 @@
-import {Message, RichEmbed, User} from "discord.js";
+import {Message, MessageEmbed, User} from "discord.js";
 import {getCurrency, initiateCurrency} from "./";
 import {Channel} from "../../types/discord";
 
@@ -16,7 +16,7 @@ async function sayUserBalance(channel: Channel, user: User) {
         if (!currency) {
             await initiateCurrency(user.id);
         }
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setAuthor(`${user.username}'s balance`, `${user.avatarURL}`)
             .setDescription(`**Wallet:** $${wallet}\n**Bank:** $${bank}`)
             .setColor("#fffff");
@@ -32,5 +32,7 @@ async function sayUserBalance(channel: Channel, user: User) {
 export function setupCurrencyCommands(message: Message) {
     const messageChannel = message.channel;
 
-    sayUserBalance(messageChannel, message.author);
+    if (messageChannel.type == "text" || messageChannel.type == "news") {
+        sayUserBalance(messageChannel, message.author);
+    }
 }

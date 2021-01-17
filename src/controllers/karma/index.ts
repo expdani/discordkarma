@@ -18,8 +18,8 @@ export async function getKarma(userID: string, serverID: string): Promise<TypeKa
 export async function initiateKarma(userID: string, serverID: string): Promise<TypeKarmaTotal> {
     const now = new Date();
     const input: TypeKarmaTotalInput = {
-        user_id: userID,
-        server_id: serverID,
+        userID,
+        serverID,
         total: 0,
         created_at: now,
         updated_at: now,
@@ -43,10 +43,10 @@ export async function initiateKarmaPost(
     const post = await database("karma_posts").where({userID, serverID, messageID, authorID}).first();
     if (!post) {
         const input: TypeKarmaPost = {
-            user_id: userID,
-            server_id: serverID,
-            message_id: messageID,
-            author_id: authorID,
+            userID,
+            serverID,
+            messageID,
+            authorID,
             vote: vote,
             updated_at: now,
             created_at: now,
@@ -59,8 +59,15 @@ export async function initiateKarmaPost(
             vote: vote,
             updated_at: now,
         };
-        return await database("karma_total").where({userID, serverID, messageID, authorID}).update(input);
+        return await database("karma_posts").where({userID, serverID, messageID, authorID}).update(input);
     }
+}
+
+/**
+ * Remove karma record for the post
+ */
+export async function removeKarmaPost(userID: string, serverID: string, messageID: string, authorID: string) {
+    await database("karma_posts").where({userID, serverID, messageID, authorID}).del();
 }
 
 /**
@@ -68,11 +75,8 @@ export async function initiateKarmaPost(
  * - A positive number adds karma to the user
  * - A negative number removes karma from the user
  */
-export async function changeKarma(userID: string, serverID: string, total = 0) {
-    let karma = await getKarma(userID, serverID);
-    if (!karma) {
-        karma = await getKarma(userID, serverID);
-    }
+export async function updateKarma(userID: string, serverID: string, total = 0) {
+    const karma = await getKarma(userID, serverID);
 
     const newKarma = {
         ...karma,

@@ -10,19 +10,19 @@ export async function up(knex: Knex): Promise<void> {
         /**
          * The id of the Discord user
          */
-        table.string("user_id").notNullable();
+        table.string("userID").notNullable();
         /**
          * The id of the Discord server
          */
-        table.string("server_id").notNullable();
+        table.string("serverID").notNullable();
         /**
          * The id of the message
          */
-        table.string("message_id").notNullable();
+        table.string("messageID").notNullable();
         /**
          * The id of the author
          */
-        table.string("author_id").notNullable();
+        table.string("authorID").notNullable();
         /**
          * Type of the vote
          */
@@ -34,7 +34,7 @@ export async function up(knex: Knex): Promise<void> {
         /**
          * These columns must be unique together
          */
-        table.unique(["user_id", "server_id", "message_id", "author_id"]);
+        table.unique(["userID", "serverID", "messageID", "authorID"]);
     });
 }
 

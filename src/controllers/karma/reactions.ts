@@ -1,5 +1,5 @@
-import {Message, ReactionEmoji, User} from "discord.js";
-import {changeKarma, initiateKarmaPost} from ".";
+import {Message, MessageReaction, PartialUser, User} from "discord.js";
+import {updateKarma, initiateKarmaPost, removeKarmaPost} from ".";
 
 const UPVOTE = ["upvote", "👍"];
 const DOWNVOTE = ["downvote", "👎"];
@@ -8,10 +8,18 @@ const DOWNVOTE = ["downvote", "👎"];
  * Method that adds reactions to messages that contain a link or an attachment
  */
 export default async function addKarmaReactions(message: Message) {
-    if (message.content.includes("https://") || message.content.includes("http://") || message.attachments.size > 0) {
+    const content = message.content.toLowerCase();
+    if (
+        content.includes("https://") ||
+        content.includes("http://") ||
+        message.attachments.size > 0 ||
+        content.startsWith("poll:") ||
+        content.startsWith("referendum:") ||
+        content.startsWith("petitie:")
+    ) {
         try {
-            const upvote = message?.guild?.emojis?.find((emoji) => emoji?.name === "upvote") || "👍";
-            const downvote = message?.guild?.emojis?.find((emoji) => emoji?.name === "downvote") || "👎";
+            const upvote = message?.guild?.emojis?.cache.find((emoji) => emoji?.name === "upvote") || "👍";
+            const downvote = message?.guild?.emojis?.cache.find((emoji) => emoji?.name === "downvote") || "👎";
 
             await message.react(upvote);
             await message.react(downvote);
@@ -24,13 +32,22 @@ export default async function addKarmaReactions(message: Message) {
 /**
  * Setup karma reaction events
  */
-export async function setupKarmaReactions(message: Message, reaction: ReactionEmoji, user: User) {
-    if (UPVOTE.includes(reaction.name)) {
-        await changeKarma(message.author.id, message.guild.id, 1);
-        await initiateKarmaPost(user.id, message.guild.id, message.id, message.author.id, "upvote");
+export async function setupKarmaReactions(reaction: MessageReaction, user: User | PartialUser, type: string) {
+    const message = reaction.message;
+    if (UPVOTE.includes(reaction.emoji.name)) {
+        await updateKarma(message.author.id, message.guild?.id ?? "", type === "add" ? 1 : -1);
+        if (type === "add") {
+            await initiateKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id, "upvote");
+        } else {
+            await removeKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id);
+        }
     }
-    if (DOWNVOTE.includes(reaction.name)) {
-        await changeKarma(message.author.id, message.guild.id, -1);
-        await initiateKarmaPost(user.id, message.guild.id, message.id, message.author.id, "downvote");
+    if (DOWNVOTE.includes(reaction.emoji.name)) {
+        await updateKarma(message.author.id, message.guild?.id ?? "", type === "add" ? -1 : 1);
+        if (type === "add") {
+            await initiateKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id, "downvote");
+        } else {
+            await removeKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id);
+        }
     }
 }

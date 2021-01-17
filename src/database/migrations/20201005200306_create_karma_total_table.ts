@@ -11,11 +11,11 @@ export async function up(knex: Knex): Promise<void> {
         /**
          * The id of the Discord user
          */
-        table.string("user_id").notNullable();
+        table.string("userID").notNullable();
         /**
          * The id of the Discord server
          */
-        table.string("server_id").notNullable();
+        table.string("serverID").notNullable();
         /**
          * The amount of karma the user has
          */
@@ -27,7 +27,7 @@ export async function up(knex: Knex): Promise<void> {
         /**
          * These columns must be unique together
          */
-        table.unique(["user_id", "server_id"]);
+        table.unique(["userID", "serverID"]);
     });
 }
 

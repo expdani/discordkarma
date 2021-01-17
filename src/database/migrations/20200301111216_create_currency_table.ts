@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
         /**
          * The id of the Discord user
          */
-        table.string("user_id").notNullable();
+        table.string("userID").notNullable();
         /**
          * The amount of money the user has in his bank
          */

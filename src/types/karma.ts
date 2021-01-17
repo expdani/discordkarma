@@ -3,8 +3,8 @@
  */
 export type TypeKarmaTotal = {
     id: number;
-    user_id: string;
-    server_id: string;
+    userID: string;
+    serverID: string;
     total: number;
     updated_at: Date;
     created_at: Date;
@@ -14,8 +14,8 @@ export type TypeKarmaTotal = {
  * @type with a single currency item from the database.
  */
 export type TypeKarmaTotalInput = {
-    user_id: string;
-    server_id: string;
+    userID: string;
+    serverID: string;
     total: number;
     updated_at: Date;
     created_at: Date;
@@ -25,10 +25,10 @@ export type TypeKarmaTotalInput = {
  * @type with a single currency item from the database.
  */
 export type TypeKarmaPost = {
-    user_id: string;
-    server_id: string;
-    message_id: string;
-    author_id: string;
+    userID: string;
+    serverID: string;
+    messageID: string;
+    authorID: string;
     vote: string;
     updated_at: Date;
     created_at: Date;
