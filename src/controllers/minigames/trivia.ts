@@ -87,7 +87,7 @@ async function askQuestion(channel: Channel, user: User) {
 
     // Send the question in the chat
     const embed = new MessageEmbed()
-        .setAuthor(`${user.username}'s trivia question`, `${user.avatarURL}`)
+        .setAuthor(`${user.username}'s trivia question`, `${user.avatarURL()}`)
         .setDescription(decodeHTML(questionMessage))
         .setColor("#fffff");
     channel.send(embed);
