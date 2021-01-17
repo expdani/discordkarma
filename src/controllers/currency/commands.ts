@@ -17,7 +17,7 @@ async function sayUserBalance(channel: Channel, user: User) {
             await initiateCurrency(user.id);
         }
         const embed = new MessageEmbed()
-            .setAuthor(`${user.username}'s balance`, `${user.avatarURL}`)
+            .setAuthor(`${user.username}'s balance`, `${user.avatarURL()}`)
             .setDescription(`**Wallet:** $${wallet}\n**Bank:** $${bank}`)
             .setColor("#fffff");
         channel.send(embed);

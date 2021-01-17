@@ -1,4 +1,4 @@
-export type TypeCommandInputResponse = {
+export type TypeMessageResponse = {
     input: {
         text: string;
         attributes: Array<string>;
@@ -6,7 +6,7 @@ export type TypeCommandInputResponse = {
     };
     parameters?: {};
     response?: string;
-    command: TypeCommand | null;
+    command: TypeCommand | null | undefined;
 };
 
 export type TypeCommand = {
