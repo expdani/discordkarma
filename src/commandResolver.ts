@@ -1,7 +1,7 @@
 import {Message} from "discord.js";
 import {TypeMessageResponse} from "./types/response";
 import {setupCurrencyCommands} from "./controllers/currency/commands";
-import {setupKarmaCommands} from "./controllers/karma/commands";
+import {sayKarmaCommand, sayTopCommand} from "./controllers/karma/commands";
 import setupMinigameCommands from "./controllers/minigames";
 import {sayCommand} from "./controllers/admin/commands";
 
@@ -14,7 +14,8 @@ type TypeResolvers = {
 const resolvers: TypeResolvers = {
     balance: setupCurrencyCommands,
     trivia: setupMinigameCommands,
-    karma: setupKarmaCommands,
+    karma: sayKarmaCommand,
+    leaderboard: sayTopCommand,
     say: sayCommand,
     hello_there: (message, context) => {
         if (context.response) {

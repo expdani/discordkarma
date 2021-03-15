@@ -1,5 +1,5 @@
 import {Message, MessageReaction, PartialUser, User} from "discord.js";
-import {updateKarma, initiateKarmaPost, removeKarmaPost} from ".";
+import {updateKarma, initiateKarmaPost, removeKarmaPost} from "./user/index";
 
 const UPVOTE = ["upvote", "👍"];
 const DOWNVOTE = ["downvote", "👎"];

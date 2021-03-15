@@ -4,31 +4,37 @@
             "text": "balance",
             "aliases": ["bal", "money"],
             "description": "Get current balance",
-            "usage": "!balance"
+            "usage": "?balance"
         },
         {
             "text": "trivia",
             "aliases": ["question", "q"],
             "description": "Get a random trivia question",
-            "usage": "!trivia"
+            "usage": "?trivia"
         },
         {
             "text": "hello there",
             "description": "General kenobi",
-            "usage": "!hello there",
+            "usage": "?hello there",
             "intent": "Hello there"
         },
         {
             "text": "karma",
             "aliases": ["karma"],
             "description": "Get user karma",
-            "usage": "!karma"
+            "usage": "?karma"
+        },
+        {
+            "text": "leaderboard",
+            "aliases": ["leaderboard", "lb", "top"],
+            "description": "Get server leaderboard",
+            "usage": "?karma leaderboard"
         },
         {
             "text": "say",
             "aliases": ["repeat"],
             "description": "Bot says what you're saying",
-            "usage": "!say"
+            "usage": "?say"
         }
     ]
 }

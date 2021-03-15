@@ -1,8 +1,8 @@
-import database from "../../database";
+import database from "../../../database";
 import {TypeKarmaPost, TypeKarmaTotal, TypeKarmaTotalInput} from "src/types/karma";
 
 /**
- * Setup karma reaction events
+ * Get user karma
  */
 export async function getKarma(userID: string, serverID: string): Promise<TypeKarmaTotal> {
     const karma = await database("karma_total").where({userID, serverID}).first();
@@ -10,6 +10,14 @@ export async function getKarma(userID: string, serverID: string): Promise<TypeKa
         return await initiateKarma(userID, serverID);
     }
     return karma;
+}
+
+/**
+ * Get server leaderboard
+ */
+export async function getKarmaServerTop(serverID: string): Promise<TypeKarmaTotal[]> {
+    const top = await database("karma_total").where({serverID}).orderBy("total", "desc").limit(10);
+    return top;
 }
 
 /**
