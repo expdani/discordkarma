@@ -1,6 +1,6 @@
 import {Message} from "discord.js";
 import {COMMAND_PREFIX} from "./types/constants";
-import {TypeCommand} from "./types/response";
+import {TypeCommand, TypeMessageResponse} from "./types/response";
 import {commands} from "../assets/commands.json";
 import {useDialogflow} from "./controllers/dialogflow";
 
@@ -16,6 +16,22 @@ function getCommand(command: string, fullCommand: string) {
             return input;
         }
     });
+}
+
+/**
+ * Checks if argumant is a registered subcommand in the main command and returns it.
+ */
+export async function getSubCommand(response: TypeMessageResponse) {
+    let subCommand = null;
+    if (response.command?.sub && response.input.attributes.length > 0) {
+        const attribute = response.input.attributes[0];
+        response.command.sub.forEach((sub) => {
+            if (sub.aliases?.includes(attribute)) {
+                subCommand = sub.text;
+            }
+        });
+    }
+    return subCommand;
 }
 
 /**

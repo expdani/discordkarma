@@ -1,13 +1,13 @@
 import {MessageEmbed} from "discord.js";
-import {getKarmaServerTop} from "./../user";
+import {getServerKarmaLeaderboard} from "./index";
 import {Channel} from "../../../types/discord";
 
 /**
  * Gets karma leaderboard of the server.
  */
-export async function sayKarmaServerTop(channel: Channel) {
+export async function sayServerKarmaLeaderboard(channel: Channel) {
     try {
-        const top = await getKarmaServerTop(channel.guild.id);
+        const top = await getServerKarmaLeaderboard(channel.guild.id);
         const embed = new MessageEmbed().setTitle("Leaderboard").setColor("#fffff");
         let i = 0;
         top.forEach((karma) => {
@@ -17,6 +17,5 @@ export async function sayKarmaServerTop(channel: Channel) {
         channel.send(embed);
     } catch (err) {
         channel.send("Oops, something went wrong while requesting the leaderboard.");
-        console.log(err);
     }
 }

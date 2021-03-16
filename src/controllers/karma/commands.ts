@@ -1,28 +1,21 @@
 import {TypeMessageResponse} from "./../../types/response";
 import {Message} from "discord.js";
 import {sayUserKarma} from "./user/commands";
-import {sayKarmaServerTop} from "./top/commands";
+import {sayServerKarmaLeaderboard} from "./top/commands";
+import {getSubCommand} from "./../../commandHandler";
 
 /**
  * Setup the commands that are related to karma in the bot
  */
-export function setupKarmaCommands(message: Message, response: TypeMessageResponse) {
+export async function setupKarmaCommands(message: Message, input: TypeMessageResponse) {
     const messageChannel = message.channel;
-    let subCommand;
     if (messageChannel.type == "text" || messageChannel.type == "news") {
-        if (response.command?.sub && response.input.attributes.length > 0) {
-            const attribute = response.input.attributes[0];
-            response.command.sub.forEach((sub) => {
-                if (sub.aliases?.includes(attribute)) {
-                    subCommand = sub.text;
-                }
-            });
-        }
+        const subCommand = await getSubCommand(input);
 
         if (subCommand) {
             switch (subCommand) {
                 case "leaderboard":
-                    sayKarmaServerTop(messageChannel);
+                    sayServerKarmaLeaderboard(messageChannel);
             }
         } else {
             sayUserKarma(messageChannel, message);

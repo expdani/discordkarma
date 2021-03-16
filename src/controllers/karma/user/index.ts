@@ -13,14 +13,6 @@ export async function getKarma(userID: string, serverID: string): Promise<TypeKa
 }
 
 /**
- * Get server leaderboard
- */
-export async function getKarmaServerTop(serverID: string): Promise<TypeKarmaTotal[]> {
-    const top = await database("karma_total").where({serverID}).orderBy("total", "desc").limit(10);
-    return top;
-}
-
-/**
  * Add a karma record for the user
  */
 export async function initiateKarma(userID: string, serverID: string): Promise<TypeKarmaTotal> {
