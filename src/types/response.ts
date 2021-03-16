@@ -15,4 +15,13 @@ export type TypeCommand = {
     description: string;
     usage: string;
     intent?: string;
+    sub?: Array<TypeSubCommand>;
+};
+
+export type TypeSubCommand = {
+    text: string;
+    aliases?: Array<string>;
+    description: string;
+    usage: string;
+    intent?: string;
 };

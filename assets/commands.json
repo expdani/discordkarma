@@ -3,37 +3,33 @@
         {
             "text": "balance",
             "aliases": ["bal", "money"],
-            "description": "Get current balance",
+            "description": "Shows the amount of money you have.",
             "usage": "?balance"
         },
         {
             "text": "trivia",
             "aliases": ["question", "q"],
-            "description": "Get a random trivia question",
+            "description": "Gives a random trivia question.",
             "usage": "?trivia"
-        },
-        {
-            "text": "hello there",
-            "description": "General kenobi",
-            "usage": "?hello there",
-            "intent": "Hello there"
         },
         {
             "text": "karma",
             "aliases": ["karma"],
-            "description": "Get user karma",
-            "usage": "?karma"
-        },
-        {
-            "text": "leaderboard",
-            "aliases": ["leaderboard", "lb", "top"],
-            "description": "Get server leaderboard",
-            "usage": "?karma leaderboard"
+            "description": "Shows the amount of karma you have.",
+            "usage": "?karma",
+            "sub": [
+                {
+                    "text": "leaderboard",
+                    "aliases": ["leaderboard", "lb", "top"],
+                    "description": "Show the karma leaderboard of the server.",
+                    "usage": "?karma top"
+                }
+            ]
         },
         {
             "text": "say",
             "aliases": ["repeat"],
-            "description": "Bot says what you're saying",
+            "description": "Deletes your message and repeats it, making it look like the bot said it.",
             "usage": "?say"
         }
     ]
