@@ -33,6 +33,6 @@ export async function sayUserKarma(channel: Channel, message: Message) {
             channel.send(embed);
         }
     } catch (err) {
-        channel.send("Oops, something went wrong while requesting your karma.");
+        channel.send("Oops, something went wrong requesting your karma.");
     }
 }

@@ -22,7 +22,7 @@ async function sayUserBalance(channel: Channel, user: User) {
             .setColor("#fffff");
         channel.send(embed);
     } catch (err) {
-        channel.send("Oops, something went wrong while requesting your balance.");
+        channel.send("Oops, something went wrong requesting your balance.");
     }
 }
 

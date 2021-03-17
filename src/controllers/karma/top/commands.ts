@@ -16,6 +16,6 @@ export async function sayServerKarmaLeaderboard(channel: Channel) {
         });
         channel.send(embed);
     } catch (err) {
-        channel.send("Oops, something went wrong while requesting the leaderboard.");
+        channel.send("Oops, something went wrong requesting the leaderboard.");
     }
 }
