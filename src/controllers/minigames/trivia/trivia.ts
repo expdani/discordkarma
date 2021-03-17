@@ -1,10 +1,11 @@
-import {Channel} from "../../types/discord";
-import {TRIVIA_API_URL, TriviaQuestion, TRIVIA_PAYOUT} from "../../types/trivia";
-import secondsToReadableString, {getAmountOfSecondsBetweenDates, shuffleArray} from "../../helpers";
+import {CURRENCY_SIGN} from "./../../../types/currency";
+import {Channel} from "../../../types/discord";
+import {TRIVIA_API_URL, TriviaQuestion, TRIVIA_PAYOUT} from "../../../types/trivia";
+import secondsToReadableString, {getAmountOfSecondsBetweenDates, shuffleArray} from "../../../helpers";
 import fetch from "node-fetch";
 import {Message, Collection, MessageEmbed, User} from "discord.js";
 import {decodeHTML} from "entities";
-import {changeCurrency} from "../currency";
+import {changeCurrency} from "../../currency";
 
 const TRIVIA_TIMEOUT = 120; // seconds
 
@@ -83,7 +84,7 @@ async function askQuestion(channel: Channel, user: User) {
 
     // Compose a question with all it's answers.
     answers.forEach((answer, index) => (answerList += `\n${index + 1}) ${decodeHTML(answer)}`));
-    const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:** ${difficulty} \n **Payout:** $${payout}`;
+    const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:** ${difficulty} \n **Payout:** ${CURRENCY_SIGN}${payout}`;
 
     // Send the question in the chat
     const embed = new MessageEmbed()

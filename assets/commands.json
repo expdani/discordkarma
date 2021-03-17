@@ -8,7 +8,7 @@
         },
         {
             "text": "trivia",
-            "aliases": ["question", "q"],
+            "aliases": ["question", "q", "t"],
             "description": "Gives a random trivia question.",
             "usage": "?trivia"
         },

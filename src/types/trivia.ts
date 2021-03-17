@@ -28,7 +28,7 @@ export enum TRIVIA_DIFFICULTIES {
  * @enum with the currency payour for every trivia question
  */
 export enum TRIVIA_PAYOUT {
-    easy = 10,
-    medium = 25,
-    hard = 50,
+    easy = 1,
+    medium = 3,
+    hard = 5,
 }

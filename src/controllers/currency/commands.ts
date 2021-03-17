@@ -1,3 +1,4 @@
+import {CURRENCY_SIGN} from "./../../types/currency";
 import {Message, MessageEmbed, User} from "discord.js";
 import {getCurrency, initiateCurrency} from "./";
 import {Channel} from "../../types/discord";
@@ -18,7 +19,7 @@ async function sayUserBalance(channel: Channel, user: User) {
         }
         const embed = new MessageEmbed()
             .setAuthor(`${user.username}'s balance`, `${user.avatarURL()}`)
-            .setDescription(`**Wallet:** $${wallet}\n**Bank:** $${bank}`)
+            .setDescription(`**Wallet:** ${CURRENCY_SIGN}${wallet}\n**Bank:** ${CURRENCY_SIGN}${bank}`)
             .setColor("#fffff");
         channel.send(embed);
     } catch (err) {
