@@ -10,8 +10,7 @@ import {getSubCommand} from "./../../commandHandler";
 export async function setupKarmaCommands(message: Message, input: TypeMessageResponse) {
     const messageChannel = message.channel;
     if (messageChannel.type == "text" || messageChannel.type == "news") {
-        const subCommand = await getSubCommand(input);
-
+        const subCommand = await getSubCommand(input, 0);
         if (subCommand) {
             switch (subCommand) {
                 case "leaderboard":

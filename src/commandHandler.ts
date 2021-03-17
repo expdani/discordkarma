@@ -24,12 +24,12 @@ function getCommand(command: string, fullCommand: string) {
 }
 
 /**
- * Checks if argumant is a registered subcommand in the main command and returns it.
+ * Checks if attribute is a registered subcommand in the main command and returns it.
  */
-export async function getSubCommand(response: TypeMessageResponse) {
+export async function getSubCommand(response: TypeMessageResponse, index: number) {
     let subCommand = null;
     if (response.command?.sub && response.input.attributes.length > 0) {
-        const attribute = response.input.attributes[0];
+        const attribute = response.input.attributes[index];
         response.command.sub.forEach((sub) => {
             if (sub.aliases?.includes(attribute.toLocaleLowerCase())) {
                 subCommand = sub.text;
@@ -37,6 +37,17 @@ export async function getSubCommand(response: TypeMessageResponse) {
         });
     }
     return subCommand;
+}
+
+/**
+ * Returns the attribute with the given index.
+ */
+export async function getAttribute(response: TypeMessageResponse, index: number) {
+    let attribute = null;
+    if (response.input.attributes[index]) {
+        attribute = response.input.attributes[index];
+    }
+    return attribute;
 }
 
 /**
