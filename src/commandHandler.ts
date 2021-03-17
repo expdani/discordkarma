@@ -12,7 +12,12 @@ function getCommand(command: string, fullCommand: string) {
         const {text, aliases, intent} = input;
 
         // Find command based on "text", "full command (including args)", aliases or intent
-        if (intent === command || text === command || text === fullCommand || aliases?.includes(command)) {
+        if (
+            intent === command.toLocaleLowerCase() ||
+            text === command.toLocaleLowerCase() ||
+            text === fullCommand.toLocaleLowerCase() ||
+            aliases?.includes(command.toLocaleLowerCase())
+        ) {
             return input;
         }
     });
@@ -26,7 +31,7 @@ export async function getSubCommand(response: TypeMessageResponse) {
     if (response.command?.sub && response.input.attributes.length > 0) {
         const attribute = response.input.attributes[0];
         response.command.sub.forEach((sub) => {
-            if (sub.aliases?.includes(attribute)) {
+            if (sub.aliases?.includes(attribute.toLocaleLowerCase())) {
                 subCommand = sub.text;
             }
         });
