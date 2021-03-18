@@ -1,18 +1,6 @@
 {
     "commands": [
         {
-            "text": "balance",
-            "aliases": ["bal", "money"],
-            "description": "Shows the amount of money you have.",
-            "usage": "?balance"
-        },
-        {
-            "text": "trivia",
-            "aliases": ["question", "q"],
-            "description": "Gives a random trivia question.",
-            "usage": "?trivia"
-        },
-        {
             "text": "karma",
             "aliases": ["karma", "rep", "reputation"],
             "description": "Shows the amount of karma you have.",
@@ -21,22 +9,39 @@
                 {
                     "text": "leaderboard",
                     "aliases": ["leaderboard", "lb", "top"],
-                    "description": "Show the karma leaderboard of the server.",
+                    "description": "Shows the karma leaderboard of the server.",
                     "usage": "?karma leaderboard"
                 }
-            ]
+            ],
+            "show": true
+        },
+        {
+            "text": "balance",
+            "aliases": ["bal", "money"],
+            "description": "Shows the amount of money you have.",
+            "usage": "?balance",
+            "show": true
+        },
+        {
+            "text": "trivia",
+            "aliases": ["question", "q", "t"],
+            "description": "Gives you a random trivia question.",
+            "usage": "?trivia",
+            "show": true
         },
         {
             "text": "say",
             "aliases": ["repeat"],
             "description": "Deletes your message and repeats it, making it look like the bot said it.",
-            "usage": "?say"
+            "usage": "?say",
+            "show": false
         },
         {
             "text": "help",
-            "aliases": ["help", "?", "welp"],
-            "description": "",
-            "usage": "?say"
+            "aliases": ["help", "welp"],
+            "description": "Shows all the commands and how to use them.",
+            "usage": "?help",
+            "show": true
         }
     ]
 }

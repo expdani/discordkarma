@@ -7,6 +7,7 @@ export type TypeMessageResponse = {
     parameters?: {};
     response?: string;
     command: TypeCommand | null | undefined;
+    show?: boolean;
 };
 
 export type TypeCommand = {

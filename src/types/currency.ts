@@ -1,11 +1,9 @@
 /**
- * @enum with the commands for the currency module
+ * Constant with the currency settings.
  */
-export enum CURRENCY_COMMANDS {
-    bal = "bal",
-    balance = "balance",
-    give = "give",
-}
+export const CURRENCY = "Euro";
+export const CURRENCY_SHORT = "EUR";
+export const CURRENCY_SIGN = "€";
 
 /**
  * @type with a single currency item from the database.
