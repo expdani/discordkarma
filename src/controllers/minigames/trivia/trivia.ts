@@ -6,8 +6,9 @@ import fetch from "node-fetch";
 import {Message, Collection, MessageEmbed, User} from "discord.js";
 import {decodeHTML} from "entities";
 import {changeCurrency} from "../../currency";
+import {correctMsgs, wrongMsgs} from "../../../../assets/random.json";
 
-const TRIVIA_TIMEOUT = 120; // seconds
+const TRIVIA_TIMEOUT = 0; // seconds
 
 type TimeoutCache = {[userID: string]: Date};
 
@@ -63,15 +64,19 @@ async function handleUserAnswer(
         const isAnswerCorrect = answerNumber && !isNaN(answerNumber) && answers[answerNumber - 1] === correctAnswer;
 
         if (isAnswerCorrect) {
+            const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
             await changeCurrency(userID, payout);
-            channel.send("That answer is correct! It's big brain time :nerd:.");
+            const embed = new MessageEmbed().setTitle(`${randomMsg}`).setColor("#00FF00");
+            channel.send(embed);
         } else {
-            channel.send(
-                `Whoops, that's not correct :man_facepalming:. The right answer is **${decodeHTML(correctAnswer)}**.`,
-            );
+            const randomMsg = wrongMsgs[Math.floor(Math.random() * wrongMsgs.length)];
+            const embed = new MessageEmbed()
+                .setTitle(`${randomMsg} Het antwoord was **${decodeHTML(correctAnswer)}**.`)
+                .setColor("#FF0000");
+            channel.send(embed);
         }
     } catch (err) {
-        channel.send("Whoops, something went wrong while processing your answer.");
+        channel.send("Whoops, something went wrong processing your answer.");
     }
 }
 
