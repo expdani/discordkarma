@@ -120,9 +120,7 @@ export function requestTriviaQuestion(channel: Channel, user: User) {
 
         if (secondsBetweenLastRequest < TRIVIA_TIMEOUT) {
             const secondsWaiting = Math.round(TRIVIA_TIMEOUT - secondsBetweenLastRequest);
-            channel.send(
-                `You have to wait ${secondsToReadableString(secondsWaiting)} before you can use trivia again.`,
-            );
+            channel.send(`You have to wait ${secondsToReadableString(secondsWaiting)}before you can use trivia again.`);
             return;
         }
     }

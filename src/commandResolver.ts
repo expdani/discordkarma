@@ -4,6 +4,7 @@ import {setupCurrencyCommands} from "./controllers/currency/commands";
 import {setupKarmaCommands} from "./controllers/karma/commands";
 import setupMinigameCommands from "./controllers/minigames/trivia/commands";
 import {sayCommand} from "./controllers/admin/commands";
+import {setupHelpCommands} from "./controllers/help/commands";
 
 type TypeResolver = (message: Message, context: TypeMessageResponse) => void;
 
@@ -16,6 +17,7 @@ const resolvers: TypeResolvers = {
     trivia: setupMinigameCommands,
     karma: setupKarmaCommands,
     say: sayCommand,
+    help: setupHelpCommands,
 };
 
 export default resolvers;
