@@ -8,7 +8,7 @@ import {decodeHTML} from "entities";
 import {changeCurrency} from "../../currency";
 import {correctMsgs, wrongMsgs} from "../../../../assets/random.json";
 
-const TRIVIA_TIMEOUT = 0; // seconds
+const TRIVIA_TIMEOUT = 60; // seconds
 
 type TimeoutCache = {[userID: string]: Date};
 
