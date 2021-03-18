@@ -9,6 +9,7 @@ export function getAmountOfSecondsBetweenDates(date1: Date, date2: Date) {
 /**
  * Function that shuffles the items in an array
  */
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export function shuffleArray(array: Array<any>) {
     let currentIndex = array.length;
     let temporaryValue;

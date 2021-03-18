@@ -84,7 +84,8 @@ async function askQuestion(channel: Channel, user: User) {
 
     // Compose a question with all it's answers.
     answers.forEach((answer, index) => (answerList += `\n${index + 1}) ${decodeHTML(answer)}`));
-    const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:** ${difficulty} \n **Payout:** ${CURRENCY_SIGN}${payout}`;
+    const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:**
+                            ${difficulty} \n **Payout:** ${CURRENCY_SIGN}${payout}`;
 
     // Send the question in the chat
     const embed = new MessageEmbed()

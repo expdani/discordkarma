@@ -16,7 +16,7 @@ async function sayHelp(channel: Channel) {
             command.sub?.forEach((sub) => {
                 description += `**${COMMAND_PREFIX}${command.text} ${sub.text}** - ${sub.description}\n`;
             });
-            description += `\n`;
+            description += "\n";
         });
         embed.description = description;
         channel.send(embed);
