@@ -64,7 +64,7 @@ export async function getInventory(userID: string): Promise<TypeInventory> {
  */
 export async function initiateInventory(userID: string): Promise<TypeInventory> {
     const now = new Date();
-    const json = JSON.stringify("{'items': []}");
+    const json = JSON.stringify('{"items": []}');
     const input = {
         userID,
         inventory: JSON.parse(json),
