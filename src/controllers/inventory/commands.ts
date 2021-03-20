@@ -14,7 +14,7 @@ export async function sayInventory(channel: Channel, user: User) {
         const embed = new MessageEmbed()
             .setAuthor(`${user.username}'s inventory`, `${user.avatarURL()}`)
             .setColor("#fffff");
-        if (inventory.items) {
+        if (inventory.items && inventory.items.length > 0) {
             inventory.items.forEach((item: {id: string; amount: any}) => {
                 const currentItem = items.find((x) => x.id.toLowerCase() === item.id.toLowerCase());
                 if (currentItem) {
