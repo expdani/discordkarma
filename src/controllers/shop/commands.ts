@@ -4,6 +4,7 @@ import {Channel} from "../../types/discord";
 import {items} from "../../../assets/items.json";
 import {TypeMessageResponse} from "src/types/response";
 import {buyItem} from ".";
+import {shopMsgs} from "../../../assets/random.json";
 
 /**
  * The bot tells the user the amount of money he has.
@@ -11,7 +12,8 @@ import {buyItem} from ".";
 async function sayShop(channel: Channel) {
     try {
         let description = "";
-        const embed = new MessageEmbed().setTitle("Welcome to the shop!").setColor("#fffff");
+        const shopMsg = shopMsgs[Math.floor(Math.random() * shopMsgs.length)];
+        const embed = new MessageEmbed().setTitle(`${shopMsg}`).setColor("#fffff");
         items.forEach((item) => {
             description += `**${item.emoji} ${item.name}** — ${CURRENCY_SIGN}${item.price} \n ${item.description}\n\n`;
         });

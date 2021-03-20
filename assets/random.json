@@ -24,7 +24,9 @@
         "POGGERSCHAMPION",
         "Dikke BMW kopen van je verdiende centen.",
         "WIJNEN WIJNEN WIJNEN!",
-        "Weet je, normaal hou ik niet van mos."
+        "Weet je, normaal hou ik niet van mos.",
+        "HANDTEKENING!!",
+        "Mining away!"
     ],
     "wrongMsgs": [
         "Ach, doe niet zo vervelend!",
@@ -43,5 +45,5 @@
         "Niet door de lavendel!",
         "Ik heb ook altijd pech.., ze moeten altijd mij hebben!"
     ],
-    "shopMsgs": ["Ja ik doe de boodschappen, boodschappen..", ""]
+    "shopMsgs": ["Ja ik doe de boodschappen, boodschappen..", "BOODSCHAP!"]
 }
