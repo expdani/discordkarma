@@ -31,7 +31,7 @@
         },
         {
             "text": "say",
-            "aliases": ["repeat"],
+            "aliases": ["say, repeat"],
             "description": "Deletes your message and repeats it, making it look like the bot said it.",
             "usage": "?say",
             "show": false
@@ -41,6 +41,34 @@
             "aliases": ["help", "welp"],
             "description": "Shows all the commands and how to use them.",
             "usage": "?help",
+            "show": true
+        },
+        {
+            "text": "shop",
+            "aliases": ["shop", "store"],
+            "description": "Shows you all the items you can buy.",
+            "usage": "?shop",
+            "show": true
+        },
+        {
+            "text": "buy",
+            "aliases": ["buy", "purchase"],
+            "description": "Buy an item from the store.",
+            "usage": "?buy (item)",
+            "show": true
+        },
+        {
+            "text": "sell",
+            "aliases": ["sell"],
+            "description": "Sell an item for half the price.",
+            "usage": "?sell (item)",
+            "show": true
+        },
+        {
+            "text": "inventory",
+            "aliases": ["inventory", "inv"],
+            "description": "Shows your inventory.",
+            "usage": "?inventory",
             "show": true
         }
     ]
