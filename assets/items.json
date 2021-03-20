@@ -1,0 +1,28 @@
+{
+    "items": [
+        {
+            "id": "pointsack",
+            "name": "Puntzak",
+            "price": 2.5,
+            "description": "Puntzak sate, komt op de tv.",
+            "emoji": "<:pointsack:443725653590802433>",
+            "shop": true
+        },
+        {
+            "id": "chickenrunner",
+            "name": "Kiprunner",
+            "price": 2,
+            "description": "Snack voor onderweg.",
+            "emoji": "<:chickenrunner:587346250316120079>",
+            "shop": true
+        },
+        {
+            "id": "snackcorner",
+            "name": "Snackmobiel",
+            "price": 24000,
+            "description": "Je eigen snackcorner!",
+            "emoji": "<:heaven:615497244401205258>",
+            "shop": true
+        }
+    ]
+}

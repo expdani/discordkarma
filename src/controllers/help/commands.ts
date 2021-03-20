@@ -4,7 +4,7 @@ import {Channel} from "../../types/discord";
 import {commands} from "../../../assets/commands.json";
 
 /**
- * The bot tells the user the amount of money he has.
+ * The bot gives a list of commands.
  */
 async function sayHelp(channel: Channel) {
     try {
@@ -26,7 +26,7 @@ async function sayHelp(channel: Channel) {
 }
 
 /**
- * Setup the command that are related to currency in the bot
+ * Setup the command that are related to help in the bot
  */
 export function setupHelpCommands(message: Message) {
     const messageChannel = message.channel;

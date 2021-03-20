@@ -42,7 +42,7 @@ export async function getSubCommand(response: TypeMessageResponse, index: number
 /**
  * Returns the attribute with the given index.
  */
-export async function getAttribute(response: TypeMessageResponse, index: number) {
+export async function getAttribute(response: TypeMessageResponse, index: number): Promise<string | null> {
     let attribute = null;
     if (response.input.attributes[index]) {
         attribute = response.input.attributes[index];

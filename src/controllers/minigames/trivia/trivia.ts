@@ -66,12 +66,12 @@ async function handleUserAnswer(
         if (isAnswerCorrect) {
             const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
             await changeCurrency(userID, payout);
-            const embed = new MessageEmbed().setTitle(`${randomMsg}`).setColor("#00FF00");
+            const embed = new MessageEmbed().setDescription(`**${randomMsg}**`).setColor("#00FF00");
             channel.send(embed);
         } else {
             const randomMsg = wrongMsgs[Math.floor(Math.random() * wrongMsgs.length)];
             const embed = new MessageEmbed()
-                .setTitle(`${randomMsg} Het antwoord was **${decodeHTML(correctAnswer)}**.`)
+                .setDescription(`**${randomMsg} Het antwoord was ${decodeHTML(correctAnswer)}**.`)
                 .setColor("#FF0000");
             channel.send(embed);
         }
@@ -89,8 +89,8 @@ async function askQuestion(channel: Channel, user: User) {
 
     // Compose a question with all it's answers.
     answers.forEach((answer, index) => (answerList += `\n${index + 1}) ${decodeHTML(answer)}`));
-    const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:**
-                            ${difficulty} \n **Payout:** ${CURRENCY_SIGN}${payout}`;
+    const questionMessage = `**${question}** ${answerList}\n\n **Difficulty:** ${difficulty}
+                                **Payout:** ${CURRENCY_SIGN}${payout}`;
 
     // Send the question in the chat
     const embed = new MessageEmbed()
