@@ -19,9 +19,8 @@ export async function buyItem(message: Message, item: any, amount: any) {
 
         if (shopItem && shopItem.shop) {
             const newBalance = balance.wallet - shopItem.price * amount;
-
             if (newBalance >= 0) {
-                await changeCurrency(userID, newBalance);
+                await changeCurrency(userID, -(shopItem.price * amount));
                 await addItemToInventory(userID, shopItem.id, amount);
                 channel.send(`U hebt een ${amount} ${shopItem.emoji} ${shopItem.name} gekocht!`);
             }
