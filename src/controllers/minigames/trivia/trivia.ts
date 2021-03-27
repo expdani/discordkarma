@@ -14,7 +14,7 @@ type TimeoutCache = {[userID: string]: Date};
 
 /**
  * Object with trivia request. This object stores user ID's and the last time when they requested a trivia question
- * Users can only request a trivia question every 120 seconds
+ * Users can only request a trivia question every .. seconds
  */
 const TRIVIA_REQUESTS: TimeoutCache = {};
 
