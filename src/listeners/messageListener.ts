@@ -3,6 +3,7 @@ import addKarmaReactions from "../controllers/karma/reactions";
 import {client} from "../";
 import {calculateResponse} from "../commandHandler";
 import commandResolver from "../commandResolver";
+import calculateRandomEvent from "../controllers/events/randomEvent";
 
 /**
  * Listener that listens to messages send in a server
@@ -22,5 +23,6 @@ export default function setupMessageListener() {
                 message.channel.send(result.response);
             }
         }
+        calculateRandomEvent(message);
     });
 }
