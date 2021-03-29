@@ -5,7 +5,6 @@
             "text": "<:heaven:615497244401205258> Herman roept Nieck zijn naam, maar je ziet dat een andere jongen er vandoor gaat met zijn puntzak! Roep `Herman!` om het hem te laten weten!",
             "response": "Herman!",
             "timeLimit": 60,
-            "chance": 1,
             "rewardText": "Het is je gelukt, {{username}}! Herman heeft de schoft kunnen stoppen en geeft jou je welverdiende **<:pointsack:443725653590802433> puntzak** (met een klein extraatje).",
             "failText": "De dief heeft de puntzak opgesmikkeld en niemand heeft het doorgehad...",
             "rewards": [
@@ -15,21 +14,36 @@
                 {
                     "item": "Pointsack"
                 }
-            ]
+            ],
+            "rarity": 3
         },
         {
             "name": "Portfolio map",
             "text": "Het is tijd om je portfolio map te laten controleren, Christina is jouw coach. Roep `Christina` en vraag haar om jouw portfolio map te controleren.",
             "response": "Christina",
             "timeLimit": 60,
-            "chance": 3,
             "rewardText": "Christina weet niks van een portfolio map, dus je krijgt vrij en gaat met de rest van Christina's coach klas naar <:heaven:615497244401205258> Herman! Hier een **<:pointsack:443725653590802433> puntzak**.",
             "failText": "Remy heeft het overgenomen, helaas was het niet voldoende...",
             "rewards": [
                 {
                     "item": "Pointsack"
                 }
-            ]
+            ],
+            "rarity": 2
+        },
+        {
+            "name": "Gerard's virus",
+            "text": "Christina krijgt tijdens een les enorm veel mailtjes van een gekke bron. Jij weet toevallig wie de boosdoener is van de mailtjes. Roep `Gerard` om hem te verklikken!",
+            "response": "Gerard",
+            "timeLimit": 60,
+            "rewardText": "Goed gedaan, {{username}}! Gerard krijgt een gesprek met zijn ouders en de hele klas verzameld geld voor jouw heldhaftige actie!",
+            "failText": "De hele klas gaat de opleiding niet meer halen..",
+            "rewards": [
+                {
+                    "wallet": 1
+                }
+            ],
+            "rarity": 1
         }
     ]
 }

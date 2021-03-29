@@ -4,7 +4,7 @@
             "id": "pointsack",
             "name": "Puntzak",
             "price": 2.5,
-            "description": "Puntzak sate, komt op de tv.",
+            "description": "Godenspijs.",
             "emoji": "<:pointsack:443725653590802433>",
             "shop": true
         },
@@ -12,7 +12,15 @@
             "id": "chickenrunner",
             "name": "Kiprunner",
             "price": 2,
-            "description": "Snack voor onderweg.",
+            "description": "Chickenrunner.",
+            "emoji": "<:chickenrunner:587346250316120079>",
+            "shop": true
+        },
+        {
+            "id": "bread_mexicano",
+            "name": "Broodje Mexicano",
+            "price": 3.5,
+            "description": "Satesaus past hier het beste bij.",
             "emoji": "<:chickenrunner:587346250316120079>",
             "shop": true
         },
