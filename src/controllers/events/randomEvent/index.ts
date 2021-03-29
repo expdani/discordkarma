@@ -1,7 +1,20 @@
-import {Collection, Message} from "discord.js";
+import {Collection, Guild, Message} from "discord.js";
 import {changeCurrency} from "../../currency";
 import {addItemToInventory} from "../../inventory";
 import {randomEvents} from "../../../../assets/randomEvents.json";
+import {getAmountOfSecondsBetweenDates} from "../../../helpers";
+
+const PERCENT_CHANCE_PER_MESSAGE = 0.2;
+
+const EVENT_TIMEOUT = 90; // seconds
+
+type TimeoutCache = {[serverID: string]: Date};
+
+/**
+ * Object with triggered events. This object stores server ID's and the last time when an event was triggered
+ * Server events can only trigger once every EVENT_TIMEOUT seconds
+ */
+const SERVER_TIMEOUTS: TimeoutCache = {};
 
 /**
  * Calculate a random event and handle it.
@@ -9,33 +22,46 @@ import {randomEvents} from "../../../../assets/randomEvents.json";
 export default function calculateRandomEvent(message: Message) {
     if (message.author.bot) return;
 
-    const messageChannel = message.channel;
     const n = Math.random() * 100;
 
-    let triggered = false;
-    randomEvents.forEach((e: any) => {
-        if (triggered) return;
-        if (n <= e.chance) {
-            messageChannel.send(e.text);
+    if (n <= PERCENT_CHANCE_PER_MESSAGE) {
+        let guild: Guild | null = null;
+        if (message.guild) guild = message.guild;
+        else return;
 
-            messageChannel
-                .awaitMessages(
-                    // Only listen for messages for the user that asked the trivia question
-                    (response: Message) =>
-                        Boolean(
-                            response.content.toLowerCase().includes(e.response.toLowerCase()) && !response.author.bot,
-                        ),
-                    // The user is only allowed to answer once, within "X" seconds
-                    {max: 1, time: e.timeLimit * 1000, errors: ["time"]},
-                )
-                .then((collectedMessages: Collection<string, Message>) => {
-                    handleUserResponse(collectedMessages, e);
-                })
-                .catch(() => messageChannel.send(e.failText));
-
-            triggered = true;
+        const lastRequest = SERVER_TIMEOUTS[guild.id];
+        if (lastRequest) {
+            if (getAmountOfSecondsBetweenDates(new Date(), lastRequest) < EVENT_TIMEOUT) return;
         }
-    });
+
+        const messageChannel = message.channel;
+        const rarity = calculateRarity();
+
+        const filteredEvents = randomEvents.filter(function (event: {rarity: number}) {
+            return event.rarity === rarity;
+        });
+
+        const randomEvent = filteredEvents[Math.floor(Math.random() * filteredEvents.length)];
+
+        messageChannel.send(randomEvent.text);
+        messageChannel
+            .awaitMessages(
+                // Only listen for messages that include the required response.
+                (response: Message) =>
+                    Boolean(
+                        response.content.toLowerCase().includes(randomEvent.response.toLowerCase()) &&
+                            !response.author.bot,
+                    ),
+                // The user is only allowed to answer once, within e.timeLimit seconds
+                {max: 1, time: randomEvent.timeLimit * 1000, errors: ["time"]},
+            )
+            .then((collectedMessages: Collection<string, Message>) => {
+                handleUserResponse(collectedMessages, randomEvent);
+            })
+            .catch(() => messageChannel.send(randomEvent.failText));
+
+        if (guild) SERVER_TIMEOUTS[guild.id] = new Date();
+    }
 }
 
 /**
@@ -44,20 +70,38 @@ export default function calculateRandomEvent(message: Message) {
 async function handleUserResponse(collectedMessages: Collection<string, Message>, event: any) {
     const messagesArray = collectedMessages.array();
     const message = messagesArray[0];
+    const username = (await message.guild?.members.fetch(message.author.id))?.nickname || message.author.username;
     try {
         if (event.rewards.length > 0) {
-            event.rewards.forEach((reward: any) => {
+            event.rewards.forEach(async (reward: any) => {
                 if (reward.item) {
-                    addItemToInventory(message.author.id, reward.item, 1);
+                    await addItemToInventory(message.author.id, reward.item, 1);
                 }
                 if (reward.wallet) {
-                    changeCurrency(message.author.id, reward.wallet);
+                    await changeCurrency(message.author.id, reward.wallet);
                 }
             });
 
-            message.channel.send(event.rewardText.replace("{{username}}", message.author.username));
+            await message.channel.send(event.rewardText.replace("{{username}}", username));
         }
     } catch (err) {
-        message.channel.send(event.failText.replace("{{username}}", message.author.username));
+        message.channel.send(event.failText.replace("{{username}}", username));
     }
+}
+
+/**
+ * Handle user response from event.
+ */
+function calculateRarity() {
+    const n = Math.random() * 100;
+    let rarity = 1;
+
+    if (n <= 50) {
+        rarity = 2;
+    }
+    if (n <= 20) {
+        rarity = 3;
+    }
+
+    return rarity;
 }
