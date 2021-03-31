@@ -22,7 +22,7 @@ export async function buyItem(message: Message, item: any, amount: any) {
             if (newBalance >= 0) {
                 await changeCurrency(userID, -(shopItem.price * amount));
                 await addItemToInventory(userID, shopItem.id, amount);
-                channel.send(`U hebt een ${amount} ${shopItem.emoji} ${shopItem.name} gekocht!`);
+                channel.send(`U hebt ${amount} ${shopItem.emoji} ${shopItem.name} gekocht!`);
             }
         } else {
             channel.send("That item is not for sale.");

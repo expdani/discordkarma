@@ -2,10 +2,10 @@
     "randomEvents": [
         {
             "name": "Gestolen puntzak",
-            "text": "<:heaven:615497244401205258> Herman roept Nieck zijn naam, maar je ziet dat een andere jongen er vandoor gaat met zijn puntzak! Roep `Herman!` om het hem te laten weten!",
+            "text": "<:heaven:826842582294331402> Herman roept Nieck zijn naam, maar je ziet dat een andere jongen er vandoor gaat met zijn puntzak! Roep `Herman!` om het hem te laten weten!",
             "response": "Herman!",
             "timeLimit": 60,
-            "rewardText": "Het is je gelukt, {{username}}! Herman heeft de schoft kunnen stoppen en geeft jou je welverdiende **<:pointsack:443725653590802433> puntzak** (met een klein extraatje).",
+            "rewardText": "Het is je gelukt, {{username}}! Herman heeft de schoft kunnen stoppen en geeft jou je welverdiende **<:pointsack:826842582335750155> puntzak** (met een klein extraatje).",
             "failText": "De dief heeft de puntzak opgesmikkeld en niemand heeft het doorgehad...",
             "rewards": [
                 {
@@ -22,7 +22,7 @@
             "text": "Het is tijd om je portfolio map te laten controleren, Christina is jouw coach. Roep `Christina` en vraag haar om jouw portfolio map te controleren.",
             "response": "Christina",
             "timeLimit": 60,
-            "rewardText": "Christina weet niks van een portfolio map, dus je krijgt vrij en gaat met de rest van Christina's coach klas naar <:heaven:615497244401205258> Herman! Hier een **<:pointsack:443725653590802433> puntzak**.",
+            "rewardText": "Christina weet niks van een portfolio map, dus je krijgt vrij en gaat met de rest van Christina's coach klas naar <:heaven:826842582294331402> Herman! Hier een **<:pointsack:826842582335750155> puntzak**.",
             "failText": "Remy heeft het overgenomen, helaas was het niet voldoende...",
             "rewards": [
                 {
