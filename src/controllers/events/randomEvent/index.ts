@@ -4,7 +4,7 @@ import {addItemToInventory} from "../../inventory";
 import {randomEvents} from "../../../../assets/randomEvents.json";
 import {getAmountOfSecondsBetweenDates} from "../../../helpers";
 
-const PERCENT_CHANCE_PER_MESSAGE = 100;
+const PERCENT_CHANCE_PER_MESSAGE = 0.33;
 
 const EVENT_TIMEOUT = 90; // seconds
 
