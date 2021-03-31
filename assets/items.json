@@ -5,7 +5,7 @@
             "name": "Puntzak",
             "price": 2.5,
             "description": "Godenspijs.",
-            "emoji": "<:pointsack:443725653590802433>",
+            "emoji": "<:pointsack:826842582335750155>",
             "shop": true
         },
         {
@@ -13,7 +13,7 @@
             "name": "Kiprunner",
             "price": 2,
             "description": "Chickenrunner.",
-            "emoji": "<:chickenrunner:587346250316120079>",
+            "emoji": "<:chickenrunner:826842582227091496>",
             "shop": true
         },
         {
@@ -21,7 +21,7 @@
             "name": "Broodje Mexicano",
             "price": 3.5,
             "description": "Satesaus past hier het beste bij.",
-            "emoji": "<:chickenrunner:587346250316120079>",
+            "emoji": "<:chickenrunner:826842582227091496>",
             "shop": true
         },
         {
@@ -29,7 +29,7 @@
             "name": "Snackmobiel",
             "price": 24000,
             "description": "Je eigen snackcorner!",
-            "emoji": "<:heaven:615497244401205258>",
+            "emoji": "<:heaven:826842582294331402>",
             "shop": true
         }
     ]

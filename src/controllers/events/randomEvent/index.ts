@@ -4,7 +4,7 @@ import {addItemToInventory} from "../../inventory";
 import {randomEvents} from "../../../../assets/randomEvents.json";
 import {getAmountOfSecondsBetweenDates} from "../../../helpers";
 
-const PERCENT_CHANCE_PER_MESSAGE = 0.2;
+const PERCENT_CHANCE_PER_MESSAGE = 100;
 
 const EVENT_TIMEOUT = 90; // seconds
 
@@ -35,7 +35,7 @@ export default function calculateRandomEvent(message: Message) {
         }
 
         const messageChannel = message.channel;
-        const rarity = calculateRarity();
+        const rarity = 2;
 
         const filteredEvents = randomEvents.filter(function (event: {rarity: number}) {
             return event.rarity === rarity;
@@ -89,19 +89,19 @@ async function handleUserResponse(collectedMessages: Collection<string, Message>
     }
 }
 
-/**
- * Handle user response from event.
- */
-function calculateRarity() {
-    const n = Math.random() * 100;
-    let rarity = 1;
+// /**
+//  * Handle user response from event.
+//  */
+// function calculateRarity() {
+//     const n = Math.random() * 100;
+//     let rarity = 1;
 
-    if (n <= 50) {
-        rarity = 2;
-    }
-    if (n <= 20) {
-        rarity = 3;
-    }
+//     if (n <= 50) {
+//         rarity = 2;
+//     }
+//     if (n <= 20) {
+//         rarity = 3;
+//     }
 
-    return rarity;
-}
+//     return rarity;
+// }

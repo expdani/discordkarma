@@ -7,6 +7,9 @@ import database from "../../database/index";
  * - A negative number removes the items from the user
  */
 export async function addItemToInventory(userID: string, item: string, amount: number) {
+    // Make sure item is in lowercase
+    item = item.toLowerCase();
+
     // Date now used to update updated_at in the query.
     const now = new Date();
 
@@ -15,6 +18,8 @@ export async function addItemToInventory(userID: string, item: string, amount: n
     if (!inventory) {
         inventory = JSON.parse((await initiateInventory(userID)).inventory);
     }
+
+    console.log(inventory);
 
     // Create an array if the inventory has no items yet.
     if (!inventory.items) {
