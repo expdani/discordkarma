@@ -11,7 +11,7 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "nohup node ${WORKSPACE}/build/src/index.js > ${WORKSPACE}/logs.log 2>&1 &"
+                sh "sudo nohup node ${WORKSPACE}/build/src/index.js > ${WORKSPACE}/logs.log 2>&1 &"
             }
         }
     }
