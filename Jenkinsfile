@@ -11,7 +11,7 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "screen -X -S 'discord-karma' quit"
+                // sh "screen -X -S 'discord-karma' quit"
                 sh "screen -d -m -S 'discord-karma' node ${WORKSPACE}/build/src/index.js"
             }
         }
