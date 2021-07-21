@@ -11,7 +11,8 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "sudo nohup node ${WORKSPACE}/build/src/index.js > ${WORKSPACE}/logs.log 2>&1 &"
+                sh "./killNohup.sh"
+                sh "JENKINS_NODE_COOKIE=dontKillMe nohup node ${WORKSPACE}/build/src/index.js > ${WORKSPACE}/logs.log 2>&1 &"
             }
         }
     }
