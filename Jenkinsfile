@@ -7,6 +7,7 @@ pipeline {
                 sh "npm install"
                 sh "yarn"
                 sh "npm run build"
+                sh "chmod +x -R ${WORKSPACE}"
             }
         }
         stage("Deploy") {
