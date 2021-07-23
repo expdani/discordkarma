@@ -1,5 +1,3 @@
-kill -9 $(pgrep -f discord-karma)
-
 export DISCORD_API_KEY=$2
 export BOT_OWNER_ID=$3
 export DATABASE_HOST=$4

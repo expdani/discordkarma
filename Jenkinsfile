@@ -4,6 +4,7 @@ pipeline {
         stage("Build") {
             steps {
                 sh "node -v"
+                sh "sudo kill -9 $(pgrep -f discord-karma)"
                 sh "npm install"
                 sh "yarn"
                 sh "npm run build"
