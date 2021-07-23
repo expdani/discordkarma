@@ -12,7 +12,14 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "sudo sh ${WORKSPACE}/run.sh ${WORKSPACE} ${DISCORD_API_KEY} ${BOT_OWNER_ID} ${DATABASE_HOST} ${DATABASE_USER} ${DATABASE_PASSWORD} ${DATABASE_NAME} ${DATABASE_PORT}"
+                sh "export DISCORD_API_KEY=${DISCORD_API_KEY}"
+                sh "export BOT_OWNER_ID=${BOT_OWNER_ID}"
+                sh "export DATABASE_HOST=${DATABASE_HOST}"
+                sh "export DATABASE_USER=${DATABASE_USER}"
+                sh "export DATABASE_PASSWORD=${DATABASE_PASSWORD}"
+                sh "export DATABASE_NAME=${DATABASE_NAME}"
+                sh "export DATABASE_PORT=${DATABASE_PORT}"
+                sh "nohup node ${WORKSPACE}/build/src/index.js > /home/discord/logs.log 2>&1 &"
             }
         }
     }
