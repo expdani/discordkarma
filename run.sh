@@ -1,5 +1,3 @@
-echo $1
-sudo ps -ef | sudo grep discord-karma | sudo grep -v grep | sudo awk '{print $2}' | sudo xargs kill
 export DISCORD_API_KEY=$2
 export BOT_OWNER_ID=$3
 export DATABASE_HOST=$4
