@@ -10,9 +10,10 @@ pipeline {
             }
         }
         stage("Deploy") {
-            steps {
-                // sh "screen -X -S 'discord-karma' quit"
-                sh "screen -d -m -S 'discord-karma' node ${WORKSPACE}/build/src/index.js"
+            script{
+                withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
+                    sh "nohup node ${WORKSPACE}/build/src/index.js > ${WORKSPACE}/build/src/logs.log 2>&1 &"
+                }
             }
         }
     }
