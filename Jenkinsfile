@@ -10,9 +10,11 @@ pipeline {
             }
         }
         stage("Deploy") {
-            script{
-                withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-                    sh "nohup node ${WORKSPACE}/build/src/index.js > ${WORKSPACE}/build/src/logs.log 2>&1 &"
+            steps {
+                script {
+                    withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
+                        sh "nohup node ${WORKSPACE}/build/src/index.js > ${WORKSPACE}/build/src/logs.log 2>&1 &"
+                    }
                 }
             }
         }
