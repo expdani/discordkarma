@@ -4,7 +4,7 @@ pipeline {
         stage("Build") {
             steps {
                 sh "node -v"
-                sh "if ps -p \$(cat /home/discord/run.pid) > /dev/null then kill -9 \$(cat /home/discord/run.pid) fi"
+                sh "sudo sh ${WORKSPACE}/kill.sh"
                 sh "npm install"
                 sh "yarn"
                 sh "npm run build"
