@@ -1,3 +1,5 @@
+pkilll -9 discord-karma
+
 export DISCORD_API_KEY=$2
 export BOT_OWNER_ID=$3
 export DATABASE_HOST=$4
