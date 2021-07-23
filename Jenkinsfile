@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-                        sh "sudo nohup node ${WORKSPACE}/build/src/index.js > /home/discord/logs.log 2>&1 &"
+                        sh "sudo sh ${WORKSPACE}/run.sh ${WORKSPACE}"
                     }
                 }
             }
