@@ -4,7 +4,7 @@ pipeline {
         stage("Build") {
             steps {
                 sh "node -v"
-                sh "sudo kill -9 \$(pgrep -f ${WORKSPACE})"
+                sh "sudo kill -9 `cat /home/discord/run.pid`"
                 sh "npm install"
                 sh "yarn"
                 sh "npm run build"

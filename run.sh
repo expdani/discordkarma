@@ -7,4 +7,5 @@ export DATABASE_NAME=$7
 export DATABASE_PORT=$8
 
 nohup node $1/build/src/index.js > /home/discord/logs.log 2>&1 &
+echo $! > /home/discord/run.pid
 exit
