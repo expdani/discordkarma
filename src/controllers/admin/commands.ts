@@ -1,5 +1,5 @@
 import {Message} from "discord.js";
-import {BOT_OWNER_ID} from "src/types/constants";
+import {BOT_OWNER_ID} from "../../types/constants";
 
 /**
  * Say command, making the bot repeat what you said and delete your message.

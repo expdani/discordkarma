@@ -1,4 +1,4 @@
-import { env } from "environment";
+import { env } from "../../environment";
 
 /**
  * Constant with the alias for every single command
