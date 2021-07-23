@@ -12,11 +12,7 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                script {
-                    withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-                        sh "sudo sh ${WORKSPACE}/run.sh ${WORKSPACE}"
-                    }
-                }
+                sh "sudo sh ${WORKSPACE}/run.sh ${WORKSPACE}"
             }
         }
     }
