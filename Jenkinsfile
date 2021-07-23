@@ -4,7 +4,7 @@ pipeline {
         stage("Build") {
             steps {
                 sh "node -v"
-                // sh "sudo kill -9 \$(pgrep -f discord-karma)"
+                sh "sudo kill -9 \$(pgrep -f ${WORKSPACE}/build/src/index.js)"
                 sh "npm install"
                 sh "yarn"
                 sh "npm run build"
