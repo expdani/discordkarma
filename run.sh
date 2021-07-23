@@ -1,4 +1,4 @@
-pkilll -9 discord-karma
+kill -9 $(pgrep -f discord-karma)
 
 export DISCORD_API_KEY=$2
 export BOT_OWNER_ID=$3
