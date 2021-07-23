@@ -7,6 +7,10 @@ import setupReactionListeners from "./listeners/reactionListener";
  * Setup Discord.JS client
  */
 
+ console.log(process.env.DATABASE_PORT);
+
+console.log(process.env.DISCORD_API_KEY);
+
 console.log(process.env);
 
 export const client = new Discord.Client({partials: ["MESSAGE", "CHANNEL", "REACTION"]});
