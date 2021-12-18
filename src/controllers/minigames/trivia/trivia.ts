@@ -55,25 +55,26 @@ async function handleUserAnswer(
     userID: string,
 ) {
     try {
-        const messagesArray = collectedMessages.array();
-        const message = messagesArray[0].content;
+        const message = collectedMessages.first();
+        console.log(message);
+
         const {answers, payout, correctAnswer} = questionData;
 
         // The user needs to give an answer which is a single number
-        const answerNumber = message.length === 1 ? Number(message) : undefined;
+        const answerNumber = message?.content.length === 1 ? Number(message) : undefined;
         const isAnswerCorrect = answerNumber && !isNaN(answerNumber) && answers[answerNumber - 1] === correctAnswer;
 
         if (isAnswerCorrect) {
             const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
             await changeCurrency(userID, payout);
             const embed = new MessageEmbed().setDescription(`**${randomMsg}**`).setColor("#00FF00");
-            channel.send(embed);
+            channel.send({embeds: [embed]});
         } else {
             const randomMsg = wrongMsgs[Math.floor(Math.random() * wrongMsgs.length)];
             const embed = new MessageEmbed()
                 .setDescription(`**${randomMsg} Het antwoord was ${decodeHTML(correctAnswer)}**.`)
                 .setColor("#FF0000");
-            channel.send(embed);
+            channel.send({embeds: [embed]});
         }
     } catch (err) {
         channel.send("Whoops, something went wrong processing your answer.");
@@ -97,17 +98,13 @@ async function askQuestion(channel: Channel, user: User) {
         .setAuthor(`${user.username}'s trivia question`, `${user.avatarURL()}`)
         .setDescription(decodeHTML(questionMessage))
         .setColor("#fffff");
-    channel.send(embed);
+    channel.send({embeds: [embed]});
 
-    // Set a listener that automatically removes itself. It listens to the first response
-    // from this user that asked the question. This response is considered as the "answer"
+    // Await answer
+    const filter = (response: Message) => Boolean(response.author.id === user.id);
+    // Errors: ['time'] treats ending because of the time limit as an error
     channel
-        .awaitMessages(
-            // Only listen for messages for the user that asked the trivia question
-            (response: Message) => Boolean(response.author.id === user.id),
-            // The user is only allowed to answer once, within "X" seconds
-            {max: 1, time: TIME_TO_ANSWER * 1000, errors: ["time"]},
-        )
+        .awaitMessages({filter, max: 1, time: TIME_TO_ANSWER * 1000, errors: ["time"]})
         .then((collectedMessages: Collection<string, Message>) => {
             const questionData = {answers, correctAnswer, payout};
             handleUserAnswer(collectedMessages, channel, questionData, user.id);

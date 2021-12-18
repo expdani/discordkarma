@@ -1,14 +1,16 @@
-import {Message} from "discord.js";
+import {Command} from "../../types/discord";
 import {BOT_OWNER_ID} from "../../types/constants";
+import {Message} from "discord.js";
 
 /**
  * Say command, making the bot repeat what you said and delete your message.
  */
-export function sayCommand(message: Message) {
+export function sayCommand(command: Command) {
+    if (!(command instanceof Message)) return;
     if (BOT_OWNER_ID) {
-        if (message.deletable) {
-            message.delete();
+        if (command.deletable) {
+            command.delete();
         }
-        message.channel.send(message.content.substr(message.content.indexOf(" ") + 1));
+        command.channel.send(command.content.substr(command.content.indexOf(" ") + 1));
     }
 }

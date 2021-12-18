@@ -44,17 +44,15 @@ export default function calculateRandomEvent(message: Message) {
         const randomEvent = filteredEvents[Math.floor(Math.random() * filteredEvents.length)];
 
         messageChannel.send(randomEvent.text);
+
+        // Await answer
+        const filter = (response: Message) =>
+            Boolean(
+                response.content.toLowerCase().includes(randomEvent.response.toLowerCase()) && !response.author.bot,
+            );
+        // Errors: ['time'] treats ending because of the time limit as an error
         messageChannel
-            .awaitMessages(
-                // Only listen for messages that include the required response.
-                (response: Message) =>
-                    Boolean(
-                        response.content.toLowerCase().includes(randomEvent.response.toLowerCase()) &&
-                            !response.author.bot,
-                    ),
-                // The user is only allowed to answer once, within e.timeLimit seconds
-                {max: 1, time: randomEvent.timeLimit * 1000, errors: ["time"]},
-            )
+            .awaitMessages({filter, max: 1, time: randomEvent.timeLimit * 1000, errors: ["time"]})
             .then((collectedMessages: Collection<string, Message>) => {
                 handleUserResponse(collectedMessages, randomEvent);
             })
@@ -68,9 +66,9 @@ export default function calculateRandomEvent(message: Message) {
  * Handle user response from event.
  */
 async function handleUserResponse(collectedMessages: Collection<string, Message>, event: any) {
-    const messagesArray = collectedMessages.array();
-    const message = messagesArray[0];
-    const username = (await message.guild?.members.fetch(message.author.id))?.nickname || message.author.username;
+    const message = collectedMessages.first();
+    const username = (await message?.guild?.members.fetch(message.author.id))?.nickname || message?.author.username;
+    if (!message?.author.id) return;
     try {
         if (event.rewards.length > 0) {
             event.rewards.forEach(async (reward: any) => {

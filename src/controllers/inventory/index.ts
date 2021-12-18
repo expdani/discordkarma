@@ -19,8 +19,6 @@ export async function addItemToInventory(userID: string, item: string, amount: n
         inventory = JSON.parse((await initiateInventory(userID)).inventory);
     }
 
-    console.log(inventory);
-
     // Create an array if the inventory has no items yet.
     if (!inventory.items) {
         inventory.items = [];

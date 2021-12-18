@@ -1,7 +1,7 @@
 /**
  * Constant with the API url for the trivia questions
  */
-export const TRIVIA_API_URL = "https://opentdb.com/api.php?amount=1&type=multiple";
+export const TRIVIA_API_URL = "https://opentdb.com/api.php?amount=1&category=15&type=multiple";
 
 /**
  * @type with a single trivia question

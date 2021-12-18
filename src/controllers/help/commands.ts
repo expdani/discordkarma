@@ -1,6 +1,6 @@
 import {COMMAND_PREFIX} from "./../../types/constants";
-import {Message, MessageEmbed} from "discord.js";
-import {Channel} from "../../types/discord";
+import {MessageEmbed, TextChannel} from "discord.js";
+import {Channel, Command} from "../../types/discord";
 import {commands} from "../../../assets/commands.json";
 
 /**
@@ -19,7 +19,7 @@ async function sayHelp(channel: Channel) {
             description += "\n";
         });
         embed.description = description;
-        channel.send(embed);
+        channel.send({embeds: [embed]});
     } catch (err) {
         channel.send("Oops, something went wrong requesting a list of the commands.");
     }
@@ -28,10 +28,10 @@ async function sayHelp(channel: Channel) {
 /**
  * Setup the command that are related to help in the bot
  */
-export function setupHelpCommands(message: Message) {
-    const messageChannel = message.channel;
+export function setupHelpCommands(command: Command) {
+    const messageChannel = command.channel;
 
-    if (messageChannel.type == "text" || messageChannel.type == "news") {
+    if (messageChannel instanceof TextChannel) {
         sayHelp(messageChannel);
     }
 }

@@ -1,6 +1,6 @@
 import {getInventory} from ".";
-import {Channel} from "./../../types/discord";
-import {Message, MessageEmbed, User} from "discord.js";
+import {Channel, Command} from "./../../types/discord";
+import {MessageEmbed, TextChannel, User} from "discord.js";
 import {items} from "../../../assets/items.json";
 import {wrongMsgs} from "../../../assets/random.json";
 
@@ -27,7 +27,7 @@ export async function sayInventory(channel: Channel, user: User) {
             description = `Je hebt helemaal niks!\n${randomMsg}`;
         }
         embed.description = description;
-        channel.send(embed);
+        channel.send({embeds: [embed]});
     } catch (err) {
         channel.send("Oops, something went wrong processing your inventory.");
     }
@@ -36,10 +36,10 @@ export async function sayInventory(channel: Channel, user: User) {
 /**
  * Setup the command that are related to inventory in the bot
  */
-export function setupInventoryCommands(message: Message) {
-    const messageChannel = message.channel;
+export function setupInventoryCommands(command: Command) {
+    const messageChannel = command.channel;
 
-    if (messageChannel.type == "text" || messageChannel.type == "news") {
-        sayInventory(messageChannel, message.author);
+    if (messageChannel instanceof TextChannel) {
+        sayInventory(messageChannel, command.member?.user as User);
     }
 }

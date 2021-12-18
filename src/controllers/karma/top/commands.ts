@@ -14,7 +14,7 @@ export async function sayServerKarmaLeaderboard(channel: Channel) {
             i++;
             embed.addField(`${karma.total} punten`, `${i}. <@${karma.userID}>`, true);
         });
-        channel.send(embed);
+        channel.send({embeds: [embed]});
     } catch (err) {
         channel.send("Oops, something went wrong requesting the leaderboard.");
     }

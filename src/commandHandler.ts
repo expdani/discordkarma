@@ -1,4 +1,4 @@
-import {Message} from "discord.js";
+import {Interaction, Message, User} from "discord.js";
 import {COMMAND_PREFIX} from "./types/constants";
 import {TypeCommand, TypeMessageResponse} from "./types/response";
 import {commands} from "../assets/commands.json";
@@ -7,7 +7,7 @@ import {useDialogflow} from "./controllers/dialogflow";
 /**
  * Check if command is een regsitered command
  */
-function getCommand(command: string, fullCommand: string) {
+function getCommand(command: string) {
     return commands.find((input: TypeCommand) => {
         const {text, aliases, intent} = input;
 
@@ -15,7 +15,6 @@ function getCommand(command: string, fullCommand: string) {
         if (
             intent === command.toLocaleLowerCase() ||
             text === command.toLocaleLowerCase() ||
-            text === fullCommand.toLocaleLowerCase() ||
             aliases?.includes(command.toLocaleLowerCase())
         ) {
             return input;
@@ -31,7 +30,7 @@ export async function getSubCommand(response: TypeMessageResponse, index: number
     if (response.command?.sub && response.input.attributes.length > 0) {
         const attribute = response.input.attributes[index];
         response.command.sub.forEach((sub) => {
-            if (sub.aliases?.includes(attribute.toLocaleLowerCase())) {
+            if (attribute instanceof String && sub.aliases?.includes(attribute.toLocaleLowerCase())) {
                 subCommand = sub.text;
             }
         });
@@ -42,18 +41,32 @@ export async function getSubCommand(response: TypeMessageResponse, index: number
 /**
  * Returns the attribute with the given index.
  */
-export async function getAttribute(response: TypeMessageResponse, index: number): Promise<string | null> {
+export async function getMessageAttribute(response: TypeMessageResponse, index: number): Promise<string | null> {
     let attribute = null;
     if (response.input.attributes[index]) {
         attribute = response.input.attributes[index];
     }
-    return attribute;
+    return null;
+}
+
+/**
+ * Returns the attribute with the given name.
+ */
+export async function getInteractionAttribute(response: TypeMessageResponse, name: string): Promise<any> {
+    const attribute = (response.input.attributes as any[]).find((x) => x.name === name);
+
+    switch (attribute.type) {
+        case "USER":
+            return attribute.user as User;
+        default:
+            return attribute;
+    }
 }
 
 /**
  * Calculate response
  */
-export async function calculateResponse(message: Message) {
+export async function calculateMessageResponse(message: Message) {
     // Ignore the message if: it does not start with the command prefix
     // or if it's send by another bot
     if (!message.content.startsWith(COMMAND_PREFIX) || message.author.bot) {
@@ -82,24 +95,45 @@ export async function calculateResponse(message: Message) {
         const {queryResult} = data[0];
 
         if (queryResult.intent) {
-            command = getCommand(queryResult.intent.displayName, fullCommand);
+            command = getCommand(queryResult.intent.displayName);
             response = queryResult.fulfillmentText;
             parameters = queryResult.parameters;
         }
     }
 
     if (!command) {
-        command = getCommand(commandText, fullCommand);
+        command = getCommand(commandText);
     }
 
     return {
         input: {
             text: commandText,
             attributes,
-            fullCommand,
         },
         parameters,
         response,
+        command,
+    };
+}
+
+export async function calculateInteractionResponse(interaction: Interaction) {
+    if (!interaction.isCommand()) return;
+
+    // Ignore the message if:
+    // or if it's send by another bot
+    if (interaction.user.bot) return;
+
+    // // Seperate command and attributes
+    const commandText = interaction.commandName;
+    const attributes = interaction.options.data;
+
+    const command = getCommand(commandText);
+
+    return {
+        input: {
+            text: commandText,
+            attributes,
+        },
         command,
     };
 }

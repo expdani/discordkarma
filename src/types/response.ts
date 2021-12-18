@@ -1,8 +1,10 @@
+import {CacheType, CommandInteractionOption} from "discord.js";
+
 export type TypeMessageResponse = {
     input: {
         text: string;
-        attributes: Array<string>;
-        fullCommand: string;
+        attributes: Array<string> | readonly CommandInteractionOption<CacheType>[];
+        fullCommand?: string;
     };
     parameters?: {};
     response?: string;

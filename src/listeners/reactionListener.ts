@@ -22,14 +22,16 @@ export default function setupReactionListeners() {
             }
         }
 
+        if (!(reaction instanceof MessageReaction)) return;
+
         if (requiresSetup(reaction, user)) {
             setupKarmaReactions(reaction, user, "add");
         }
     });
 
     client.on("messageReactionRemove", async (reaction, user) => {
-        // When we receive a reaction we check if the reaction is partial or not
         if (reaction.partial) {
+            // When we receive a reaction we check if the reaction is partial or not
             // If the message this reaction belongs to was removed the fetching
             // might result in an API error, which we need to handle
             try {
@@ -42,6 +44,8 @@ export default function setupReactionListeners() {
             }
         }
 
+        if (!(reaction instanceof MessageReaction)) return;
+
         if (requiresSetup(reaction, user)) {
             setupKarmaReactions(reaction, user, "remove");
         }
@@ -52,6 +56,7 @@ export default function setupReactionListeners() {
  * Checks if the action requires setupKarmaReactions
  */
 function requiresSetup(reaction: MessageReaction, user: User | PartialUser) {
+    if (!reaction.emoji.name || !reaction.message.author) return false;
     if (KARMA_REACTIONS.includes(reaction.emoji.name) && !user.bot && user.id !== reaction.message.author.id) {
         return true;
     }
