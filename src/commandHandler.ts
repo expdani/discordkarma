@@ -1,3 +1,4 @@
+import {Command} from "./types/discord";
 import {Interaction, Message, User} from "discord.js";
 import {COMMAND_PREFIX} from "./types/constants";
 import {TypeCommand, TypeMessageResponse} from "./types/response";
@@ -13,9 +14,9 @@ function getCommand(command: string) {
 
         // Find command based on "text", "full command (including args)", aliases or intent
         if (
-            intent === command.toLocaleLowerCase() ||
-            text === command.toLocaleLowerCase() ||
-            aliases?.includes(command.toLocaleLowerCase())
+            intent === command.toLowerCase() ||
+            text.toLowerCase() === command.toLowerCase() ||
+            aliases?.includes(command.toLowerCase())
         ) {
             return input;
         }
@@ -25,12 +26,13 @@ function getCommand(command: string) {
 /**
  * Checks if attribute is a registered subcommand in the main command and returns it.
  */
-export async function getSubCommand(response: TypeMessageResponse, index: number) {
+export function getMessageSubCommand(response: TypeMessageResponse, index: number) {
     let subCommand = null;
+
     if (response.command?.sub && response.input.attributes.length > 0) {
-        const attribute = response.input.attributes[index];
+        const attribute = response.input.attributes[index] as String;
         response.command.sub.forEach((sub) => {
-            if (attribute instanceof String && sub.aliases?.includes(attribute.toLocaleLowerCase())) {
+            if (attribute instanceof String && sub.aliases?.includes(attribute.toLowerCase())) {
                 subCommand = sub.text;
             }
         });
@@ -39,12 +41,21 @@ export async function getSubCommand(response: TypeMessageResponse, index: number
 }
 
 /**
+ * Checks if attribute is a registered subcommand in the main command and returns it.
+ */
+export function getInteractionSubCommand(command: Command) {
+    if (!(command instanceof Interaction)) return;
+    if (!command.isCommand()) return;
+
+    return command.options.getSubcommand();
+}
+
+/**
  * Returns the attribute with the given index.
  */
-export async function getMessageAttribute(response: TypeMessageResponse, index: number): Promise<string | null> {
-    let attribute = null;
-    if (response.input.attributes[index]) {
-        attribute = response.input.attributes[index];
+export function getMessageAttribute(response: TypeMessageResponse, index: number): string | null {
+    if (response.input.attributes instanceof String && response.input.attributes[index]) {
+        return response.input.attributes[index];
     }
     return null;
 }
@@ -52,9 +63,10 @@ export async function getMessageAttribute(response: TypeMessageResponse, index: 
 /**
  * Returns the attribute with the given name.
  */
-export async function getInteractionAttribute(response: TypeMessageResponse, name: string): Promise<any> {
+export function getInteractionAttribute(response: TypeMessageResponse, name: string): string | null | User {
     const attribute = (response.input.attributes as any[]).find((x) => x.name === name);
 
+    if (!attribute) return null;
     switch (attribute.type) {
         case "USER":
             return attribute.user as User;

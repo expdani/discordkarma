@@ -19,6 +19,21 @@ export type TypeCommand = {
     usage: string;
     intent?: string;
     sub?: Array<TypeSubCommand>;
+    options?: Array<TypeCommandOption>;
+    slash?: boolean;
+};
+
+export type TypeCommandOption = {
+    type: number;
+    name: string;
+    description: string;
+    required?: boolean;
+    choices?: Array<TypeChoices>;
+};
+
+export type TypeChoices = {
+    name: string;
+    value: string;
 };
 
 export type TypeSubCommand = {

@@ -5,23 +5,24 @@
             "aliases": ["karma", "rep", "reputation"],
             "description": "Shows the amount of karma you have.",
             "usage": "?karma",
-            "sub": [
-                {
-                    "text": "leaderboard",
-                    "aliases": ["leaderboard", "lb", "top"],
-                    "description": "Shows the karma leaderboard of the server.",
-                    "usage": "?karma leaderboard"
-                }
-            ],
             "options": [
                 {
                     "type": 6,
                     "name": "user",
-                    "description": "A user."
+                    "description": "Mention a user to see their karma."
                 }
             ],
             "show": true,
             "slash": true
+        },
+        {
+            "text": "top",
+            "aliases": ["lb", "leaderboard", "top"],
+            "description": "Shows the karma leaderboard of this server.",
+            "usage": "?top",
+            "show": true,
+            "slash": true,
+            "options": []
         },
         {
             "text": "balance",
@@ -29,7 +30,8 @@
             "description": "Shows the amount of money you have.",
             "usage": "?balance",
             "show": true,
-            "slash": true
+            "slash": true,
+            "options": []
         },
         {
             "text": "trivia",
@@ -37,7 +39,8 @@
             "description": "Gives you a random trivia question.",
             "usage": "?trivia",
             "show": true,
-            "slash": true
+            "slash": true,
+            "options": []
         },
         {
             "text": "say",
@@ -45,7 +48,8 @@
             "description": "Deletes your message and repeats it, making it look like the bot said it.",
             "usage": "?say",
             "show": false,
-            "slash": false
+            "slash": false,
+            "options": []
         },
         {
             "text": "help",
@@ -53,7 +57,8 @@
             "description": "An embed with all the commands.",
             "usage": "?help",
             "show": true,
-            "slash": true
+            "slash": true,
+            "options": []
         },
         {
             "text": "shop",
@@ -61,7 +66,8 @@
             "description": "An embed with all the items in the shop.",
             "usage": "?shop",
             "show": true,
-            "slash": true
+            "slash": true,
+            "options": []
         },
         {
             "text": "buy",
@@ -69,7 +75,27 @@
             "description": "Buy an item from the store.",
             "usage": "?buy (item)",
             "show": true,
-            "slash": true
+            "slash": true,
+            "options": [
+                {
+                    "type": 3,
+                    "name": "item",
+                    "description": "the item you want to purchase",
+                    "required": true,
+                    "choices": [
+                        {
+                            "name": "test1",
+                            "value": "test2"
+                        }
+                    ]
+                },
+                {
+                    "type": 4,
+                    "name": "amount",
+                    "description": "how many of this item you want to purchase",
+                    "required": false
+                }
+            ]
         },
         {
             "text": "sell",
@@ -77,7 +103,8 @@
             "description": "Sell an item for half the price.",
             "usage": "?sell (item)",
             "show": true,
-            "slash": true
+            "slash": true,
+            "options": []
         },
         {
             "text": "inventory",
@@ -85,7 +112,8 @@
             "description": "Shows your inventory.",
             "usage": "?inventory",
             "show": true,
-            "slash": true
+            "slash": true,
+            "options": []
         }
     ]
 }

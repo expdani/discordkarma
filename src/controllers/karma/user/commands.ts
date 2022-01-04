@@ -15,8 +15,6 @@ export async function sayUserKarma(command: Command, response: TypeMessageRespon
         const userId = command.member?.user.id;
         const targetUser =
             command instanceof Message ? command.mentions.users.first() : getInteractionAttribute(response, "user");
-        console.log(targetUser);
-
         const guildId = command.guildId;
 
         if (!userId || !guildId) return;
@@ -43,6 +41,6 @@ export async function sayUserKarma(command: Command, response: TypeMessageRespon
             reply(command, {embeds: [embed]});
         }
     } catch (err) {
-        command?.channel?.send("Oops, something went wrong requesting your karma.");
+        reply(command, "Oops, something went wrong requesting your karma.");
     }
 }

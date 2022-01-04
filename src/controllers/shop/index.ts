@@ -1,16 +1,17 @@
+import {Command} from "./../../types/discord";
+import {reply} from "../../helpers";
 import {addItemToInventory} from "../inventory";
-import {Message} from "discord.js";
 import {changeCurrency, getCurrency} from "../currency";
 import {items} from "../../../assets/items.json";
 
 /**
  * Buy an item from the shop.
  */
-export async function buyItem(message: Message, item: any, amount: any) {
-    const channel = message.channel;
+export async function buyItem(command: Command, item: any, amount: any) {
     try {
-        const userID = message.author.id;
-        const balance = await getCurrency(userID);
+        const user = command.member?.user;
+        if (!user) return;
+        const balance = await getCurrency(user.id);
         const shopItem = items.find(
             (x) => x.id.toLowerCase() === item.toLowerCase() || x.name.toLowerCase() === item.toLowerCase(),
         );
@@ -20,14 +21,14 @@ export async function buyItem(message: Message, item: any, amount: any) {
         if (shopItem && shopItem.shop) {
             const newBalance = balance.wallet - shopItem.price * amount;
             if (newBalance >= 0) {
-                await changeCurrency(userID, -(shopItem.price * amount));
-                await addItemToInventory(userID, shopItem.id, amount);
-                channel.send(`U hebt ${amount} ${shopItem.emoji} ${shopItem.name} gekocht!`);
+                await changeCurrency(user.id, -(shopItem.price * amount));
+                await addItemToInventory(user.id, shopItem.id, amount);
+                reply(command, `You have bought ${amount} ${shopItem.emoji} ${shopItem.name}!`);
             }
         } else {
-            channel.send("That item is not for sale.");
+            reply(command, `That item is not for sale.`);
         }
     } catch (err) {
-        channel.send("Oops, something went wrong processing your purchase.");
+        reply(command, `Oops, something went wrong processing your purchase.`);
     }
 }

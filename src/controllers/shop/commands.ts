@@ -1,10 +1,11 @@
 import {CURRENCY_SIGN} from "./../../types/currency";
-import {Message, MessageEmbed, TextChannel} from "discord.js";
+import {MessageEmbed, TextChannel} from "discord.js";
 import {Channel, Command} from "../../types/discord";
 import {items} from "../../../assets/items.json";
 import {TypeMessageResponse} from "src/types/response";
 import {buyItem} from ".";
 import {shopMsgs} from "../../../assets/random.json";
+import {reply} from "../../helpers";
 
 /**
  * The bot tells the user the amount of money he has.
@@ -41,10 +42,11 @@ export function setupShopCommands(command: Command) {
 export function setupBuyCommands(command: Command, result: TypeMessageResponse) {
     const messageChannel = command.channel;
 
-    if (messageChannel instanceof TextChannel && command instanceof Message) {
+    if (messageChannel instanceof TextChannel) {
         if (result.input.attributes.length < 1) {
-            messageChannel.send("To buy an item, use `?buy (item name)`.");
+            reply(command, "To buy an item, use `?buy (item name)`.");
         } else {
+            console.log(result.input.attributes);
             if (result.input.attributes instanceof String)
                 buyItem(command, result.input.attributes[0], parseInt(result.input.attributes[1]));
         }
