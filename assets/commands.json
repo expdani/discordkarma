@@ -82,12 +82,7 @@
                     "name": "item",
                     "description": "the item you want to purchase",
                     "required": true,
-                    "choices": [
-                        {
-                            "name": "test1",
-                            "value": "test2"
-                        }
-                    ]
+                    "choices": []
                 },
                 {
                     "type": 4,

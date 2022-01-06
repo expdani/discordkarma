@@ -6,6 +6,7 @@ import {TypeMessageResponse} from "src/types/response";
 import {buyItem} from ".";
 import {shopMsgs} from "../../../assets/random.json";
 import {reply} from "../../helpers";
+import {getInteractionAttribute, getMessageAttribute} from "../../commandHandler";
 
 /**
  * The bot tells the user the amount of money he has.
@@ -46,9 +47,15 @@ export function setupBuyCommands(command: Command, result: TypeMessageResponse) 
         if (result.input.attributes.length < 1) {
             reply(command, "To buy an item, use `?buy (item name)`.");
         } else {
-            console.log(result.input.attributes);
-            if (result.input.attributes instanceof String)
-                buyItem(command, result.input.attributes[0], parseInt(result.input.attributes[1]));
+            const item = getInteractionAttribute(result, "item")
+                ? getInteractionAttribute(result, "item")
+                : getMessageAttribute(result, 0);
+            console.log(getMessageAttribute(result, 0));
+
+            const amount = getInteractionAttribute(result, "amount")
+                ? getInteractionAttribute(result, "amount")
+                : getMessageAttribute(result, 1);
+            buyItem(command, item as string, amount as string);
         }
     }
 }

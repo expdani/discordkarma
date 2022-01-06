@@ -7,24 +7,13 @@ export default function registerCommands(client: Client) {
     let slashCommands: ApplicationCommandDataResolvable[] = [];
     commands.forEach((command: TypeCommand) => {
         if (command.slash) {
-            if (command.text === "buy") {
-                const shopChoises = getShopChoices();
-                if (shopChoises != undefined) {
-                    let choices = command.options?.find((cmd) => {
-                        cmd.name === "item";
-                    })?.choices;
+            setupCustomOptions(command);
 
-                    shopChoises.forEach((choice) => {
-                        choices?.push(choice);
-                    });
-                }
-            }
             slashCommands.push({
                 name: command.text,
                 description: command.description,
                 options: command.options,
             });
-            console.log(command);
         }
     });
 
@@ -38,7 +27,7 @@ export default function registerCommands(client: Client) {
     client.application?.commands?.set([]);
 }
 
-export function getShopChoices(): TypeChoices[] {
+function getShopChoices(): TypeChoices[] {
     const choices: TypeChoices[] = [];
     items.forEach((item) => {
         if (item.shop)
@@ -48,4 +37,13 @@ export function getShopChoices(): TypeChoices[] {
             });
     });
     return choices;
+}
+
+function setupCustomOptions(command: TypeCommand) {
+    if (command.text === "buy") {
+        const shopChoises = getShopChoices();
+        if (shopChoises != undefined) {
+            command.options!.find((option) => option.name === "item")!.choices = getShopChoices();
+        }
+    }
 }

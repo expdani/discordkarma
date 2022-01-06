@@ -8,6 +8,6 @@ export default function setupMinigameCommands(command: Command) {
     const messageChannel = command.channel;
 
     if (messageChannel instanceof TextChannel) {
-        requestTriviaQuestion(messageChannel, command.member?.user as User);
+        requestTriviaQuestion(command, command.member?.user as User);
     }
 }

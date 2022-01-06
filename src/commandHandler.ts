@@ -54,8 +54,8 @@ export function getInteractionSubCommand(command: Command) {
  * Returns the attribute with the given index.
  */
 export function getMessageAttribute(response: TypeMessageResponse, index: number): string | null {
-    if (response.input.attributes instanceof String && response.input.attributes[index]) {
-        return response.input.attributes[index];
+    if (response.input.attributes && response.input.attributes[index]) {
+        return response.input.attributes[index] as string;
     }
     return null;
 }
@@ -67,11 +67,12 @@ export function getInteractionAttribute(response: TypeMessageResponse, name: str
     const attribute = (response.input.attributes as any[]).find((x) => x.name === name);
 
     if (!attribute) return null;
+
     switch (attribute.type) {
         case "USER":
             return attribute.user as User;
         default:
-            return attribute;
+            return attribute.value;
     }
 }
 

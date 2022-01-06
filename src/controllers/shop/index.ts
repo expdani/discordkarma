@@ -7,7 +7,7 @@ import {items} from "../../../assets/items.json";
 /**
  * Buy an item from the shop.
  */
-export async function buyItem(command: Command, item: any, amount: any) {
+export async function buyItem(command: Command, item: string, amount: any) {
     try {
         const user = command.member?.user;
         if (!user) return;
@@ -16,6 +16,7 @@ export async function buyItem(command: Command, item: any, amount: any) {
             (x) => x.id.toLowerCase() === item.toLowerCase() || x.name.toLowerCase() === item.toLowerCase(),
         );
 
+        amount = parseInt(amount);
         if (!amount) amount = 1;
 
         if (shopItem && shopItem.shop) {
