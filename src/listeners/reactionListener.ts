@@ -57,7 +57,7 @@ export default function setupReactionListeners() {
  */
 function requiresSetup(reaction: MessageReaction, user: User | PartialUser) {
     if (!reaction.emoji.name || !reaction.message.author) return false;
-    if (KARMA_REACTIONS.includes(reaction.emoji.name) && !user.bot && user.id !== reaction.message.author.id) {
+    if (KARMA_REACTIONS.includes(reaction.emoji.name) && user.id !== reaction.message.author.id) {
         return true;
     }
     return false;
