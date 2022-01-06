@@ -5,71 +5,110 @@
             "aliases": ["karma", "rep", "reputation"],
             "description": "Shows the amount of karma you have.",
             "usage": "?karma",
-            "sub": [
+            "options": [
                 {
-                    "text": "leaderboard",
-                    "aliases": ["leaderboard", "lb", "top"],
-                    "description": "Shows the karma leaderboard of the server.",
-                    "usage": "?karma leaderboard"
+                    "type": 6,
+                    "name": "user",
+                    "description": "Mention a user to see their karma."
                 }
             ],
-            "show": true
+            "show": true,
+            "slash": true
+        },
+        {
+            "text": "top",
+            "aliases": ["lb", "leaderboard", "top"],
+            "description": "Shows the karma leaderboard of this server.",
+            "usage": "?top",
+            "show": true,
+            "slash": true,
+            "options": []
         },
         {
             "text": "balance",
             "aliases": ["bal", "money"],
             "description": "Shows the amount of money you have.",
             "usage": "?balance",
-            "show": true
+            "show": true,
+            "slash": true,
+            "options": []
         },
         {
             "text": "trivia",
             "aliases": ["question", "q", "t"],
             "description": "Gives you a random trivia question.",
             "usage": "?trivia",
-            "show": true
+            "show": true,
+            "slash": true,
+            "options": []
         },
         {
             "text": "say",
             "aliases": ["say, repeat"],
             "description": "Deletes your message and repeats it, making it look like the bot said it.",
             "usage": "?say",
-            "show": false
+            "show": false,
+            "slash": false,
+            "options": []
         },
         {
             "text": "help",
             "aliases": ["help", "welp"],
-            "description": "Shows all the commands and how to use them.",
+            "description": "An embed with all the commands.",
             "usage": "?help",
-            "show": true
+            "show": true,
+            "slash": true,
+            "options": []
         },
         {
             "text": "shop",
             "aliases": ["shop", "store"],
-            "description": "Shows you all the items you can buy.",
+            "description": "An embed with all the items in the shop.",
             "usage": "?shop",
-            "show": true
+            "show": true,
+            "slash": true,
+            "options": []
         },
         {
             "text": "buy",
             "aliases": ["buy", "purchase"],
             "description": "Buy an item from the store.",
             "usage": "?buy (item)",
-            "show": true
+            "show": true,
+            "slash": true,
+            "options": [
+                {
+                    "type": 3,
+                    "name": "item",
+                    "description": "the item you want to purchase",
+                    "required": true,
+                    "choices": []
+                },
+                {
+                    "type": 4,
+                    "name": "amount",
+                    "description": "how many of this item you want to purchase",
+                    "required": false
+                }
+            ]
         },
         {
             "text": "sell",
             "aliases": ["sell"],
             "description": "Sell an item for half the price.",
             "usage": "?sell (item)",
-            "show": true
+            "show": true,
+            "slash": true,
+            "options": []
         },
         {
             "text": "inventory",
             "aliases": ["inventory", "inv"],
             "description": "Shows your inventory.",
             "usage": "?inventory",
-            "show": true
+            "show": true,
+            "slash": true,
+            "options": []
         }
     ]
 }

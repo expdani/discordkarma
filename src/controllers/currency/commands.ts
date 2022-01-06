@@ -1,13 +1,16 @@
+import {reply} from "../../helpers";
 import {CURRENCY_SIGN} from "./../../types/currency";
-import {Message, MessageEmbed, User} from "discord.js";
+import {MessageEmbed, TextChannel, User} from "discord.js";
 import {getCurrency, initiateCurrency} from "./";
-import {Channel} from "../../types/discord";
+import {Command} from "../../types/discord";
 
 /**
  * The bot tells the user the amount of money he has.
  */
-async function sayUserBalance(channel: Channel, user: User) {
+async function sayUserBalance(command: Command) {
     try {
+        const user = command.member?.user as User;
+        if (!user) return;
         const currency = await getCurrency(user.id);
         const wallet = (currency && currency.wallet) || 0;
         const bank = (currency && currency.bank) || 0;
@@ -21,19 +24,17 @@ async function sayUserBalance(channel: Channel, user: User) {
             .setAuthor(`${user.username}'s balance`, `${user.avatarURL()}`)
             .setDescription(`**Wallet:** ${CURRENCY_SIGN}${wallet}\n**Bank:** ${CURRENCY_SIGN}${bank}`)
             .setColor("#fffff");
-        channel.send(embed);
+        reply(command, {embeds: [embed]});
     } catch (err) {
-        channel.send("Oops, something went wrong requesting your balance.");
+        reply(command, "Oops, something went wrong requesting your balance.");
     }
 }
 
 /**
  * Setup the command that are related to currency in the bot
  */
-export function setupCurrencyCommands(message: Message) {
-    const messageChannel = message.channel;
+export function setupCurrencyCommands(command: Command) {
+    const messageChannel = command.channel;
 
-    if (messageChannel.type == "text" || messageChannel.type == "news") {
-        sayUserBalance(messageChannel, message.author);
-    }
+    if (messageChannel instanceof TextChannel) sayUserBalance(command);
 }

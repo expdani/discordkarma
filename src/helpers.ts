@@ -1,9 +1,28 @@
+import {Interaction} from "discord.js";
+import {Command} from "./types/discord";
+
 /**
  * Get the amount of seconds between two dates
  */
 export function getAmountOfSecondsBetweenDates(date1: Date, date2: Date) {
     const diff = (date1.getTime() - date2.getTime()) / 1000;
     return Math.abs(diff);
+}
+
+/**
+ * Reply to command.
+ */
+export function reply(command: Command, reply: any) {
+    if (command instanceof Interaction && !command.isCommand()) return;
+
+    command.reply(reply);
+}
+
+/**
+ * Check if instance of...
+ */
+export function isInteraction(command: Command) {
+    return command instanceof Interaction;
 }
 
 /**

@@ -7,11 +7,12 @@
         "migrate": "npx knex migrate:up --knexfile ./src/database/knexFile.ts"
     },
     "dependencies": {
+        "@discordjs/builders": "^0.9.0",
         "@types/dialogflow": "0.11.0",
         "@types/uuid": "7.0.0",
         "@types/ws": "^7.4.0",
         "dialogflow": "1.2.0",
-        "discord.js": "^12.5.1",
+        "discord.js": "^13.3.1",
         "dotenv": "8.2.0",
         "entities": "2.0.3",
         "knex": "0.21.5",
@@ -38,7 +39,7 @@
         "prettier": "^2.1.2",
         "ts-node": "8.6.2",
         "tslib": "1.11.1",
-        "typescript": "3.8.3",
+        "typescript": "4.5.3",
         "typings": "2.1.1"
     },
     "nodemonConfig": {

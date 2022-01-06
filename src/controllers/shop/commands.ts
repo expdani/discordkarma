@@ -1,10 +1,12 @@
 import {CURRENCY_SIGN} from "./../../types/currency";
-import {Message, MessageEmbed} from "discord.js";
-import {Channel} from "../../types/discord";
+import {MessageEmbed, TextChannel} from "discord.js";
+import {Channel, Command} from "../../types/discord";
 import {items} from "../../../assets/items.json";
 import {TypeMessageResponse} from "src/types/response";
 import {buyItem} from ".";
 import {shopMsgs} from "../../../assets/random.json";
+import {reply} from "../../helpers";
+import {getInteractionAttribute, getMessageAttribute} from "../../commandHandler";
 
 /**
  * The bot tells the user the amount of money he has.
@@ -18,7 +20,7 @@ async function sayShop(channel: Channel) {
             description += `**${item.emoji} ${item.name}** — ${CURRENCY_SIGN}${item.price} \n ${item.description}\n\n`;
         });
         embed.description = description;
-        channel.send(embed);
+        channel.send({embeds: [embed]});
     } catch (err) {
         channel.send("Oops, something went wrong requesting the shop.");
     }
@@ -27,10 +29,10 @@ async function sayShop(channel: Channel) {
 /**
  * Setup the command that are related to currency in the bot
  */
-export function setupShopCommands(message: Message) {
-    const messageChannel = message.channel;
+export function setupShopCommands(command: Command) {
+    const messageChannel = command.channel;
 
-    if (messageChannel.type == "text" || messageChannel.type == "news") {
+    if (messageChannel instanceof TextChannel) {
         sayShop(messageChannel);
     }
 }
@@ -38,27 +40,35 @@ export function setupShopCommands(message: Message) {
 /**
  * Setup the command that are related to buying in the bot
  */
-export function setupBuyCommands(message: Message, result: TypeMessageResponse) {
-    const messageChannel = message.channel;
+export function setupBuyCommands(command: Command, result: TypeMessageResponse) {
+    const messageChannel = command.channel;
 
-    if (messageChannel.type == "text" || messageChannel.type == "news") {
+    if (messageChannel instanceof TextChannel) {
         if (result.input.attributes.length < 1) {
-            messageChannel.send("To buy an item, use `?buy (item name)`.");
+            reply(command, "To buy an item, use `?buy (item name)`.");
         } else {
-            buyItem(message, result.input.attributes[0], parseInt(result.input.attributes[1]));
+            const item = getInteractionAttribute(result, "item")
+                ? getInteractionAttribute(result, "item")
+                : getMessageAttribute(result, 0);
+            console.log(getMessageAttribute(result, 0));
+
+            const amount = getInteractionAttribute(result, "amount")
+                ? getInteractionAttribute(result, "amount")
+                : getMessageAttribute(result, 1);
+            buyItem(command, item as string, amount as string);
         }
     }
 }
 
-/**
- * Setup the command that are related to selling in the bot
- */
-export function setupSellCommands(message: Message, result: TypeMessageResponse) {
-    const messageChannel = message.channel;
+// /**
+//  * Setup the command that are related to selling in the bot
+//  */
+// export function setupSellCommands(command: Command, result: TypeMessageResponse) {
+//     const messageChannel = command.channel;
 
-    if (messageChannel.type == "text" || messageChannel.type == "news") {
-        if (result.input.attributes.length < 1) {
-            messageChannel.send("To buy an item, use `?buy (item name)`.");
-        }
-    }
-}
+//     if (messageChannel instanceof TextChannel) {
+//         if (result.input.attributes.length < 1) {
+//             messageChannel.send("To buy an item, use `?buy (item name)`.");
+//         }
+//     }
+// }

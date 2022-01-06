@@ -24,7 +24,7 @@ export default async function addKarmaReactions(message: Message) {
             await message.react(upvote);
             await message.react(downvote);
         } catch (error) {
-            message.channel.send(error);
+            console.log(error);
         }
     }
 }
@@ -34,6 +34,8 @@ export default async function addKarmaReactions(message: Message) {
  */
 export async function setupKarmaReactions(reaction: MessageReaction, user: User | PartialUser, type: string) {
     const message = reaction.message;
+    if (!reaction.emoji.name) return;
+    if (!message?.author?.id) return;
     if (UPVOTE.includes(reaction.emoji.name)) {
         await updateKarma(message.author.id, message.guild?.id ?? "", type === "add" ? 1 : -1);
         if (type === "add") {
