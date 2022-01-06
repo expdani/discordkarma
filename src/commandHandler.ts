@@ -3,7 +3,7 @@ import {Interaction, Message, User} from "discord.js";
 import {COMMAND_PREFIX} from "./types/constants";
 import {TypeCommand, TypeMessageResponse} from "./types/response";
 import {commands} from "../assets/commands.json";
-import {useDialogflow} from "./controllers/dialogflow";
+// import {useDialogflow} from "./controllers/dialogflow";
 
 /**
  * Check if command is een regsitered command
@@ -104,14 +104,13 @@ export async function calculateMessageResponse(message: Message) {
     let response;
 
     if (process.env.DIALOGFLOW_PROJECT_ID) {
-        const data = await useDialogflow(fullCommand);
-        const {queryResult} = data[0];
-
-        if (queryResult.intent) {
-            command = getCommand(queryResult.intent.displayName);
-            response = queryResult.fulfillmentText;
-            parameters = queryResult.parameters;
-        }
+        // const data = await useDialogflow(fullCommand);
+        // const {queryResult} = data[0];
+        // if (queryResult.intent) {
+        //     command = getCommand(queryResult.intent.displayName);
+        //     response = queryResult.fulfillmentText;
+        //     parameters = queryResult.parameters;
+        // }
     }
 
     if (!command) {
