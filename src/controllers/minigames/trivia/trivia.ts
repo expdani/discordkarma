@@ -64,18 +64,15 @@ async function handleUserAnswer(
 
         // The user needs to give an answer which is a single number
         const answerNumber = parseInt(i.customId);
+
         const isAnswerCorrect = answerNumber && !isNaN(answerNumber) && answers[answerNumber - 1] === correctAnswer;
 
         if (isAnswerCorrect) {
             const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
             await changeCurrency(userID, payout);
             const embed = new MessageEmbed()
-                .setDescription(
-                    `~~${decodeHTML(questionMessage)}~~\n\n**${randomMsg}\nHet antwoord was ${decodeHTML(
-                        correctAnswer,
-                    )}**.`,
-                )
-                .setColor("#FF0000");
+                .setDescription(`${decodeHTML(questionMessage)}\n\n**${randomMsg}**`)
+                .setColor("#00FF00");
             await i.deferUpdate();
             await i.editReply({embeds: [embed], components: [answersRow]});
             collector.stop("answered");

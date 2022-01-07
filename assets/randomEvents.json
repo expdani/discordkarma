@@ -15,7 +15,7 @@
                     "item": "Pointsack"
                 }
             ],
-            "rarity": 3
+            "rarity": 1
         },
         {
             "name": "Portfolio map",
@@ -29,7 +29,7 @@
                     "item": "Pointsack"
                 }
             ],
-            "rarity": 2
+            "rarity": 1
         },
         {
             "name": "Gerard's virus",
@@ -41,6 +41,34 @@
             "rewards": [
                 {
                     "wallet": 1
+                }
+            ],
+            "rarity": 1
+        },
+        {
+            "name": "Gerard speelt vals",
+            "text": "Er wordt verdacht vaak 2 en 12 gegooid nu Gerard aan deze getallen staat. Vermoeden wordt dat hij aan het cheaten is. Snel, type `votekick Gerard` om hem uit het spel te schoppen!",
+            "response": "votekick gerard",
+            "timeLimit": 60,
+            "rewardText": "En terecht, {{username}}.",
+            "failText": "Wat een rot spel is het toch ook..",
+            "rewards": [
+                {
+                    "wallet": 2
+                }
+            ],
+            "rarity": 1
+        },
+        {
+            "name": "Uiteten met Daniel",
+            "text": "Je denkt lekker sushi te gaan eten met de Hermanmakkers, maar iemand (ik noem geen namen) heeft geen geldige QR-code. Snel, roep `rutte` voordat hij het land in lockdown gooit!",
+            "response": "rutte",
+            "timeLimit": 60,
+            "rewardText": "Corona is no more, goed gedaan {{username}}.",
+            "failText": "Rutte is boos en gooit het hele land op slot :angry:.",
+            "rewards": [
+                {
+                    "wallet": 2
                 }
             ],
             "rarity": 1

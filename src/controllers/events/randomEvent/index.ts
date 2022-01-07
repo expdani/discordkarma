@@ -4,7 +4,7 @@ import {addItemToInventory} from "../../inventory";
 import {randomEvents} from "../../../../assets/randomEvents.json";
 import {getAmountOfSecondsBetweenDates} from "../../../helpers";
 
-const PERCENT_CHANCE_PER_MESSAGE = 0.34;
+const PERCENT_CHANCE_PER_MESSAGE = 0.43;
 
 const EVENT_TIMEOUT = 90; // seconds
 
@@ -35,21 +35,21 @@ export default function calculateRandomEvent(message: Message) {
         }
 
         const messageChannel = message.channel;
-        const rarity = calculateRarity();
 
-        const filteredEvents = randomEvents.filter(function (event: {rarity: number}) {
-            return event.rarity === rarity;
-        });
+        const filteredEvents = randomEvents;
 
         const randomEvent = filteredEvents[Math.floor(Math.random() * filteredEvents.length)];
 
         messageChannel.send(randomEvent.text);
 
-        // Await answer
+        /**
+         * Await line
+         */
         const filter = (response: Message) =>
             Boolean(
                 response.content.toLowerCase().includes(randomEvent.response.toLowerCase()) && !response.author.bot,
             );
+
         // Errors: ['time'] treats ending because of the time limit as an error
         messageChannel
             .awaitMessages({filter, max: 1, time: randomEvent.timeLimit * 1000, errors: ["time"]})
@@ -80,26 +80,26 @@ async function handleUserResponse(collectedMessages: Collection<string, Message>
                 }
             });
 
-            await message.channel.send(event.rewardText.replace("{{username}}", username));
+            await message.reply(event.rewardText.replace("{{username}}", username));
         }
     } catch (err) {
         message.channel.send(event.failText.replace("{{username}}", username));
     }
 }
 
-/**
- * Handle user response from event.
- */
-function calculateRarity() {
-    const n = Math.random() * 100;
-    let rarity = 1;
+// /**
+//  * Handle user response from event.
+//  */
+// function calculateRarity() {
+//     // const n = Math.random() * 100;
+//     const rarity = 1;
 
-    if (n <= 50) {
-        rarity = 2;
-    }
-    if (n <= 20) {
-        rarity = 3;
-    }
+//     // if (n <= 50) {
+//     //     rarity = 2;
+//     // }
+//     // if (n <= 20) {
+//     //     rarity = 3;
+//     // }
 
-    return rarity;
-}
+//     return rarity;
+// }
