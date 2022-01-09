@@ -71,7 +71,7 @@ async function handleUserAnswer(
             const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
             await changeCurrency(userID, payout);
             const embed = new MessageEmbed()
-                .setDescription(`${decodeHTML(questionMessage)}\n\n**${randomMsg}**`)
+                .setDescription(`${decodeHTML(questionMessage)}\n\n**${randomMsg}**.`)
                 .setColor("#00FF00");
             await i.deferUpdate();
             await i.editReply({embeds: [embed], components: [answersRow]});
