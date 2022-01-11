@@ -7,6 +7,7 @@ import {sayCommand} from "./controllers/admin/commands";
 import {setupHelpCommands} from "./controllers/help/commands";
 import {setupBuyCommands, setupShopCommands} from "./controllers/shop/commands";
 import {setupInventoryCommands} from "./controllers/inventory/commands";
+import {setupTictactoeCommands} from "./controllers/minigames/tictactoe/commands";
 
 type TypeResolver = (message: Message | Interaction, context: TypeMessageResponse) => void;
 
@@ -24,6 +25,7 @@ const resolvers: TypeResolvers = {
     shop: setupShopCommands,
     inventory: setupInventoryCommands,
     buy: setupBuyCommands,
+    ttt: setupTictactoeCommands,
     // sell: setupSellCommands,
 };
 

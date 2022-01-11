@@ -67,3 +67,11 @@ export default function secondsToReadableString(unParsedSeconds: number) {
 
     return readableString;
 }
+
+/**
+ * Random number between min and max.
+ */
+export function randomInt(min: number, max: number) {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
