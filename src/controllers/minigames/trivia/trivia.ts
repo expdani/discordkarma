@@ -8,7 +8,7 @@ import {decodeHTML} from "entities";
 import {changeCurrency} from "../../currency";
 import {correctMsgs, wrongMsgs} from "../../../../assets/random.json";
 
-const TRIVIA_TIMEOUT = 15; // seconds
+const TRIVIA_TIMEOUT = 18; // seconds
 
 type TimeoutCache = {[userID: string]: Date};
 type MessageCache = {[commandId: string]: Message};
@@ -71,7 +71,7 @@ async function handleUserAnswer(
             const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
             await changeCurrency(userID, payout);
             const embed = new MessageEmbed()
-                .setDescription(`${decodeHTML(questionMessage)}\n\n**${randomMsg}**`)
+                .setDescription(`${decodeHTML(questionMessage)}\n\n**${randomMsg}**.`)
                 .setColor("#00FF00");
             await i.deferUpdate();
             await i.editReply({embeds: [embed], components: [answersRow]});
@@ -135,13 +135,15 @@ async function askQuestion(command: Command, user: User) {
         .setColor("#fffff");
 
     if (command instanceof Message) {
-        command.reply({embeds: [embed], components: [row]}).then((sent) => {
+        // eslint-disable-next-line promise/catch-or-return
+        await command.reply({embeds: [embed], components: [row]}).then((sent) => {
             const msg = command.channel?.messages.cache.get(sent.id);
 
             if (sent.id && msg) TRIVIA_MESSAGES[command.id] = msg;
         });
     } else reply(command, {embeds: [embed], components: [row]});
 
+    // eslint-disable-next-line require-jsdoc
     const filter = (i: any) => i.user.id === user.id;
 
     const collector = command.channel?.createMessageComponentCollector({filter, time: TIME_TO_ANSWER * 1000});

@@ -43,6 +43,21 @@
             "options": []
         },
         {
+            "text": "tictactoe",
+            "aliases": ["ttt", "tic", "tictactoe"],
+            "description": "Start a tic tac toe fight with someone.",
+            "usage": "?trivia",
+            "show": true,
+            "slash": true,
+            "options": [
+                {
+                    "type": 6,
+                    "name": "user",
+                    "description": "A user you want to 1v1 in tic tac toe."
+                }
+            ]
+        },
+        {
             "text": "say",
             "aliases": ["say, repeat"],
             "description": "Deletes your message and repeats it, making it look like the bot said it.",
