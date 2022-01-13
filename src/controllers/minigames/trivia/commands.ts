@@ -4,7 +4,7 @@ import {Command} from "../../../types/discord";
 /**
  * Setup commands for minigames
  */
-export default function setupMinigameCommands(command: Command) {
+export default function setupTriviaCommands(command: Command) {
     const messageChannel = command.channel;
 
     if (messageChannel instanceof TextChannel) {

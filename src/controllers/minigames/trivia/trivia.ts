@@ -135,13 +135,15 @@ async function askQuestion(command: Command, user: User) {
         .setColor("#fffff");
 
     if (command instanceof Message) {
-        command.reply({embeds: [embed], components: [row]}).then((sent) => {
+        // eslint-disable-next-line promise/catch-or-return
+        await command.reply({embeds: [embed], components: [row]}).then((sent) => {
             const msg = command.channel?.messages.cache.get(sent.id);
 
             if (sent.id && msg) TRIVIA_MESSAGES[command.id] = msg;
         });
     } else reply(command, {embeds: [embed], components: [row]});
 
+    // eslint-disable-next-line require-jsdoc
     const filter = (i: any) => i.user.id === user.id;
 
     const collector = command.channel?.createMessageComponentCollector({filter, time: TIME_TO_ANSWER * 1000});

@@ -43,8 +43,8 @@
             "options": []
         },
         {
-            "text": "ttt",
-            "aliases": ["tic", "tictactoe", "tic"],
+            "text": "tictactoe",
+            "aliases": ["ttt", "tic", "tictactoe"],
             "description": "Start a tic tac toe fight with someone.",
             "usage": "?trivia",
             "show": true,

@@ -1,5 +1,6 @@
+/* eslint-disable complexity */
 import {reply, randomInt} from "../../../helpers";
-import {Interaction, Message, MessageActionRow, MessageButton, User} from "discord.js";
+import {Interaction, Message, User} from "discord.js";
 import {Command} from "../../../types/discord";
 import {getInteractionAttribute} from "../../../commandHandler";
 import {TypeMessageResponse} from "../../../types/response";
@@ -9,6 +10,7 @@ type TictactoeData = {
     author: User;
     target: User;
     turn: User | null;
+    winner?: User;
 };
 
 type TictactoeCache = {[commandId: string]: TictactoeData};
@@ -27,66 +29,52 @@ export async function initiateTicTacToe(command: Command, response: TypeMessageR
                 ? command.mentions.users.first()
                 : (getInteractionAttribute(response, "user") as User);
 
-        if (targetUser) {
+        if (targetUser && targetUser != (command.member?.user as User) && !targetUser.bot) {
             await sendTicTacToe(command, command.member?.user as User, targetUser);
 
+            /**
+             * Only handle interaction if user is author or target.
+             */
             const filter = (i: any) => i.user.id === command.member?.user.id || i.user.id === targetUser.id;
-            const collector = command.channel?.createMessageComponentCollector({filter, time: 30000});
+            const collector = command.channel?.createMessageComponentCollector({filter, time: 300000});
 
             collector?.on("collect", async (i) => {
                 handleInteraction(i, command);
             });
+        } else {
+            reply(command, "Mention a valid opponent.");
         }
     }
 }
 
+/**
+ * Handle an interaction
+ */
 async function handleInteraction(i: Interaction, command: Command) {
     try {
         if (!i.isButton()) return;
         const game = TTT_GAMES[command.id];
-        if (i.user.id === game.turn?.id) updateGrid(i);
+        if (i.user.id === game.turn?.id) {
+            TTT_GAMES[command.id].turn = game.turn.id === game.author.id ? game.target : game.author;
+            updateGrid(i, game);
+        }
     } catch (err) {
         i.channel?.send("Oops, something went wrong processing your action.");
     }
 }
 
-async function sendTicTacToe(command: Command, author: User, target: User) {
-    const i = randomInt(1, 2);
-    const turn = i === 1 ? author : target;
-
-    reply(command, {
-        content: "Fight!",
-        components: [getComponents()],
-    });
-
-    TTT_GAMES[command.id] = {
-        target,
-        author,
-        turn,
-    };
-}
-
 /**
  * Update a grid
  */
-async function updateGrid(interaction: any) {
+async function updateGrid(interaction: any, game: TictactoeData) {
     if (!interaction.isMessageComponent()) return;
     const message = interaction.message;
-
-    let xs = 0;
-    let os = 0;
 
     if (!interaction.isButton()) return;
     if (!message.components) return;
 
-    for (const actionRow of message.components) {
-        for (const button of actionRow.components) {
-            if (button.label === "X") xs++;
-            else if (button.label === "O") os++;
-        }
-    }
+    disableAllButtons(message);
 
-    const xs_turn = xs <= os;
     const i = parseInt(interaction.customId[3]);
     const j = parseInt(interaction.customId[4]);
 
@@ -94,8 +82,8 @@ async function updateGrid(interaction: any) {
 
     if (buttonPressed.label !== "_") return;
 
-    buttonPressed.label = xs_turn ? "X" : "O";
-    buttonPressed.style = xs_turn ? "SUCCESS" : "DANGER";
+    buttonPressed.label = interaction.user.id === game.author.id ? "X" : "O";
+    buttonPressed.style = interaction.user.id === game.author.id ? "SUCCESS" : "DANGER";
 
     // eslint-disable-next-line require-jsdoc
     const styleToNumber = (style: string) => (style === "SECONDARY" ? 2 : style === "SUCCESS" ? 3 : 4);
@@ -109,29 +97,152 @@ async function updateGrid(interaction: any) {
                 type: 2,
                 label: button.label,
                 style: styleToNumber(button.style),
-                customId: button.customID,
+                customId: button.customId,
+                disabled: true,
             });
         }
     }
 
-    await message.edit({components: components});
-
     await interaction.deferUpdate();
+    await message.edit({
+        components: components,
+    });
+    await message.edit(`<@${game.author.id}> vs <@${game.target.id}>.\n<@${game.turn?.id}>'s turn!`);
+    checkWin(interaction, message, game);
 }
 
-function getComponents(): any[] {
-    const r1 = new MessageActionRow();
-    const r2 = new MessageActionRow();
-    const r3 = new MessageActionRow();
-    r1.addComponents(new MessageButton().setCustomId(`ttt11`).setLabel(`_`).setStyle(2));
-    r1.addComponents(new MessageButton().setCustomId(`ttt12`).setLabel(`_`).setStyle(2));
-    r1.addComponents(new MessageButton().setCustomId(`ttt13`).setLabel(`_`).setStyle(2));
-    r2.addComponents(new MessageButton().setCustomId(`ttt21`).setLabel(`_`).setStyle(2));
-    r2.addComponents(new MessageButton().setCustomId(`ttt22`).setLabel(`_`).setStyle(2));
-    r2.addComponents(new MessageButton().setCustomId(`ttt23`).setLabel(`_`).setStyle(2));
-    r3.addComponents(new MessageButton().setCustomId(`ttt31`).setLabel(`_`).setStyle(2));
-    r3.addComponents(new MessageButton().setCustomId(`ttt32`).setLabel(`_`).setStyle(2));
-    r3.addComponents(new MessageButton().setCustomId(`ttt33`).setLabel(`_`).setStyle(2));
+/**
+ * Send grid and save game to cache.
+ */
+async function sendTicTacToe(command: Command, author: User, target: User) {
+    const i = randomInt(1, 2);
+    const turn: User = i === 1 ? author : target;
 
-    return [r1, r2, r3];
+    reply(command, {
+        content: `<@${author.id}> vs <@${target.id}>.\n<@${turn.id}>'s turn!`,
+        components: [
+            {
+                type: 1,
+                components: [
+                    {type: 2, label: "_", style: 2, custom_id: "ttt11"},
+                    {type: 2, label: "_", style: 2, custom_id: "ttt12"},
+                    {type: 2, label: "_", style: 2, custom_id: "ttt13"},
+                ],
+            },
+            {
+                type: 1,
+                components: [
+                    {type: 2, label: "_", style: 2, custom_id: "ttt21"},
+                    {type: 2, label: "_", style: 2, custom_id: "ttt22"},
+                    {type: 2, label: "_", style: 2, custom_id: "ttt23"},
+                ],
+            },
+            {
+                type: 1,
+                components: [
+                    {type: 2, label: "_", style: 2, custom_id: "ttt31"},
+                    {type: 2, label: "_", style: 2, custom_id: "ttt32"},
+                    {type: 2, label: "_", style: 2, custom_id: "ttt33"},
+                ],
+            },
+        ],
+    });
+
+    TTT_GAMES[command.id] = {
+        target,
+        author,
+        turn,
+    };
+}
+
+/**
+ * Check if there is a winner.
+ */
+async function checkWin(interaction: any, message: any, game: TictactoeData) {
+    if (!message.components) return;
+
+    const buttons: {label: string; id: string}[] = [];
+
+    for (const actionRow of message.components) {
+        for (const button of actionRow.components) {
+            buttons.push({
+                label: button.label,
+                id: button.customId as string,
+            });
+        }
+    }
+
+    const letter = interaction.user.id === game.author.id ? "X" : "O";
+
+    if (isWinner(buttons, letter)) {
+        game.winner = interaction.user.id;
+
+        await message.edit(`**<@${interaction.user.id}> is the winner!**`);
+    } else enableAllButtons(message);
+}
+
+/**
+ * Check grid if there are 3 in a row.
+ */
+function isWinner(buttons: any, letter: string) {
+    if (
+        // horizontal
+        (buttons[0].label === letter && buttons[1].label === letter && buttons[2].label === letter) ||
+        (buttons[3].label === letter && buttons[4].label === letter && buttons[5].label === letter) ||
+        (buttons[6].label === letter && buttons[7].label === letter && buttons[8].label === letter) ||
+        // vertical
+        (buttons[0].label === letter && buttons[3].label === letter && buttons[6].label === letter) ||
+        (buttons[1].label === letter && buttons[4].label === letter && buttons[7].label === letter) ||
+        (buttons[2].label === letter && buttons[5].label === letter && buttons[8].label === letter) ||
+        // cross
+        (buttons[0].label === letter && buttons[4].label === letter && buttons[8].label === letter) ||
+        (buttons[6].label === letter && buttons[4].label === letter && buttons[2].label === letter)
+    )
+        return true;
+}
+
+/**
+ * Disable all buttons in a message.
+ */
+async function disableAllButtons(message: any) {
+    const components: any = [];
+    for (const actionRow of message.components) {
+        components.push({type: actionRow.type, components: []});
+        for (const button of actionRow.components) {
+            components[components.length - 1].components.push({
+                type: button.type,
+                label: button.label,
+                style: button.style,
+                customId: button.customId,
+                disabled: true,
+            });
+        }
+    }
+
+    await message.edit({
+        components: components,
+    });
+}
+
+/**
+ * Enable all buttons in a message.
+ */
+async function enableAllButtons(message: any) {
+    const components: any = [];
+    for (const actionRow of message.components) {
+        components.push({type: actionRow.type, components: []});
+        for (const button of actionRow.components) {
+            components[components.length - 1].components.push({
+                type: button.type,
+                label: button.label,
+                style: button.style,
+                customId: button.customId,
+                disabled: false,
+            });
+        }
+    }
+
+    await message.edit({
+        components: components,
+    });
 }
