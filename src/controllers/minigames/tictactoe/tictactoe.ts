@@ -178,12 +178,14 @@ async function checkWin(interaction: any, message: any, game: TictactoeData, col
 
     if (!isWinner(buttons, letter) && empty === 0) {
         await message.edit("**Draw!**");
+        disableAllButtons(message);
         collector.stop("winner");
     }
     if (isWinner(buttons, letter)) {
         game.winner = interaction.user.id;
 
         await message.edit(`**<@${interaction.user.id}> is the winner!**`);
+        disableAllButtons(message);
         collector.stop("winner");
     } else enableAllButtons(message);
 }
