@@ -39,7 +39,7 @@ export async function initiateTicTacToe(command: Command, response: TypeMessageR
             const collector = command.channel?.createMessageComponentCollector({filter, time: 300000});
 
             collector?.on("collect", async (i) => {
-                handleInteraction(i, command);
+                handleInteraction(i, command, collector);
             });
         } else {
             reply(command, "Mention a valid opponent.");
@@ -50,13 +50,13 @@ export async function initiateTicTacToe(command: Command, response: TypeMessageR
 /**
  * Handle an interaction
  */
-async function handleInteraction(i: Interaction, command: Command) {
+async function handleInteraction(i: Interaction, command: Command, collector: any) {
     try {
         if (!i.isButton()) return;
         const game = TTT_GAMES[command.id];
         if (i.user.id === game.turn?.id) {
             TTT_GAMES[command.id].turn = game.turn.id === game.author.id ? game.target : game.author;
-            updateGrid(i, game);
+            updateGrid(i, game, collector);
         }
     } catch (err) {
         i.channel?.send("Oops, something went wrong processing your action.");
@@ -66,7 +66,7 @@ async function handleInteraction(i: Interaction, command: Command) {
 /**
  * Update a grid
  */
-async function updateGrid(interaction: any, game: TictactoeData) {
+async function updateGrid(interaction: any, game: TictactoeData, collector: any) {
     if (!interaction.isMessageComponent()) return;
     const message = interaction.message;
 
@@ -108,7 +108,7 @@ async function updateGrid(interaction: any, game: TictactoeData) {
         components: components,
     });
     await message.edit(`<@${game.author.id}> vs <@${game.target.id}>.\n<@${game.turn?.id}>'s turn!`);
-    checkWin(interaction, message, game);
+    checkWin(interaction, message, game, collector);
 }
 
 /**
@@ -158,7 +158,7 @@ async function sendTicTacToe(command: Command, author: User, target: User) {
 /**
  * Check if there is a winner.
  */
-async function checkWin(interaction: any, message: any, game: TictactoeData) {
+async function checkWin(interaction: any, message: any, game: TictactoeData, collector: any) {
     if (!message.components) return;
 
     const buttons: {label: string; id: string}[] = [];
@@ -178,6 +178,7 @@ async function checkWin(interaction: any, message: any, game: TictactoeData) {
         game.winner = interaction.user.id;
 
         await message.edit(`**<@${interaction.user.id}> is the winner!**`);
+        collector.stop("winner");
     } else enableAllButtons(message);
 }
 
