@@ -162,9 +162,11 @@ async function checkWin(interaction: any, message: any, game: TictactoeData, col
     if (!message.components) return;
 
     const buttons: {label: string; id: string}[] = [];
+    let empty = 0;
 
     for (const actionRow of message.components) {
         for (const button of actionRow.components) {
+            if (button.label === "_") empty++;
             buttons.push({
                 label: button.label,
                 id: button.customId as string,
@@ -174,6 +176,10 @@ async function checkWin(interaction: any, message: any, game: TictactoeData, col
 
     const letter = interaction.user.id === game.author.id ? "X" : "O";
 
+    if (!isWinner(buttons, letter) && empty === 0) {
+        await message.edit("**Draw!**");
+        collector.stop("winner");
+    }
     if (isWinner(buttons, letter)) {
         game.winner = interaction.user.id;
 
