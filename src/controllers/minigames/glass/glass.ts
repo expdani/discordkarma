@@ -17,8 +17,8 @@ type GlassCache = {[guildId: string]: GlassData};
 
 const GLASS_GAMES: GlassCache = {};
 
-const TIME_TO_REACT = 5;
-const TIME_TO_JOIN = 5;
+const TIME_TO_REACT = 10;
+const TIME_TO_JOIN = 25;
 
 /**
  * Start a glass game
@@ -95,7 +95,10 @@ async function runGame(command: Command) {
     await GLASS_GAMES[command.guild?.id].message?.reactions.removeAll();
     GLASS_GAMES[command.guild?.id].participants = shuffleArray(GLASS_GAMES[command.guild?.id].participants);
     if (GLASS_GAMES[command.guild?.id].participants.length > 0) newCollector(command);
-    else GLASS_GAMES[command.guild?.id].message?.edit("No one joined.");
+    else {
+        GLASS_GAMES[command.guild?.id].message?.edit("No one joined.");
+        GLASS_GAMES[command.guild?.id].running = false;
+    }
 }
 
 /**
