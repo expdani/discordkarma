@@ -20,8 +20,12 @@ async function sayUserBalance(command: Command) {
         if (!currency) {
             await initiateCurrency(user.id);
         }
+
+        const avatar = user.avatarURL()
+            ? user.avatarURL()
+            : "https://media.istockphoto.com/photos/lol-emoji-isolated-on-white-background-laughing-face-emoticon-3d-picture-id856170516";
         const embed = new MessageEmbed()
-            .setAuthor(`${user.username}'s balance`, `${user.avatarURL()}`)
+            .setAuthor(`${user.username}'s balance`, `${avatar}`)
             .setDescription(`**Wallet:** ${CURRENCY_SIGN}${wallet}\n**Bank:** ${CURRENCY_SIGN}${bank}`)
             .setColor("#fffff");
         reply(command, {embeds: [embed]});

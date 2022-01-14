@@ -11,6 +11,7 @@
         "@types/dialogflow": "0.11.0",
         "@types/uuid": "7.0.0",
         "@types/ws": "^7.4.0",
+        "array-shuffle": "^3.0.0",
         "dialogflow": "1.2.0",
         "discord.js": "^13.3.1",
         "dotenv": "8.2.0",

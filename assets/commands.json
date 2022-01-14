@@ -58,6 +58,15 @@
             ]
         },
         {
+            "text": "glass",
+            "aliases": ["gs"],
+            "description": "Start a game where everyone gets a turn for the glass bridge. (squid game lol)",
+            "usage": "?glass",
+            "show": true,
+            "slash": true,
+            "options": []
+        },
+        {
             "text": "say",
             "aliases": ["say, repeat"],
             "description": "Deletes your message and repeats it, making it look like the bot said it.",

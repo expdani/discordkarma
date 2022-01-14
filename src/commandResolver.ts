@@ -8,6 +8,7 @@ import {setupHelpCommands} from "./controllers/help/commands";
 import {setupBuyCommands, setupShopCommands} from "./controllers/shop/commands";
 import {setupInventoryCommands} from "./controllers/inventory/commands";
 import {setupTictactoeCommands} from "./controllers/minigames/tictactoe/commands";
+import {setupGlassCommands} from "./controllers/minigames/glass/commands";
 
 type TypeResolver = (message: Message | Interaction, context: TypeMessageResponse) => void;
 
@@ -26,6 +27,7 @@ const resolvers: TypeResolvers = {
     inventory: setupInventoryCommands,
     buy: setupBuyCommands,
     tictactoe: setupTictactoeCommands,
+    glass: setupGlassCommands,
     // sell: setupSellCommands,
 };
 
