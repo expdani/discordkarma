@@ -53,7 +53,8 @@
                 {
                     "type": 6,
                     "name": "user",
-                    "description": "A user you want to 1v1 in tic tac toe."
+                    "required": true,
+                    "description": "An opponent you want to 1v1 in tic tac toe."
                 }
             ]
         },

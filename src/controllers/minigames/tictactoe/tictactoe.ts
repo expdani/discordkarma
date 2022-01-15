@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import {reply, randomInt} from "../../../helpers";
-import {Interaction, Message, User} from "discord.js";
+import {Interaction, Message, MessageEmbed, User} from "discord.js";
 import {Command} from "../../../types/discord";
 import {getInteractionAttribute} from "../../../commandHandler";
 import {TypeMessageResponse} from "../../../types/response";
@@ -42,7 +42,7 @@ export async function initiateTicTacToe(command: Command, response: TypeMessageR
                 handleInteraction(i, command, collector);
             });
         } else {
-            reply(command, "Mention a valid opponent.");
+            reply(command, "Mention a valid opponent. Bots and yourself are not valid.");
         }
     }
 }
@@ -104,10 +104,15 @@ async function updateGrid(interaction: any, game: TictactoeData, collector: any)
     }
 
     await interaction.deferUpdate();
+
+    const string = `<@${game.author.id}> vs <@${game.target.id}>.\n<@${game.turn?.id}>'s turn!`;
+    const embed = new MessageEmbed().setTitle("**Tic Tac Toe**").setDescription(`${string}`).setColor("#fffff");
+
     await message.edit({
-        components: components,
+        embeds: [embed],
+        components: [components],
     });
-    await message.edit(`<@${game.author.id}> vs <@${game.target.id}>.\n<@${game.turn?.id}>'s turn!`);
+
     checkWin(interaction, message, game, collector);
 }
 
@@ -118,8 +123,15 @@ async function sendTicTacToe(command: Command, author: User, target: User) {
     const i = randomInt(1, 2);
     const turn: User = i === 1 ? author : target;
 
+    const string = `**<@${turn.id}>'s turn!**`;
+    const embed = new MessageEmbed()
+        .setTitle("**Tic Tac Toe**")
+        .setDescription(`${string}`)
+        .setColor("#fffff")
+        .setFooter(`${author.tag} vs ${target.tag}\n/help tictactoe`);
+
     reply(command, {
-        content: `<@${author.id}> vs <@${target.id}>.\n<@${turn.id}>'s turn!`,
+        embeds: [embed],
         components: [
             {
                 type: 1,
@@ -177,14 +189,25 @@ async function checkWin(interaction: any, message: any, game: TictactoeData, col
     const letter = interaction.user.id === game.author.id ? "X" : "O";
 
     if (!isWinner(buttons, letter) && empty === 0) {
-        await message.edit("**Draw!**");
+        const string = "**Draw!**";
+        const embed = new MessageEmbed()
+            .setTitle("**Tic Tac Toe**")
+            .setDescription(`${string}`)
+            .setColor("#fffff")
+            .setFooter(`${game.author.tag} vs ${game.target.tag}\n/help tictactoe`);
+        await message.edit({embeds: [embed]});
         disableAllButtons(message);
         collector.stop("winner");
     }
     if (isWinner(buttons, letter)) {
         game.winner = interaction.user.id;
-
-        await message.edit(`**<@${interaction.user.id}> is the winner!**`);
+        const string = `**<@${interaction.user.id}> is the winner!**`;
+        const embed = new MessageEmbed()
+            .setTitle("**Tic Tac Toe**")
+            .setDescription(`${string}`)
+            .setColor("#fffff")
+            .setFooter(`${game.author.tag} vs ${game.target.tag}\n/help tictactoe`);
+        await message.edit({embeds: [embed]});
         disableAllButtons(message);
         collector.stop("winner");
     } else enableAllButtons(message);
