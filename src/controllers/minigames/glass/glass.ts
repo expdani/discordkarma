@@ -178,6 +178,7 @@ async function handleEnd(command: Command, _reason: string, currentUser?: User) 
 async function handleCollect(_i: any, command: Command, collector: any, currentUser: User, buttons: any) {
     if (!command.guild?.id) return;
     if (!_i.isButton()) return;
+    _i.deferUpdate();
 
     const correct = randomInt(1, 2);
 

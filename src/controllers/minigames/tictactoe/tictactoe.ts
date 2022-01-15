@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import {reply, randomInt} from "../../../helpers";
-import {Interaction, Message, MessageEmbed, User} from "discord.js";
+import {Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, User} from "discord.js";
 import {Command} from "../../../types/discord";
 import {getInteractionAttribute} from "../../../commandHandler";
 import {TypeMessageResponse} from "../../../types/response";
@@ -53,6 +53,7 @@ export async function initiateTicTacToe(command: Command, response: TypeMessageR
 async function handleInteraction(i: Interaction, command: Command, collector: any) {
     try {
         if (!i.isButton()) return;
+        await i.deferUpdate();
         const game = TTT_GAMES[command.id];
         if (i.user.id === game.turn?.id) {
             TTT_GAMES[command.id].turn = game.turn.id === game.author.id ? game.target : game.author;
@@ -85,32 +86,23 @@ async function updateGrid(interaction: any, game: TictactoeData, collector: any)
     buttonPressed.label = interaction.user.id === game.author.id ? "X" : "O";
     buttonPressed.style = interaction.user.id === game.author.id ? "SUCCESS" : "DANGER";
 
-    // eslint-disable-next-line require-jsdoc
-    const styleToNumber = (style: string) => (style === "SECONDARY" ? 2 : style === "SUCCESS" ? 3 : 4);
-
-    const components: any = [];
+    const msgComponents: MessageActionRow[] = [];
 
     for (const actionRow of message.components) {
-        components.push({type: 1, components: []});
+        msgComponents.push(new MessageActionRow());
         for (const button of actionRow.components) {
-            components[components.length - 1].components.push({
-                type: 2,
-                label: button.label,
-                style: styleToNumber(button.style),
-                customId: button.customId,
-                disabled: true,
-            });
+            msgComponents[msgComponents.length - 1].addComponents(
+                new MessageButton().setCustomId(button.customId).setLabel(button.label).setStyle(button.style),
+            );
         }
     }
-
-    await interaction.deferUpdate();
 
     const string = `<@${game.author.id}> vs <@${game.target.id}>.\n<@${game.turn?.id}>'s turn!`;
     const embed = new MessageEmbed().setTitle("**Tic Tac Toe**").setDescription(`${string}`).setColor("#fffff");
 
     await message.edit({
+        components: msgComponents,
         embeds: [embed],
-        components: [components],
     });
 
     checkWin(interaction, message, game, collector);
@@ -198,6 +190,7 @@ async function checkWin(interaction: any, message: any, game: TictactoeData, col
         await message.edit({embeds: [embed]});
         disableAllButtons(message);
         collector.stop("winner");
+        return true;
     }
     if (isWinner(buttons, letter)) {
         game.winner = interaction.user.id;
@@ -210,7 +203,11 @@ async function checkWin(interaction: any, message: any, game: TictactoeData, col
         await message.edit({embeds: [embed]});
         disableAllButtons(message);
         collector.stop("winner");
-    } else enableAllButtons(message);
+        return true;
+    } else {
+        enableAllButtons(message);
+        return false;
+    }
 }
 
 /**

@@ -187,10 +187,10 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@14.11.1":
-  version "14.11.1"
-  resolved "https://registry.npmjs.org/@types/node/-/node-14.11.1.tgz"
-  integrity sha512-oTQgnd0hblfLsJ6BvJzzSL+Inogp3lq9fGgqRkMB/ziKMgEUaFl801OncOzUmalfzt14N0oPHMK47ipl+wbTIw==
+"@types/node@*", "@types/node@^14.18.5":
+  version "14.18.5"
+  resolved "https://npm.tradecast.eu:4879/@types%2fnode/-/node-14.18.5.tgz"
+  integrity sha512-LMy+vDDcQR48EZdEx5wRX1q/sEl6NdGuHXPnfeL8ixkwCOSZ2qnIyIZmcCbdX0MeRqHhAcHmX+haCbrS8Run+A==
 
 "@types/node@^13.7.0":
   version "13.13.40"
@@ -3669,9 +3669,9 @@ ts-mixer@^6.0.0:
   resolved "https://registry.npmjs.org/ts-mixer/-/ts-mixer-6.0.0.tgz"
   integrity sha512-nXIb1fvdY5CBSrDIblLn73NW0qRDk5yJ0Sk1qPBF560OdJfQp9jhl+0tzcY09OZ9U+6GpeoI9RjwoIKFIoB9MQ==
 
-ts-node@8.6.2:
+ts-node@^8.6.2:
   version "8.6.2"
-  resolved "https://registry.npmjs.org/ts-node/-/ts-node-8.6.2.tgz"
+  resolved "https://npm.tradecast.eu:4879/ts-node/-/ts-node-8.6.2.tgz"
   integrity sha512-4mZEbofxGqLL2RImpe3zMJukvEvcO1XP8bj8ozBPySdCUXEcU5cIRwR0aM3R+VoZq7iXc8N86NC0FspGRqP4gg==
   dependencies:
     arg "^4.1.0"
@@ -3724,15 +3724,15 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@4.5.3:
-  version "4.5.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.5.3.tgz"
-  integrity sha512-eVYaEHALSt+s9LbvgEv4Ef+Tdq7hBiIZgii12xXJnukryt3pMgJf6aKhoCZ3FWQsu6sydEnkg11fYXLzhLBjeQ==
-
 typescript@^2.1.4:
   version "2.9.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-2.9.2.tgz"
   integrity sha512-Gr4p6nFNaoufRIY4NMdpQRNmgxVIGMs4Fcu/ujdYk3nAZqk7supzBE9idmvfZIlH/Cuj//dvi+019qEue9lV0w==
+
+typescript@^4.5.3:
+  version "4.5.3"
+  resolved "https://npm.tradecast.eu:4879/typescript/-/typescript-4.5.3.tgz"
+  integrity sha512-eVYaEHALSt+s9LbvgEv4Ef+Tdq7hBiIZgii12xXJnukryt3pMgJf6aKhoCZ3FWQsu6sydEnkg11fYXLzhLBjeQ==
 
 typings-core@^2.3.3:
   version "2.3.3"
