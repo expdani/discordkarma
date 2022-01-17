@@ -63,7 +63,7 @@ export function getMessageAttribute(response: TypeMessageResponse, index: number
 /**
  * Returns the attribute with the given name.
  */
-export function getInteractionAttribute(response: TypeMessageResponse, name: string): string | null | User {
+export function getInteractionAttribute(response: TypeMessageResponse, name: string): string | null | User | number {
     const attribute = (response.input.attributes as any[]).find((x) => x.name === name);
 
     if (!attribute) return null;
@@ -71,6 +71,8 @@ export function getInteractionAttribute(response: TypeMessageResponse, name: str
     switch (attribute.type) {
         case "USER":
             return attribute.user as User;
+        case "INTEGER":
+            return attribute.value as number;
         default:
             return attribute.value;
     }

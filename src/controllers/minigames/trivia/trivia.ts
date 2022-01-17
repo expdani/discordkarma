@@ -60,6 +60,7 @@ async function handleUserAnswer(
 ) {
     try {
         if (!i.isButton()) return;
+        await i.deferUpdate();
         const {answers, payout, correctAnswer, questionMessage} = questionData;
 
         // The user needs to give an answer which is a single number
@@ -73,7 +74,6 @@ async function handleUserAnswer(
             const embed = new MessageEmbed()
                 .setDescription(`${decodeHTML(questionMessage)}\n\n**${randomMsg}**.`)
                 .setColor("#00FF00");
-            await i.deferUpdate();
             await i.editReply({embeds: [embed], components: [answersRow]});
             collector.stop("answered");
         } else {
@@ -85,7 +85,6 @@ async function handleUserAnswer(
                     )}**.`,
                 )
                 .setColor("#FF0000");
-            await i.deferUpdate();
             await i.editReply({embeds: [embed], components: [answersRow]});
             collector.stop("answered");
         }
