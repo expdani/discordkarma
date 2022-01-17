@@ -68,8 +68,8 @@ export async function initiateTicTacToe(command: Command, response: TypeMessageR
 async function sendRequest(command: Command, targetUser: User, bet: any) {
     if (!command.member?.user) return;
 
-    let string = `<@${targetUser.id}>, do you want to play against <@${command.member?.user.id}>?`;
-    if (bet) string += `\n**BET: ${CURRENCY_SIGN}${bet}**`;
+    let string = `<@${targetUser.id}>, <@${command.member?.user.id}> is challenging you for a game!`;
+    if (bet) string += `\n**Bet: ${CURRENCY_SIGN}${bet}**!`;
     const embed = new MessageEmbed().setTitle("**Tic Tac Toe**").setDescription(`${string}`).setColor("#fffff");
     const buttons = new MessageActionRow().addComponents(
         new MessageButton().setCustomId("accept").setLabel("Accept").setStyle("SUCCESS"),
@@ -180,7 +180,7 @@ async function handleInteraction(i: Interaction, command: Command, collector: an
         const game = TTT_GAMES[command.id];
         if (i.user.id === game.turn?.id) {
             TTT_GAMES[command.id].turn = game.turn.id === game.author.id ? game.target : game.author;
-            updateGrid(i, command, game, collector);
+            await updateGrid(i, command, game, collector);
         }
     } catch (err) {
         i.channel?.send("Oops, something went wrong processing your action.");
@@ -210,14 +210,20 @@ async function updateGrid(interaction: any, command: Command, game: TictactoeDat
         buttonPressed.label = interaction.user.id === game.author.id ? "X" : "O";
         buttonPressed.style = interaction.user.id === game.author.id ? "SUCCESS" : "DANGER";
 
-        const msgComponents: MessageActionRow[] = [];
+        // eslint-disable-next-line require-jsdoc
+        const styleToNumber = (style: any) => (style === "SECONDARY" ? 2 : style === "SUCCESS" ? 3 : 4);
+
+        const components: any[] = [];
 
         for (const actionRow of message.components) {
-            msgComponents.push(new MessageActionRow());
+            components.push({type: 1, components: []});
             for (const button of actionRow.components) {
-                msgComponents[msgComponents.length - 1].addComponents(
-                    new MessageButton().setCustomId(button.customId).setLabel(button.label).setStyle(button.style),
-                );
+                components[components.length - 1].components.push({
+                    type: 2,
+                    label: button.label,
+                    style: styleToNumber(button.style),
+                    customId: button.customId,
+                });
             }
         }
 
@@ -225,7 +231,7 @@ async function updateGrid(interaction: any, command: Command, game: TictactoeDat
         const embed = new MessageEmbed().setTitle("**Tic Tac Toe**").setDescription(`${string}`).setColor("#fffff");
 
         await message.edit({
-            components: msgComponents,
+            components: components,
             embeds: [embed],
         });
 
@@ -243,7 +249,7 @@ async function sendTicTacToe(_i: any, command: Command, author: User, target: Us
     const turn: User = i === 1 ? author : target;
 
     let string = `**<@${turn.id}>'s turn!**`;
-    if (bet) string += `\nBET: ${CURRENCY_SIGN}${bet}`;
+    if (bet) string += `\nBet: ${CURRENCY_SIGN}${bet}`;
     const embed = new MessageEmbed()
         .setTitle("**Tic Tac Toe**")
         .setDescription(`${string}`)
@@ -321,7 +327,11 @@ async function checkWin(interaction: any, command: Command, message: any, game: 
                 .setFooter(`${game.author.tag} vs ${game.target.tag}\n/help tictactoe`);
             await message.edit({embeds: [embed]});
             disableAllButtons(message);
-            collector.stop("winner");
+            if (TTT_GAMES[command.id].bet) {
+                await changeCurrency(TTT_GAMES[command.id].author.id, TTT_GAMES[command.id].bet);
+                await changeCurrency(TTT_GAMES[command.id].target.id, TTT_GAMES[command.id].bet);
+            }
+            collector.stop("draw");
             return true;
         }
         if (isWinner(buttons, letter)) {
