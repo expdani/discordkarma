@@ -1,6 +1,6 @@
 import {Interaction, Message} from "discord.js";
 import {TypeMessageResponse} from "./types/response";
-import {setupCurrencyCommands} from "./controllers/currency/commands";
+import {setupBalanceCommand, setupDepositCommand, setupWithdrawCommand} from "./controllers/currency/commands";
 import {setupKarmaCommands, setupTopCommands} from "./controllers/karma/commands";
 import setupTriviaCommands from "./controllers/minigames/trivia/commands";
 import {sayCommand} from "./controllers/admin/commands";
@@ -17,7 +17,9 @@ type TypeResolvers = {
 };
 
 const resolvers: TypeResolvers = {
-    balance: setupCurrencyCommands,
+    balance: setupBalanceCommand,
+    withdraw: setupWithdrawCommand,
+    deposit: setupDepositCommand,
     trivia: setupTriviaCommands,
     karma: setupKarmaCommands,
     top: setupTopCommands,
