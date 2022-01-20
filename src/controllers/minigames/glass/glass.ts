@@ -1,6 +1,11 @@
 import {Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, User} from "discord.js";
 import {Command} from "../../../types/discord";
-import {randomInt, reply, shuffleArray} from "../../../helpers";
+import secondsToReadableString, {
+    getAmountOfSecondsBetweenDates,
+    randomInt,
+    reply,
+    shuffleArray,
+} from "../../../helpers";
 import {CURRENCY_SIGN} from "../../../types/currency";
 import {changeCurrency} from "../../currency/index";
 
@@ -11,6 +16,7 @@ type GlassData = {
     current: number;
     previousMessage?: string;
     dead: number;
+    date?: Date;
 };
 
 type GlassCache = {[guildId: string]: GlassData};
@@ -18,7 +24,9 @@ type GlassCache = {[guildId: string]: GlassData};
 const GLASS_GAMES: GlassCache = {};
 
 const TIME_TO_REACT = 10;
-const TIME_TO_JOIN = 25;
+const TIME_TO_JOIN = 30;
+// 20 min
+const GLASS_TIMEOUT = 1200;
 
 /**
  * Start a glass game
@@ -27,13 +35,28 @@ export async function startGlassGame(command: Command) {
     if (!command.guild?.id) return;
 
     const game = GLASS_GAMES[command.guild?.id];
-    if (game?.running) return;
+    if (game?.running) reply(command, "A glass bridge game is already running in this server.");
+
+    const lastRequest = GLASS_GAMES[command.guild?.id].date;
+    if (lastRequest) {
+        const secondsBetweenLastRequest = getAmountOfSecondsBetweenDates(new Date(), lastRequest);
+
+        if (secondsBetweenLastRequest < GLASS_TIMEOUT) {
+            const secondsWaiting = Math.round(GLASS_TIMEOUT - secondsBetweenLastRequest);
+            reply(
+                command,
+                `You have to wait ${secondsToReadableString(secondsWaiting)}before you can start a glass bridge again.`,
+            );
+            return;
+        }
+    }
 
     GLASS_GAMES[command.guild?.id] = {
         participants: [],
         running: true,
         current: 0,
         dead: 0,
+        date: new Date(),
     };
 
     await getParticipants(command);
@@ -94,10 +117,11 @@ async function runGame(command: Command) {
     if (!GLASS_GAMES[command.guild?.id].message?.editable) return;
     await GLASS_GAMES[command.guild?.id].message?.reactions.removeAll();
     GLASS_GAMES[command.guild?.id].participants = shuffleArray(GLASS_GAMES[command.guild?.id].participants);
-    if (GLASS_GAMES[command.guild?.id].participants.length > 0) newCollector(command);
+    if (GLASS_GAMES[command.guild?.id].participants.length >= 2) newCollector(command);
     else {
-        GLASS_GAMES[command.guild?.id].message?.edit("No one joined.");
+        GLASS_GAMES[command.guild?.id].message?.edit("You need at least 2 participants to start a glass bridge game.");
         GLASS_GAMES[command.guild?.id].running = false;
+        GLASS_GAMES[command.guild?.id].date = undefined;
     }
 }
 
@@ -242,7 +266,7 @@ function addButtons(): MessageActionRow {
  */
 async function givePrize(command: Command, prize: number) {
     if (!command.guild?.id) return;
-    GLASS_GAMES[command.guild?.id].participants.forEach((user) => {
-        changeCurrency(user.id, 0, prize);
+    GLASS_GAMES[command.guild?.id].participants.forEach(async (user) => {
+        await changeCurrency(user.id, 0, prize);
     });
 }

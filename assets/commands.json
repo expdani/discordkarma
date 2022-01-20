@@ -34,6 +34,38 @@
             "options": []
         },
         {
+            "text": "withdraw",
+            "aliases": ["with"],
+            "description": "Withdraw money from your bank to your wallet.",
+            "usage": "?withdraw (amount)",
+            "show": true,
+            "slash": true,
+            "options": [
+                {
+                    "type": 4,
+                    "name": "money",
+                    "required": false,
+                    "description": "amount of money you want to withdraw from your bank"
+                }
+            ]
+        },
+        {
+            "text": "deposit",
+            "aliases": ["dep"],
+            "description": "Deposit money from your wallet to your bank.",
+            "usage": "?deposit (amount)",
+            "show": true,
+            "slash": true,
+            "options": [
+                {
+                    "type": 4,
+                    "name": "money",
+                    "required": false,
+                    "description": "amount of money you want to deposit to your bank."
+                }
+            ]
+        },
+        {
             "text": "trivia",
             "aliases": ["question", "q", "t"],
             "description": "Gives you a random trivia question.",
