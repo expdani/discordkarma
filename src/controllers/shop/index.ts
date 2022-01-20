@@ -25,11 +25,11 @@ export async function buyItem(command: Command, item: string, amount: any) {
                 await changeCurrency(user.id, -(shopItem.price * amount));
                 await addItemToInventory(user.id, shopItem.id, amount);
                 reply(command, `You have bought ${amount} ${shopItem.emoji} ${shopItem.name}!`);
-            }
+            } else reply(command, "You don't have enough money in your wallet..");
         } else {
-            reply(command, `That item is not for sale.`);
+            reply(command, "That item is not for sale.");
         }
     } catch (err) {
-        reply(command, `Oops, something went wrong processing your purchase.`);
+        reply(command, "Oops, something went wrong processing your purchase.");
     }
 }
