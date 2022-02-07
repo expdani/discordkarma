@@ -22,6 +22,7 @@ const TTT_GAMES: TictactoeCache = {};
 // 300 seconds (5 min)
 const TTT_DURATION = 300;
 const REQUEST_DURATION = 30;
+const MAX_BET = 500;
 
 /**
  * Play tic tac toe
@@ -46,7 +47,9 @@ export async function initiateTicTacToe(command: Command, response: TypeMessageR
             if (targetUser && targetUser != (command.member.user as User) && !targetUser.bot) {
                 if (bet) {
                     if (authorWallet >= bet) {
-                        sendRequest(command, targetUser, bet);
+                        if (bet > MAX_BET) {
+                            reply(command, `The maximum amount of money to bid is ${CURRENCY_SIGN}${MAX_BET}.`);
+                        } else sendRequest(command, targetUser, bet);
                     } else {
                         reply(command, `You don't have enough money in your wallet to bet ${CURRENCY_SIGN}${bet}.`);
                     }

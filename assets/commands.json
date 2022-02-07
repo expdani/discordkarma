@@ -1,6 +1,7 @@
 {
     "commands": [
         {
+            "category": "Karma",
             "text": "karma",
             "aliases": ["karma", "rep", "reputation"],
             "description": "Shows the amount of karma you have.",
@@ -16,6 +17,7 @@
             "slash": true
         },
         {
+            "category": "Karma",
             "text": "top",
             "aliases": ["lb", "leaderboard", "top"],
             "description": "Shows the karma leaderboard of this server.",
@@ -25,6 +27,7 @@
             "options": []
         },
         {
+            "category": "General",
             "text": "balance",
             "aliases": ["bal", "money"],
             "description": "Shows the amount of money you have.",
@@ -34,6 +37,17 @@
             "options": []
         },
         {
+            "category": "General",
+            "text": "inventory",
+            "aliases": ["inventory", "inv"],
+            "description": "Shows your inventory.",
+            "usage": "?inventory",
+            "show": true,
+            "slash": true,
+            "options": []
+        },
+        {
+            "category": "General",
             "text": "withdraw",
             "aliases": ["with"],
             "description": "Withdraw money from your bank to your wallet.",
@@ -50,6 +64,7 @@
             ]
         },
         {
+            "category": "General",
             "text": "deposit",
             "aliases": ["dep"],
             "description": "Deposit money from your wallet to your bank.",
@@ -66,64 +81,7 @@
             ]
         },
         {
-            "text": "trivia",
-            "aliases": ["question", "q", "t"],
-            "description": "Gives you a random trivia question.",
-            "usage": "?trivia",
-            "show": true,
-            "slash": true,
-            "options": []
-        },
-        {
-            "text": "tictactoe",
-            "aliases": ["ttt", "tic", "tictactoe"],
-            "description": "Start a tic tac toe fight with someone.",
-            "usage": "?trivia",
-            "show": true,
-            "slash": true,
-            "options": [
-                {
-                    "type": 6,
-                    "name": "user",
-                    "required": true,
-                    "description": "An opponent you want to 1v1 in tic tac toe."
-                },
-                {
-                    "type": 4,
-                    "name": "bet",
-                    "required": false,
-                    "description": "Amount of money you want to bet."
-                }
-            ]
-        },
-        {
-            "text": "glass",
-            "aliases": ["gs"],
-            "description": "Start a game where everyone gets a turn for the glass bridge. (squid game lol)",
-            "usage": "?glass",
-            "show": true,
-            "slash": true,
-            "options": []
-        },
-        {
-            "text": "say",
-            "aliases": ["say, repeat"],
-            "description": "Deletes your message and repeats it, making it look like the bot said it.",
-            "usage": "?say",
-            "show": false,
-            "slash": false,
-            "options": []
-        },
-        {
-            "text": "help",
-            "aliases": ["help", "welp"],
-            "description": "An embed with all the commands.",
-            "usage": "?help",
-            "show": true,
-            "slash": true,
-            "options": []
-        },
-        {
+            "category": "General",
             "text": "shop",
             "aliases": ["shop", "store"],
             "description": "An embed with all the items in the shop.",
@@ -133,6 +91,7 @@
             "options": []
         },
         {
+            "category": "General",
             "text": "buy",
             "aliases": ["buy", "purchase"],
             "description": "Buy an item from the store.",
@@ -156,21 +115,76 @@
             ]
         },
         {
+            "category": "General",
             "text": "sell",
             "aliases": ["sell"],
-            "description": "Sell an item for half the price.",
+            "description": "Sell an item.",
             "usage": "?sell (item)",
             "show": true,
             "slash": true,
             "options": []
         },
         {
-            "text": "inventory",
-            "aliases": ["inventory", "inv"],
-            "description": "Shows your inventory.",
-            "usage": "?inventory",
+            "category": "Games",
+            "text": "trivia",
+            "aliases": ["question", "q", "t"],
+            "description": "Gives you a random trivia question.",
+            "usage": "?trivia",
             "show": true,
             "slash": true,
+            "options": []
+        },
+        {
+            "category": "Games",
+            "text": "tictactoe",
+            "aliases": ["ttt", "tic", "tictactoe"],
+            "description": "Start a tic tac toe fight with someone.",
+            "usage": "?trivia",
+            "show": true,
+            "slash": true,
+            "options": [
+                {
+                    "type": 6,
+                    "name": "user",
+                    "required": true,
+                    "description": "An opponent you want to 1v1 in tic tac toe."
+                },
+                {
+                    "type": 4,
+                    "name": "bet",
+                    "required": false,
+                    "description": "Amount of money you want to bet."
+                }
+            ]
+        },
+        {
+            "category": "Games",
+            "text": "glass",
+            "aliases": ["gs"],
+            "description": "Start a game where everyone gets a turn for the glass bridge. (squid game lol)",
+            "usage": "?glass",
+            "show": true,
+            "slash": true,
+            "options": []
+        },
+        {
+            "category": "Admin",
+            "text": "help",
+            "aliases": ["help", "welp"],
+            "description": "An embed with all the commands.",
+            "usage": "?help",
+            "show": false,
+            "slash": true,
+            "options": []
+        },
+        {
+            "category": "Admin",
+            "text": "say",
+            "aliases": ["say, repeat"],
+            "description": "Deletes your message and repeats it, making it look like the bot said it.",
+            "usage": "?say",
+            "show": false,
+            "slash": false,
             "options": []
         }
     ]
