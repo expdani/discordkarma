@@ -3,7 +3,7 @@ import {MessageEmbed, TextChannel} from "discord.js";
 import {Channel, Command} from "../../types/discord";
 import {items} from "../../../assets/items.json";
 import {TypeMessageResponse} from "src/types/response";
-import {buyItem} from ".";
+import {buyItem, sellItem} from ".";
 import {shopMsgs} from "../../../assets/random.json";
 import {reply} from "../../helpers";
 import {getInteractionAttribute, getMessageAttribute} from "../../commandHandler";
@@ -50,7 +50,6 @@ export function setupBuyCommands(command: Command, result: TypeMessageResponse) 
             const item = getInteractionAttribute(result, "item")
                 ? getInteractionAttribute(result, "item")
                 : getMessageAttribute(result, 0);
-            console.log(getMessageAttribute(result, 0));
 
             const amount = getInteractionAttribute(result, "amount")
                 ? getInteractionAttribute(result, "amount")
@@ -60,15 +59,24 @@ export function setupBuyCommands(command: Command, result: TypeMessageResponse) 
     }
 }
 
-// /**
-//  * Setup the command that are related to selling in the bot
-//  */
-// export function setupSellCommands(command: Command, result: TypeMessageResponse) {
-//     const messageChannel = command.channel;
+/**
+ * Setup the command that are related to selling items in the bot
+ */
+export function setupSellCommands(command: Command, result: TypeMessageResponse) {
+    const messageChannel = command.channel;
 
-//     if (messageChannel instanceof TextChannel) {
-//         if (result.input.attributes.length < 1) {
-//             messageChannel.send("To buy an item, use `?buy (item name)`.");
-//         }
-//     }
-// }
+    if (messageChannel instanceof TextChannel) {
+        if (result.input.attributes.length < 1) {
+            reply(command, "To sell an item, use `?sell (item name)`.");
+        } else {
+            const item = getInteractionAttribute(result, "item")
+                ? getInteractionAttribute(result, "item")
+                : getMessageAttribute(result, 0);
+
+            const amount = getInteractionAttribute(result, "amount")
+                ? getInteractionAttribute(result, "amount")
+                : getMessageAttribute(result, 1);
+            sellItem(command, item as string, amount as string);
+        }
+    }
+}

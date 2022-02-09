@@ -1,4 +1,4 @@
-import {TypeInventory} from "src/types/inventory";
+import {TypeInventory, TypeInventoryItem} from "src/types/inventory";
 import database from "../../database/index";
 
 /**
@@ -52,6 +52,17 @@ export async function addItemToInventory(userID: string, item: string, amount: n
 }
 
 /**
+ * Get a specific item from the user's inventory.
+ */
+export async function getItem(userID: string, _item: string): Promise<TypeInventoryItem | null> {
+    const inv: TypeInventory = await getInventory(userID);
+    const invJson = JSON.parse(inv.inventory);
+    const item = await invJson.items.find((item: TypeInventoryItem) => item.id === _item);
+
+    return item;
+}
+
+/**
  * Get the inventory for the user
  */
 export async function getInventory(userID: string): Promise<TypeInventory> {
@@ -67,6 +78,7 @@ export async function getInventory(userID: string): Promise<TypeInventory> {
  */
 export async function initiateInventory(userID: string): Promise<TypeInventory> {
     const now = new Date();
+    // eslint-disable-next-line quotes
     const json = JSON.stringify('{"items": []}');
     const input = {
         userID,

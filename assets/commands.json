@@ -122,7 +122,21 @@
             "usage": "?sell (item)",
             "show": true,
             "slash": true,
-            "options": []
+            "options": [
+                {
+                    "type": 3,
+                    "name": "item",
+                    "description": "the item you want to sell",
+                    "required": true,
+                    "choices": []
+                },
+                {
+                    "type": 4,
+                    "name": "amount",
+                    "description": "how many of this item you want to sell",
+                    "required": false
+                }
+            ]
         },
         {
             "category": "Games",

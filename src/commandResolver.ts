@@ -5,7 +5,7 @@ import {setupKarmaCommands, setupTopCommands} from "./controllers/karma/commands
 import setupTriviaCommands from "./controllers/minigames/trivia/commands";
 import {sayCommand} from "./controllers/admin/commands";
 import {setupHelpCommands} from "./controllers/help/commands";
-import {setupBuyCommands, setupShopCommands} from "./controllers/shop/commands";
+import {setupBuyCommands, setupShopCommands, setupSellCommands} from "./controllers/shop/commands";
 import {setupInventoryCommands} from "./controllers/inventory/commands";
 import {setupTictactoeCommands} from "./controllers/minigames/tictactoe/commands";
 import {setupGlassCommands} from "./controllers/minigames/glass/commands";
@@ -30,7 +30,7 @@ const resolvers: TypeResolvers = {
     buy: setupBuyCommands,
     tictactoe: setupTictactoeCommands,
     glass: setupGlassCommands,
-    // sell: setupSellCommands,
+    sell: setupSellCommands,
 };
 
 export default resolvers;
