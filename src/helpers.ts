@@ -12,10 +12,12 @@ export function getAmountOfSecondsBetweenDates(date1: Date, date2: Date) {
 /**
  * Reply to command.
  */
-export function reply(command: Command, reply: any): any {
+export async function reply(command: Command, reply: any): Promise<any> {
     if (command instanceof Interaction && !command.isCommand()) return;
 
-    return command.reply(reply);
+    const msg = await command.reply(reply);
+
+    return msg;
 }
 
 /**

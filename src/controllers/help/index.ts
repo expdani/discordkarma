@@ -27,11 +27,11 @@ export async function sayHelp(command: Command) {
         const collector = command.channel?.createMessageComponentCollector({filter, time: HELP_TIMEOUT * 1000});
 
         collector?.on("collect", async (i) => {
-            handleInteraction(i, command, msg);
+            handleInteraction(i, command);
         });
 
         collector?.on("end", (_collected, _reason) => {
-            disableComponents(msg);
+            if (msg) disableComponents(msg);
         });
     } catch (err) {
         reply(command, "Oops, something went wrong requesting a list of the commands.");
@@ -41,17 +41,13 @@ export async function sayHelp(command: Command) {
 /**
  * Handle button or select interaction.
  */
-async function handleInteraction(interaction: any, command: Command, msg: any) {
+async function handleInteraction(interaction: any, command: Command) {
     if (!interaction.isMessageComponent) return;
     if (!interaction.isButton && !interaction.isSelectMenu) return;
-    interaction.deferUpdate();
 
-    // if (interaction.customId === "select") {
-    //     msg.components[0].components[0].options.forEach((o: any) => {
-    //         o.default = false;
-    //     });
-    //     msg.components[0].components[0].options.find((o: any) => o.value === interaction.values[0]).default = true;
-    // }
+    const msg = interaction.message;
+
+    interaction.deferUpdate();
 
     const pageData = getPageData(msg.embeds);
     const currentPage = pageData.page;
@@ -130,28 +126,6 @@ async function sendHelpMessage(command: Command) {
     return reply(command, {embeds: [embed], components: [buttons]});
 }
 
-// /**
-//  * Get all categories.
-//  */
-// function getSelectMenu(): MessageSelectMenu {
-//     const menu: MessageSelectMenu = new MessageSelectMenu()
-//         .setCustomId("select")
-//         .setPlaceholder("Filter on category")
-//         .setMinValues(1)
-//         .setMaxValues(1);
-
-//     for (let i = 0; i < HELP_CATEGORIES.length; i++) {
-//         if (HELP_CATEGORIES[i]) {
-//             menu.addOptions({
-//                 label: HELP_CATEGORIES[i],
-//                 value: HELP_CATEGORIES[i],
-//             });
-//         }
-//     }
-
-//     return menu;
-// }
-
 /**
  * Setup buttons.
  */
@@ -190,3 +164,25 @@ export function getCommands() {
 
     return cmds;
 }
+
+// /**
+//  * Get all categories.
+//  */
+// function getSelectMenu(): MessageSelectMenu {
+//     const menu: MessageSelectMenu = new MessageSelectMenu()
+//         .setCustomId("select")
+//         .setPlaceholder("Filter on category")
+//         .setMinValues(1)
+//         .setMaxValues(1);
+
+//     for (let i = 0; i < HELP_CATEGORIES.length; i++) {
+//         if (HELP_CATEGORIES[i]) {
+//             menu.addOptions({
+//                 label: HELP_CATEGORIES[i],
+//                 value: HELP_CATEGORIES[i],
+//             });
+//         }
+//     }
+
+//     return menu;
+// }

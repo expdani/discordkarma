@@ -119,7 +119,10 @@ async function runGame(command: Command) {
     GLASS_GAMES[command.guild?.id].participants = shuffleArray(GLASS_GAMES[command.guild?.id].participants);
     if (GLASS_GAMES[command.guild?.id].participants.length >= 2) newCollector(command);
     else {
-        GLASS_GAMES[command.guild?.id].message?.edit("You need at least 2 participants to start a glass bridge game.");
+        GLASS_GAMES[command.guild?.id].message?.edit({
+            content: "You need at least 2 participants to start a glass bridge game.",
+            embeds: [],
+        });
         GLASS_GAMES[command.guild?.id].running = false;
         GLASS_GAMES[command.guild?.id].date = undefined;
     }
