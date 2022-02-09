@@ -37,7 +37,7 @@ export async function startGlassGame(command: Command) {
     const game = GLASS_GAMES[command.guild?.id];
     if (game?.running) reply(command, "A glass bridge game is already running in this server.");
 
-    const lastRequest = GLASS_GAMES[command.guild?.id].date;
+    const lastRequest = GLASS_GAMES[command.guild?.id]?.date;
     if (lastRequest) {
         const secondsBetweenLastRequest = getAmountOfSecondsBetweenDates(new Date(), lastRequest);
 
