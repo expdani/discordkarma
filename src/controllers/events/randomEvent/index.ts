@@ -36,7 +36,7 @@ export default function calculateRandomEvent(message: Message) {
 
         const messageChannel = message.channel;
 
-        const filteredEvents = randomEvents;
+        const filteredEvents = randomEvents.filter((e) => !e.disabled);
 
         const randomEvent = filteredEvents[Math.floor(Math.random() * filteredEvents.length)];
 

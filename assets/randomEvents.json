@@ -29,7 +29,8 @@
                     "item": "Pointsack"
                 }
             ],
-            "rarity": 1
+            "rarity": 1,
+            "disabled": true
         },
         {
             "name": "Gerard's virus",
@@ -43,7 +44,8 @@
                     "wallet": 1
                 }
             ],
-            "rarity": 1
+            "rarity": 1,
+            "disabled": true
         },
         {
             "name": "Gerard speelt vals",
