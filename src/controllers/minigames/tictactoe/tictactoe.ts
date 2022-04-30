@@ -5,7 +5,7 @@ import {Interaction, Message, MessageActionRow, MessageButton, MessageEmbed, Use
 import {Command} from "../../../types/discord";
 import {getInteractionAttribute, getMessageAttribute} from "../../../commandHandler";
 import {TypeMessageResponse} from "../../../types/response";
-import {changeCurrency, getCurrency} from "../../currency/index";
+import {changeCurrency, CURRENCY_TYPE, getCurrency} from "../../currency/index";
 import {CURRENCY_SIGN} from "../../../types/currency";
 
 type TictactoeData = {
@@ -136,8 +136,8 @@ async function startCollector(_i: any, command: Command, targetUser: User, bet: 
     const collector = command.channel?.createMessageComponentCollector({filter, time: TTT_DURATION * 1000});
 
     if (bet) {
-        await changeCurrency((command.member.user as User).id, -bet);
-        await changeCurrency(targetUser.id, -bet);
+        await changeCurrency((command.member.user as User).id, CURRENCY_TYPE.WALLET, -bet);
+        await changeCurrency(targetUser.id, CURRENCY_TYPE.WALLET, -bet);
     }
 
     collector?.on("collect", async (i) => {
@@ -161,7 +161,8 @@ async function handleTimeout(_i: any, command: Command, targetUser: User, bet: a
     TTT_GAMES[command.id].winner =
         TTT_GAMES[command.id].turn === targetUser ? (command.member?.user as User) : targetUser;
     const loser = TTT_GAMES[command.id].winner === targetUser ? (command.member?.user as User) : targetUser;
-    if (TTT_GAMES[command.id].winner) await changeCurrency((TTT_GAMES[command.id].winner as User).id, bet * 2);
+    if (TTT_GAMES[command.id].winner)
+        await changeCurrency((TTT_GAMES[command.id].winner as User).id, CURRENCY_TYPE.WALLET, bet * 2);
 
     const embed = new MessageEmbed()
         .setTitle("**Tic Tac Toe**")
@@ -331,8 +332,16 @@ async function checkWin(interaction: any, command: Command, message: any, game: 
             await message.edit({embeds: [embed]});
             disableAllButtons(message);
             if (TTT_GAMES[command.id].bet) {
-                await changeCurrency(TTT_GAMES[command.id].author.id, TTT_GAMES[command.id].bet);
-                await changeCurrency(TTT_GAMES[command.id].target.id, TTT_GAMES[command.id].bet);
+                await changeCurrency(
+                    TTT_GAMES[command.id].author.id,
+                    CURRENCY_TYPE.WALLET,
+                    TTT_GAMES[command.id]?.bet || 0,
+                );
+                await changeCurrency(
+                    TTT_GAMES[command.id].target.id,
+                    CURRENCY_TYPE.WALLET,
+                    TTT_GAMES[command.id]?.bet || 0,
+                );
             }
             collector.stop("draw");
             return true;
@@ -348,7 +357,7 @@ async function checkWin(interaction: any, command: Command, message: any, game: 
 
             const bet = TTT_GAMES[command.id].bet;
             if (bet && TTT_GAMES[command.id].winner) {
-                await changeCurrency(interaction.user.id, bet * 2);
+                await changeCurrency(interaction.user.id, CURRENCY_TYPE.WALLET, bet * 2);
             }
             await message.edit({embeds: [embed]});
             disableAllButtons(message);

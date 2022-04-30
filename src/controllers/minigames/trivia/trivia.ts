@@ -5,7 +5,7 @@ import secondsToReadableString, {getAmountOfSecondsBetweenDates, reply, shuffleA
 import fetch from "node-fetch";
 import {MessageEmbed, User, MessageActionRow, MessageButton, Interaction, Message} from "discord.js";
 import {decodeHTML} from "entities";
-import {changeCurrency} from "../../currency";
+import {changeCurrency, CURRENCY_TYPE} from "../../currency";
 import {correctMsgs, wrongMsgs} from "../../../../assets/random.json";
 
 const TRIVIA_TIMEOUT = 18; // seconds
@@ -70,7 +70,7 @@ async function handleUserAnswer(
 
         if (isAnswerCorrect) {
             const randomMsg = correctMsgs[Math.floor(Math.random() * correctMsgs.length)];
-            await changeCurrency(userID, payout);
+            await changeCurrency(userID, CURRENCY_TYPE.WALLET, payout);
             const embed = new MessageEmbed()
                 .setDescription(`${decodeHTML(questionMessage)}\n\n**${randomMsg}**.`)
                 .setColor("#00FF00");

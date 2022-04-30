@@ -1,4 +1,5 @@
 import {Message, MessageReaction, PartialUser, User} from "discord.js";
+import {VOTE_ENUM} from "../../types/karma";
 import {updateKarma, initiateKarmaPost, removeKarmaPost} from "./user/index";
 
 const UPVOTE = ["upvote", "👍"];
@@ -39,7 +40,7 @@ export async function setupKarmaReactions(reaction: MessageReaction, user: User 
     if (UPVOTE.includes(reaction.emoji.name)) {
         await updateKarma(message.author.id, message.guild?.id ?? "", type === "add" ? 1 : -1);
         if (type === "add") {
-            await initiateKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id, "upvote");
+            await initiateKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id, VOTE_ENUM.UPVOTE);
         } else {
             await removeKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id);
         }
@@ -47,7 +48,13 @@ export async function setupKarmaReactions(reaction: MessageReaction, user: User 
     if (DOWNVOTE.includes(reaction.emoji.name)) {
         await updateKarma(message.author.id, message.guild?.id ?? "", type === "add" ? -1 : 1);
         if (type === "add") {
-            await initiateKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id, "downvote");
+            await initiateKarmaPost(
+                user.id,
+                message.guild?.id ?? "",
+                message.id,
+                message.author.id,
+                VOTE_ENUM.DOWNVOTE,
+            );
         } else {
             await removeKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id);
         }

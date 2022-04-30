@@ -1,6 +1,6 @@
 import {Collection, Guild, Message} from "discord.js";
-import {changeCurrency} from "../../currency";
-import {addItemToInventory} from "../../inventory";
+import {changeCurrency, CURRENCY_TYPE} from "../../currency";
+import {addItemToInventory} from "../../inventory/index";
 import {randomEvents} from "../../../../assets/randomEvents.json";
 import {getAmountOfSecondsBetweenDates} from "../../../helpers";
 
@@ -76,7 +76,7 @@ async function handleUserResponse(collectedMessages: Collection<string, Message>
                     await addItemToInventory(message.author.id, reward.item, 1);
                 }
                 if (reward.wallet) {
-                    await changeCurrency(message.author.id, reward.wallet);
+                    await changeCurrency(message.author.id, CURRENCY_TYPE.WALLET, reward.wallet);
                 }
             });
 
@@ -86,20 +86,3 @@ async function handleUserResponse(collectedMessages: Collection<string, Message>
         message.channel.send(event.failText.replace("{{username}}", username));
     }
 }
-
-// /**
-//  * Handle user response from event.
-//  */
-// function calculateRarity() {
-//     // const n = Math.random() * 100;
-//     const rarity = 1;
-
-//     // if (n <= 50) {
-//     //     rarity = 2;
-//     // }
-//     // if (n <= 20) {
-//     //     rarity = 3;
-//     // }
-
-//     return rarity;
-// }

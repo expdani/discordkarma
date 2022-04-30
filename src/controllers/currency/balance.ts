@@ -12,15 +12,15 @@ export async function sayUserBalance(command: Command) {
         const user = command.member?.user as User;
         if (!user) return;
         const currency = await getCurrency(user.id);
-        const wallet = (currency && currency.wallet) || 0;
-        const bank = (currency && currency.bank) || 0;
 
         const avatar = user.avatarURL()
             ? user.avatarURL()
             : "https://media.istockphoto.com/photos/lol-emoji-isolated-on-white-background-laughing-face-emoticon-3d-picture-id856170516";
         const embed = new MessageEmbed()
             .setAuthor(`${user.username}'s financials`, `${avatar}`)
-            .setDescription(`**Wallet:** ${CURRENCY_SIGN}${wallet}\n**Bank:** ${CURRENCY_SIGN}${bank}`)
+            .setDescription(
+                `**Wallet:** ${CURRENCY_SIGN}${currency.wallet}\n**Bank:** ${CURRENCY_SIGN}${currency.bank}`,
+            )
             .setColor("#fffff");
         reply(command, {embeds: [embed]});
     } catch (err) {

@@ -1,21 +1,14 @@
-/**
- * @type with a single currency item from the database.
- */
-export type TypeKarmaTotal = {
-    id: number;
-    userID: string;
-    serverID: string;
-    total: number;
-    updated_at: Date;
-    created_at: Date;
-};
+export enum VOTE_ENUM {
+    UPVOTE = "UPVOTE",
+    DOWNVOTE = "DOWNVOTE",
+}
 
 /**
  * @type with a single currency item from the database.
  */
-export type TypeKarmaTotalInput = {
-    userID: string;
-    serverID: string;
+export type TypeKarmaTotal = {
+    user_id: string;
+    server_id: string;
     total: number;
     updated_at: Date;
     created_at: Date;
@@ -29,7 +22,7 @@ export type TypeKarmaPost = {
     serverID: string;
     messageID: string;
     authorID: string;
-    vote: string;
+    vote: VOTE_ENUM;
     updated_at: Date;
     created_at: Date;
 };

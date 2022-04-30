@@ -1,52 +1,34 @@
-import database from "../../database/index";
-import {TypeCurrency, TypeCurrencyInput} from "../../types/currency";
+import {apolloClient} from "../../apollo";
+import {TypeCurrency} from "../../types/currency";
+import {ADD_CURRENCY, GET_CURRENCY} from "./gql";
+
+export const CURRENCY_TYPE = {
+    WALLET: "WALLET",
+    BANK: "BANK",
+};
 
 /**
  * Get the current balance for the user
  */
-export async function getCurrency(userID: string): Promise<TypeCurrency> {
-    const currency = await database("currency").where({userID}).first();
-    if (!currency) {
-        return await initiateCurrency(userID);
-    }
-    return currency;
-}
+export async function getCurrency(user_id: string): Promise<TypeCurrency> {
+    const {data} = await apolloClient.query({
+        query: GET_CURRENCY,
+        variables: {user_id},
+    });
 
-/**
- * Add a currency record for the user
- */
-export async function initiateCurrency(userID: string): Promise<TypeCurrency> {
-    const now = new Date();
-    const input: TypeCurrencyInput = {
-        userID,
-        wallet: 0,
-        bank: 0,
-        created_at: now,
-        updated_at: now,
-    };
-
-    const ids: Array<number> = await database("currency").insert(input);
-    return {...input, id: ids[0]};
+    return data.getCurrency;
 }
 
 /**
  * Edit the currency of the user.
- * - A positive number adds money to the user
- * - A negative number removed money from the user
  */
-export async function changeCurrency(userID: string, addedValueToWallet = 0, addedValueTobank = 0) {
-    let currency = await getCurrency(userID);
-    if (!currency) {
-        currency = await initiateCurrency(userID);
-    }
+export async function changeCurrency(user_id: string, type: string, amount: number): Promise<TypeCurrency> {
+    const fixedAmount = parseFloat(amount?.toFixed(2));
 
-    const newCurrency = {
-        ...currency,
-        wallet: currency.wallet + addedValueToWallet,
-        bank: currency.bank + addedValueTobank,
-    };
+    const {data} = await apolloClient.mutate({
+        mutation: ADD_CURRENCY,
+        variables: {user_id, type, amount: fixedAmount},
+    });
 
-    await database("currency").where({userID}).update(newCurrency);
-
-    return newCurrency;
+    return data.changeCurrency;
 }
