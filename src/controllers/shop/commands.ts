@@ -77,6 +77,7 @@ export function setupSellCommands(command: Command, result: TypeMessageResponse)
             const amount = getInteractionAttribute(result, "amount")
                 ? getInteractionAttribute(result, "amount")
                 : getMessageAttribute(result, 1);
+
             sellItem(command, item as string, amount as string);
         }
     }

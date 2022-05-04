@@ -1,6 +1,6 @@
 import {Command} from "./../../types/discord";
 import {reply} from "../../helpers";
-import {BUY_ITEM, GET_ITEM_SHOP} from "./gql";
+import {BUY_ITEM, GET_ITEM_SHOP, SELL_ITEM} from "./gql";
 import {apolloClient} from "../../apollo/index";
 import getErrorMessage from "../../apollo/errors";
 
@@ -12,6 +12,10 @@ export async function buyItem(command: Command, item: string, amount?: any) {
         const user = command.member?.user;
         if (!user) return reply(command, "You must be a member of this server to use this command.");
 
+        if (!amount) amount = 1;
+        amount = parseInt(amount);
+        if (isNaN(amount)) return reply(command, "You must specify a valid amount.");
+
         const {data} = await apolloClient.mutate({
             mutation: BUY_ITEM,
             variables: {user_id: user.id, item, amount},
@@ -21,7 +25,6 @@ export async function buyItem(command: Command, item: string, amount?: any) {
 
         reply(command, `You have bought ${amount}x ${shopItem.emoji} ${shopItem.name}!`);
     } catch (err: any) {
-        console.log(err.graphQLErrors[0]?.message);
         reply(command, getErrorMessage(err.graphQLErrors[0]?.message));
     }
 }
@@ -29,21 +32,24 @@ export async function buyItem(command: Command, item: string, amount?: any) {
 /**
  * Sell an item.
  */
-export async function sellItem(command: Command, item: string, amount: any) {
+export async function sellItem(command: Command, item: string, amount?: any) {
     try {
         const user = command.member?.user;
         if (!user) return reply(command, "You must be a member of this server to use this command.");
 
+        if (!amount) amount = 1;
+        amount = parseInt(amount);
+        if (isNaN(amount)) return reply(command, "You must specify a valid amount.");
+
         const {data} = await apolloClient.mutate({
-            mutation: BUY_ITEM,
+            mutation: SELL_ITEM,
             variables: {user_id: user.id, item, amount},
         });
 
-        const shopItem = data.buyItem;
+        const shopItem = data.sellItem;
 
         reply(command, `You have sold ${amount}x ${shopItem.emoji} ${shopItem.name}!`);
     } catch (err: any) {
-        console.log(err.graphQLErrors[0]);
         reply(command, getErrorMessage(err.graphQLErrors[0]?.message));
     }
 }
