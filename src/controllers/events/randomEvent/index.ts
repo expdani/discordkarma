@@ -1,10 +1,12 @@
 import {Collection, Guild, Message} from "discord.js";
 import {changeCurrency, CURRENCY_TYPE} from "../../currency";
 import {addItemToInventory} from "../../inventory/index";
-import {randomEvents} from "../../../../assets/randomEvents.json";
 import {getAmountOfSecondsBetweenDates} from "../../../helpers";
+import {apolloClient} from "../../../apollo/index";
+import {GET_RANDOM_MESSAGE_EVENT} from "./gql";
+import {TypeRewards} from "src/types/randomEvent";
 
-const PERCENT_CHANCE_PER_MESSAGE = 0.43;
+const PERCENT_CHANCE_PER_MESSAGE = 100;
 
 const EVENT_TIMEOUT = 90; // seconds
 
@@ -19,7 +21,7 @@ const SERVER_TIMEOUTS: TimeoutCache = {};
 /**
  * Calculate a random event and handle it.
  */
-export default function calculateRandomEvent(message: Message) {
+export default async function calculateRandomEvent(message: Message) {
     if (message.author.bot) return;
 
     const n = Math.random() * 100;
@@ -36,27 +38,29 @@ export default function calculateRandomEvent(message: Message) {
 
         const messageChannel = message.channel;
 
-        const filteredEvents = randomEvents.filter((e) => !e.disabled);
+        const {data} = await apolloClient.query({
+            query: GET_RANDOM_MESSAGE_EVENT,
+        });
 
-        const randomEvent = filteredEvents[Math.floor(Math.random() * filteredEvents.length)];
 
-        messageChannel.send(randomEvent.text);
+        const event = data.getRandomMessageEvent;
+
+        if (!event) return;
+        messageChannel.send(event.text);
 
         /**
          * Await line
          */
         const filter = (response: Message) =>
-            Boolean(
-                response.content.toLowerCase().includes(randomEvent.response.toLowerCase()) && !response.author.bot,
-            );
+            Boolean(response.content.toLowerCase().includes(event.answer.toLowerCase()) && !response.author.bot);
 
         // Errors: ['time'] treats ending because of the time limit as an error
         messageChannel
-            .awaitMessages({filter, max: 1, time: randomEvent.timeLimit * 1000, errors: ["time"]})
+            .awaitMessages({filter, max: 1, time: event.timeLimit * 1000, errors: ["time"]})
             .then((collectedMessages: Collection<string, Message>) => {
-                handleUserResponse(collectedMessages, randomEvent);
+                handleUserResponse(collectedMessages, event);
             })
-            .catch(() => messageChannel.send(randomEvent.failText));
+            .catch(() => messageChannel.send(event.failText));
 
         if (guild) SERVER_TIMEOUTS[guild.id] = new Date();
     }
@@ -68,21 +72,27 @@ export default function calculateRandomEvent(message: Message) {
 async function handleUserResponse(collectedMessages: Collection<string, Message>, event: any) {
     const message = collectedMessages.first();
     const username = (await message?.guild?.members.fetch(message.author.id))?.nickname || message?.author.username;
+
     if (!message?.author.id) return;
     try {
-        if (event.rewards.length > 0) {
-            event.rewards.forEach(async (reward: any) => {
-                if (reward.item) {
-                    await addItemToInventory(message.author.id, reward.item, 1);
-                }
-                if (reward.wallet) {
-                    await changeCurrency(message.author.id, CURRENCY_TYPE.WALLET, reward.wallet);
-                }
-            });
+        const rewards: TypeRewards = event.rewards;
+        if (rewards) {
+            if (rewards.wallet && rewards.wallet > 0) {
+                await changeCurrency(message.author.id, CURRENCY_TYPE.WALLET, rewards.wallet);
+            }
+            if (rewards.bank && rewards.bank > 0) {
+                await changeCurrency(message.author.id, CURRENCY_TYPE.BANK, rewards.bank);
+            }
+            if (rewards.items) {
+                rewards.items.forEach(async (item) => {
+                    await addItemToInventory(message.author.id, item.id, item.amount || 1);
+                });
+            }
 
-            await message.reply(event.rewardText.replace("{{username}}", username));
+            await message.reply(event.successText.replace("{{username}}", username));
         }
     } catch (err) {
+        console.log(err);
         message.channel.send(event.failText.replace("{{username}}", username));
     }
 }

@@ -55,7 +55,9 @@ export function setupBuyCommands(command: Command, result: TypeMessageResponse) 
             const amount = getInteractionAttribute(result, "amount")
                 ? getInteractionAttribute(result, "amount")
                 : getMessageAttribute(result, 1);
-            buyItem(command, item as string, amount as string);
+
+            if (isNaN(Number(amount))) return reply(command, "You must specify a valid amount.");
+            buyItem(command, item as string, Number(amount));
         }
     }
 }
@@ -78,7 +80,9 @@ export function setupSellCommands(command: Command, result: TypeMessageResponse)
                 ? getInteractionAttribute(result, "amount")
                 : getMessageAttribute(result, 1);
 
-            sellItem(command, item as string, amount as string);
+            if (isNaN(Number(amount))) return reply(command, "You must specify a valid amount.");
+            sellItem(command, item as string, Number(amount));
+
         }
     }
 }
