@@ -15,6 +15,7 @@ export async function buyItem(command: Command, item: string, amount?: number) {
         if (!amount) amount = 1;
         else amount = Number(amount);
 
+
         const {data} = await apolloClient.mutate({
             mutation: BUY_ITEM,
             variables: {user_id: user.id, item, amount},
@@ -32,12 +33,14 @@ export async function buyItem(command: Command, item: string, amount?: number) {
  * Sell an item.
  */
 export async function sellItem(command: Command, item: string, amount?: number) {
+
     try {
         const user = command.member?.user;
         if (!user) return reply(command, "You must be a member of this server to use this command.");
 
         if (!amount) amount = 1;
         else amount = Number(amount);
+
 
         const {data} = await apolloClient.mutate({
             mutation: SELL_ITEM,

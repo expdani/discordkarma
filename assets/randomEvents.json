@@ -29,7 +29,8 @@
                     "item": "Pointsack"
                 }
             ],
-            "rarity": 1
+            "rarity": 1,
+            "disabled": true
         },
         {
             "name": "Gerard's virus",
@@ -43,7 +44,8 @@
                     "wallet": 1
                 }
             ],
-            "rarity": 1
+            "rarity": 1,
+            "disabled": true
         },
         {
             "name": "Gerard speelt vals",
@@ -66,6 +68,20 @@
             "timeLimit": 60,
             "rewardText": "Corona is no more, goed gedaan {{username}}.",
             "failText": "Rutte is boos en gooit het hele land op slot :angry:.",
+            "rewards": [
+                {
+                    "wallet": 2
+                }
+            ],
+            "rarity": 1
+        },
+        {
+            "name": "Op denne blok!",
+            "text": "Je bent lekker een potje Fortnite aan het streamen, maar stalkers hebben jouw adres gekopieerd van jouw beschrijving. Roep snel dat Kirsten ze `op denne blok` moet gooien!",
+            "response": "op denne blok",
+            "timeLimit": 60,
+            "rewardText": "Goed gedaan, moderator {{username}}. Geen Fortnite meer met kijkers tot eind julli!",
+            "failText": "Haters hebben 14 kapsalon besteld op jouw naam en je oude telefoonnummer :angry:.",
             "rewards": [
                 {
                     "wallet": 2

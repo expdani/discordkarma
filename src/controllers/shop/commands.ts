@@ -82,6 +82,7 @@ export function setupSellCommands(command: Command, result: TypeMessageResponse)
 
             if (isNaN(Number(amount))) return reply(command, "You must specify a valid amount.");
             sellItem(command, item as string, Number(amount));
+
         }
     }
 }
