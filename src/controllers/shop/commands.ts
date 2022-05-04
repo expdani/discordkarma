@@ -1,9 +1,8 @@
 import {CURRENCY_SIGN} from "./../../types/currency";
 import {MessageEmbed, TextChannel} from "discord.js";
 import {Channel, Command} from "../../types/discord";
-import {items} from "../../../assets/items.json";
 import {TypeMessageResponse} from "src/types/response";
-import {buyItem, sellItem} from ".";
+import {buyItem, getItemShop, sellItem} from ".";
 import {shopMsgs} from "../../../assets/random.json";
 import {reply} from "../../helpers";
 import {getInteractionAttribute, getMessageAttribute} from "../../commandHandler";
@@ -14,14 +13,16 @@ import {getInteractionAttribute, getMessageAttribute} from "../../commandHandler
 async function sayShop(channel: Channel) {
     try {
         let description = "";
+        const shop = await getItemShop();
         const shopMsg = shopMsgs[Math.floor(Math.random() * shopMsgs.length)];
         const embed = new MessageEmbed().setTitle(`${shopMsg}`).setColor("#fffff");
-        items.forEach((item) => {
+        shop.forEach((item: any) => {
             description += `**${item.emoji} ${item.name}** — ${CURRENCY_SIGN}${item.price} \n ${item.description}\n\n`;
         });
         embed.description = description;
         channel.send({embeds: [embed]});
     } catch (err) {
+        console.log(err);
         channel.send("Oops, something went wrong requesting the shop.");
     }
 }
@@ -76,6 +77,7 @@ export function setupSellCommands(command: Command, result: TypeMessageResponse)
             const amount = getInteractionAttribute(result, "amount")
                 ? getInteractionAttribute(result, "amount")
                 : getMessageAttribute(result, 1);
+
             sellItem(command, item as string, amount as string);
         }
     }

@@ -1,0 +1,24 @@
+{
+    "errors": [
+        {
+            "key": "not_enough_money",
+            "message": "You don't have that amount of money."
+        },
+        {
+            "key": "not_enough_items",
+            "message": "You don't have enough of that item."
+        },
+        {
+            "key": "item_not_found",
+            "message": "This item could not be found."
+        },
+        {
+            "key": "not_for_sale",
+            "message": "This item is not for sale."
+        },
+        {
+            "key": "cant_sell",
+            "message": "You cannot sell this item."
+        }
+    ]
+}

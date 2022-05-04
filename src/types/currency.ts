@@ -9,8 +9,7 @@ export const CURRENCY_SIGN = "€";
  * @type with a single currency item from the database.
  */
 export type TypeCurrency = {
-    id: number;
-    userID: string;
+    user_id: string;
     wallet: number;
     bank: number;
     updated_at: Date;
@@ -21,7 +20,7 @@ export type TypeCurrency = {
  * @type with the input for a new currency entry in the database
  */
 export type TypeCurrencyInput = {
-    userID: string;
+    user_id: string;
     wallet: number;
     bank: number;
     created_at: Date;

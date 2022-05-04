@@ -1,5 +1,5 @@
-import {getInventory} from ".";
-import {Channel, Command} from "./../../types/discord";
+import {getInventory} from "./index";
+import {Channel, Command} from "../../types/discord";
 import {MessageEmbed, TextChannel, User} from "discord.js";
 import {items} from "../../../assets/items.json";
 import {wrongMsgs} from "../../../assets/random.json";
@@ -9,7 +9,10 @@ import {wrongMsgs} from "../../../assets/random.json";
  */
 export async function sayInventory(channel: Channel, user: User) {
     try {
-        const inventory = JSON.parse((await getInventory(user.id)).inventory);
+        const inventoryObj = await getInventory(user.id);
+        if (!inventoryObj) return channel.send("Oops, something went wrong processing your inventory.");
+
+        const inventory = inventoryObj.inventory;
         let description = "";
         const embed = new MessageEmbed()
             .setAuthor(`${user.username}'s inventory`, `${user.avatarURL()}`)
@@ -29,6 +32,7 @@ export async function sayInventory(channel: Channel, user: User) {
         embed.description = description;
         channel.send({embeds: [embed]});
     } catch (err) {
+        console.log(err);
         channel.send("Oops, something went wrong processing your inventory.");
     }
 }

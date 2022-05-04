@@ -1,65 +1,66 @@
 import {Command} from "./../../types/discord";
 import {reply} from "../../helpers";
-import {addItemToInventory, getItem} from "../inventory";
-import {changeCurrency, getCurrency} from "../currency";
-import {items} from "../../../assets/items.json";
+import {BUY_ITEM, GET_ITEM_SHOP, SELL_ITEM} from "./gql";
+import {apolloClient} from "../../apollo/index";
+import getErrorMessage from "../../apollo/errors";
 
 /**
  * Buy an item from the shop.
  */
-export async function buyItem(command: Command, item: string, amount: any) {
+export async function buyItem(command: Command, item: string, amount?: any) {
     try {
         const user = command.member?.user;
-        if (!user) return;
-        const balance = await getCurrency(user.id);
-        const shopItem = items.find(
-            (x) => x.id.toLowerCase() === item.toLowerCase() || x.name.toLowerCase() === item.toLowerCase(),
-        );
+        if (!user) return reply(command, "You must be a member of this server to use this command.");
 
-        amount = parseInt(amount);
         if (!amount) amount = 1;
+        amount = parseInt(amount);
+        if (isNaN(amount)) return reply(command, "You must specify a valid amount.");
 
-        if (shopItem && shopItem.shop) {
-            const newBalance = balance.wallet - shopItem.price * amount;
-            if (newBalance >= 0) {
-                await changeCurrency(user.id, -(shopItem.price * amount));
-                await addItemToInventory(user.id, shopItem.id, amount);
-                reply(command, `You have bought ${amount} ${shopItem.emoji} ${shopItem.name}!`);
-            } else reply(command, "You don't have enough money in your wallet..");
-        } else {
-            reply(command, "That item is not for sale.");
-        }
-    } catch (err) {
-        reply(command, "Oops, something went wrong processing your purchase.");
+        const {data} = await apolloClient.mutate({
+            mutation: BUY_ITEM,
+            variables: {user_id: user.id, item, amount},
+        });
+
+        const shopItem = data.buyItem;
+
+        reply(command, `You have bought ${amount}x ${shopItem.emoji} ${shopItem.name}!`);
+    } catch (err: any) {
+        reply(command, getErrorMessage(err.graphQLErrors[0]?.message));
     }
 }
 
 /**
  * Sell an item.
  */
-export async function sellItem(command: Command, item: string, amount: any) {
+export async function sellItem(command: Command, item: string, amount?: any) {
     try {
         const user = command.member?.user;
-        if (!user) return;
-        const shopItem: any = items.find(
-            (x) => x.id.toLowerCase() === item.toLowerCase() || x.name.toLowerCase() === item.toLowerCase(),
-        );
+        if (!user) return reply(command, "You must be a member of this server to use this command.");
 
-        const sellItem = await getItem(user.id, shopItem.id);
-
-        amount = parseInt(amount);
         if (!amount) amount = 1;
+        amount = parseInt(amount);
+        if (isNaN(amount)) return reply(command, "You must specify a valid amount.");
 
-        if (shopItem) {
-            if (sellItem && amount <= sellItem.amount) {
-                await addItemToInventory(user.id, shopItem.id, -amount);
-                await changeCurrency(user.id, shopItem.sell ? shopItem.sell * amount : (shopItem.price * amount) / 2);
-                reply(command, `You have sold ${amount} ${shopItem.emoji} ${shopItem.name}!`);
-            } else reply(command, "You don't have enough of this item..");
-        } else {
-            reply(command, "That is not a valid item.");
-        }
-    } catch (err) {
-        reply(command, "Oops, something went wrong processing your transaction.");
+        const {data} = await apolloClient.mutate({
+            mutation: SELL_ITEM,
+            variables: {user_id: user.id, item, amount},
+        });
+
+        const shopItem = data.sellItem;
+
+        reply(command, `You have sold ${amount}x ${shopItem.emoji} ${shopItem.name}!`);
+    } catch (err: any) {
+        reply(command, getErrorMessage(err.graphQLErrors[0]?.message));
     }
+}
+
+/**
+ * Get server shop.
+ */
+export async function getItemShop() {
+    const {data} = await apolloClient.query({
+        query: GET_ITEM_SHOP,
+        // variables: {user_id},
+    });
+    return data.getItemShop;
 }

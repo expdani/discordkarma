@@ -1,8 +1,9 @@
 import {MessageEmbed} from "discord.js";
 import {Command} from "./../../../types/discord";
-import database from "../../../database";
-import {TypeKarmaTotal} from "src/types/karma";
 import {reply} from "../../../helpers";
+import {apolloClient} from "../../../apollo";
+import {GET_SERVER_KARMA_LEADERBOARD} from "../gql";
+import {TypeKarmaTotal} from "../../../types/karma";
 
 /**
  * Gets karma leaderboard of the server.
@@ -15,7 +16,7 @@ export async function sayServerKarmaLeaderboard(command: Command) {
         let i = 0;
         top.forEach((karma) => {
             i++;
-            embed.addField(`${karma.total} punten`, `${i}. <@${karma.userID}>`, true);
+            embed.addField(`${karma.total} punten`, `${i}. <@${karma.user_id}>`, true);
         });
         reply(command, {embeds: [embed]});
     } catch (err) {
@@ -27,6 +28,10 @@ export async function sayServerKarmaLeaderboard(command: Command) {
  * Get server leaderboard
  */
 export async function getServerKarmaLeaderboard(serverID: string): Promise<TypeKarmaTotal[]> {
-    const top = await database("karma_total").where({serverID}).orderBy("total", "desc").limit(10);
-    return top;
+    const {data} = await apolloClient.query({
+        query: GET_SERVER_KARMA_LEADERBOARD,
+        variables: {server_id: serverID},
+    });
+
+    return data.getServerLeaderboard;
 }

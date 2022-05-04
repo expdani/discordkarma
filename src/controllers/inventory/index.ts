@@ -1,61 +1,29 @@
+import {apolloClient} from "../../apollo/index";
 import {TypeInventory, TypeInventoryItem} from "src/types/inventory";
-import database from "../../database/index";
+import {ADD_ITEM_TO_INVENTORY, GET_INVENTORY} from "./gql";
 
 /**
  * Edit the inventory of the user.
  * - A positive number adds the items to the user
  * - A negative number removes the items from the user
  */
-export async function addItemToInventory(userID: string, item: string, amount: number) {
-    // Make sure item is in lowercase
-    item = item.toLowerCase();
+export async function addItemToInventory(user_id: string, item: string, amount: number) {
+    const fixedAmount = parseFloat(amount?.toFixed(2));
 
-    // Date now used to update updated_at in the query.
-    const now = new Date();
+    const {data} = await apolloClient.mutate({
+        mutation: ADD_ITEM_TO_INVENTORY,
+        variables: {user_id, item, amount: fixedAmount},
+    });
 
-    // Check if the user has an inventory, else create it.
-    let inventory = JSON.parse((await getInventory(userID)).inventory);
-    if (!inventory) {
-        inventory = JSON.parse((await initiateInventory(userID)).inventory);
-    }
-
-    // Create an array if the inventory has no items yet.
-    if (!inventory.items) {
-        inventory.items = [];
-    }
-
-    // Update the amount if the item is in the inventory already.
-    let currentItem;
-    if ((currentItem = inventory.items.find((x: {id: any}) => x.id === item))) {
-        if (currentItem.amount + amount > 0) {
-            currentItem.amount = currentItem.amount + amount;
-        } else {
-            inventory.items = inventory.items.filter((x: {id: any}) => x.id != item);
-        }
-    } else {
-        inventory.items.push({
-            id: item,
-            amount: amount,
-        });
-    }
-
-    const input = {
-        inventory: JSON.stringify(inventory),
-        updated_at: now,
-    };
-
-    await database("inventory").where({userID}).update(input);
-
-    return {
-        inventory,
-    };
+    return data.addItemToInventory;
 }
 
 /**
  * Get a specific item from the user's inventory.
  */
-export async function getItem(userID: string, _item: string): Promise<TypeInventoryItem | null> {
-    const inv: TypeInventory = await getInventory(userID);
+export async function getItem(user_id: string, _item: string): Promise<TypeInventoryItem | null> {
+    const inv: TypeInventory | undefined = await getInventory(user_id);
+    if (!inv) return null;
     const invJson = JSON.parse(inv.inventory);
     const item = await invJson.items.find((item: TypeInventoryItem) => item.id === _item);
 
@@ -65,29 +33,14 @@ export async function getItem(userID: string, _item: string): Promise<TypeInvent
 /**
  * Get the inventory for the user
  */
-export async function getInventory(userID: string): Promise<TypeInventory> {
-    const inventory = await database("inventory").where({userID}).first();
-    if (!inventory) {
-        return await initiateInventory(userID);
+export async function getInventory(user_id: string): Promise<TypeInventory | undefined> {
+    try {
+        const {data} = await apolloClient.query({
+            query: GET_INVENTORY,
+            variables: {user_id},
+        });
+        return data.getInventory;
+    } catch (err) {
+        console.log(err);
     }
-    return inventory;
-}
-
-/**
- * Add a inventory record for the user
- */
-export async function initiateInventory(userID: string): Promise<TypeInventory> {
-    const now = new Date();
-    // eslint-disable-next-line quotes
-    const json = JSON.stringify('{"items": []}');
-    const input = {
-        userID,
-        inventory: JSON.parse(json),
-        created_at: now,
-        updated_at: now,
-    };
-
-    await database("inventory").insert(input);
-
-    return input;
 }

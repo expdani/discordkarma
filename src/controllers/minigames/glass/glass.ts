@@ -7,7 +7,7 @@ import secondsToReadableString, {
     shuffleArray,
 } from "../../../helpers";
 import {CURRENCY_SIGN} from "../../../types/currency";
-import {changeCurrency} from "../../currency/index";
+import {changeCurrency, CURRENCY_TYPE} from "../../currency/index";
 
 type GlassData = {
     message?: Message;
@@ -269,7 +269,7 @@ function addButtons(): MessageActionRow {
  */
 async function givePrize(command: Command, prize: number) {
     if (!command.guild?.id) return;
-    GLASS_GAMES[command.guild?.id].participants.forEach(async (user) => {
-        await changeCurrency(user.id, 0, prize);
-    });
+    GLASS_GAMES[command.guild?.id].participants.forEach(
+        async (user) => await changeCurrency(user.id, CURRENCY_TYPE.BANK, prize),
+    );
 }
