@@ -41,6 +41,7 @@ export async function sayUserKarma(command: Command, response: TypeMessageRespon
             reply(command, {embeds: [embed]});
         }
     } catch (err) {
+        console.log(err);
         reply(command, "Oops, something went wrong requesting your karma.");
     }
 }

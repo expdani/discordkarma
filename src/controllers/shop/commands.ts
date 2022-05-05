@@ -22,7 +22,6 @@ async function sayShop(channel: Channel) {
         embed.description = description;
         channel.send({embeds: [embed]});
     } catch (err) {
-        console.log(err);
         channel.send("Oops, something went wrong requesting the shop.");
     }
 }
@@ -82,7 +81,6 @@ export function setupSellCommands(command: Command, result: TypeMessageResponse)
 
             if (isNaN(Number(amount))) return reply(command, "You must specify a valid amount.");
             sellItem(command, item as string, Number(amount));
-
         }
     }
 }

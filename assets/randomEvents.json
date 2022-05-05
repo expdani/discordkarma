@@ -7,14 +7,13 @@
             "timeLimit": 60,
             "rewardText": "Het is je gelukt, {{username}}! Herman heeft de schoft kunnen stoppen en geeft jou je welverdiende **<:pointsack:826842582335750155> puntzak** (met een klein extraatje).",
             "failText": "De dief heeft de puntzak opgesmikkeld en niemand heeft het doorgehad...",
-            "rewards": [
-                {
-                    "wallet": 5
-                },
-                {
-                    "item": "Pointsack"
-                }
-            ],
+            "rewards": {
+                "items": [
+                    {
+                        "id": "puntzak"
+                    }
+                ]
+            },
             "rarity": 1
         },
         {

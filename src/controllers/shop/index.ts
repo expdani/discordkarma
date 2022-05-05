@@ -22,7 +22,7 @@ export async function buyItem(command: Command, item: string, amount?: number) {
 
         const shopItem = data.buyItem;
 
-        reply(command, `You have bought ${amount}x ${shopItem?.emoji} ${shopItem?.name}!`);
+        reply(command, `You have bought **${amount}x ${shopItem?.emoji} ${shopItem?.name}**!`);
     } catch (err: any) {
         reply(command, getErrorMessage(err.graphQLErrors[0]?.message));
     }
@@ -46,7 +46,7 @@ export async function sellItem(command: Command, item: string, amount?: number) 
 
         const shopItem = data.sellItem;
 
-        reply(command, `You have sold ${amount}x ${shopItem?.emoji} ${shopItem?.name}!`);
+        reply(command, `You have sold **${amount}x ${shopItem?.emoji} ${shopItem?.name}**!`);
     } catch (err: any) {
         reply(command, getErrorMessage(err.graphQLErrors[0]?.message));
     }

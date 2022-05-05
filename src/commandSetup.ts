@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {TypeChoices, TypeCommand} from "./types/response";
 import {ApplicationCommandDataResolvable, Client, Guild} from "discord.js";
 import {commands} from "../assets/commands.json";
-import {items} from "../assets/items.json";
+import {getItemShop} from "./controllers/shop";
 
 /**
  * Register all commands as slash command.
  */
 export default function registerCommands(client: Client) {
-    let slashCommands: ApplicationCommandDataResolvable[] = [];
+    const slashCommands: ApplicationCommandDataResolvable[] = [];
     commands.forEach((command: TypeCommand) => {
         if (command.slash) {
             setupCustomOptions(command);
@@ -33,9 +34,11 @@ export default function registerCommands(client: Client) {
 /**
  * Get custom shop/buy inputs.
  */
-function getShopChoices(): TypeChoices[] {
+async function getShopChoices(): Promise<TypeChoices[]> {
     const choices: TypeChoices[] = [];
-    items.forEach((item) => {
+
+    const items = await getItemShop();
+    items.forEach((item: any) => {
         if (item.shop)
             choices.push({
                 name: item.name,
@@ -48,13 +51,16 @@ function getShopChoices(): TypeChoices[] {
 /**
  * Get custom sell inputs.
  */
-function getSellChoices(): TypeChoices[] {
+async function getSellChoices(): Promise<TypeChoices[]> {
     const choices: TypeChoices[] = [];
-    items.forEach((item) => {
-        choices.push({
-            name: item.name,
-            value: item.id,
-        });
+
+    const items = await getItemShop();
+    items.forEach((item: any) => {
+        if (item.shop)
+            choices.push({
+                name: item.name,
+                value: item.id,
+            });
     });
     return choices;
 }
@@ -62,17 +68,20 @@ function getSellChoices(): TypeChoices[] {
 /**
  * Setup custom choice inputs.
  */
-function setupCustomOptions(command: TypeCommand) {
+async function setupCustomOptions(command: TypeCommand) {
     if (command.text === "buy") {
-        const shopChoises = getShopChoices();
+        const shopChoises = await getShopChoices();
         if (shopChoises != undefined) {
-            command.options!.find((option) => option.name === "item")!.choices = getShopChoices();
+            command.options!.find((option) => option.name === "item")!.choices?.push(...shopChoises);
         }
     }
+
     if (command.text === "sell") {
-        const sellChoices = getSellChoices();
+        const sellChoices = await getSellChoices();
         if (sellChoices != undefined) {
-            command.options!.find((option) => option.name === "item")!.choices = getSellChoices();
+            sellChoices.forEach((choice: TypeChoices) => {
+                command.options!.find((option) => option.name === "item")!.choices?.push(choice);
+            });
         }
     }
 }

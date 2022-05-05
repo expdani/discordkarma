@@ -42,7 +42,6 @@ export default async function calculateRandomEvent(message: Message) {
             query: GET_RANDOM_MESSAGE_EVENT,
         });
 
-
         const event = data.getRandomMessageEvent;
 
         if (!event) return;
