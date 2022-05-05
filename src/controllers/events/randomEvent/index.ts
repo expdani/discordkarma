@@ -6,7 +6,7 @@ import {apolloClient} from "../../../apollo/index";
 import {GET_RANDOM_MESSAGE_EVENT} from "./gql";
 import {TypeRewards} from "src/types/randomEvent";
 
-const PERCENT_CHANCE_PER_MESSAGE = 100;
+const PERCENT_CHANCE_PER_MESSAGE = 0.43;
 
 const EVENT_TIMEOUT = 90; // seconds
 
