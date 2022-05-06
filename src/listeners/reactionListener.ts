@@ -2,6 +2,7 @@ import {setupKarmaReactions} from "../controllers/karma/reactions";
 import {KARMA_REACTIONS} from "../types/constants";
 import {client} from "../";
 import {MessageReaction, PartialUser, User} from "discord.js";
+import {getServerSettings} from "../controllers/settings";
 
 /**
  * Listener that listens to reactions added or removed in a server
@@ -24,7 +25,7 @@ export default function setupReactionListeners() {
 
         if (!(reaction instanceof MessageReaction)) return;
 
-        if (requiresSetup(reaction, user)) {
+        if (await requiresSetup(reaction, user)) {
             setupKarmaReactions(reaction, user, "add");
         }
     });
@@ -46,7 +47,7 @@ export default function setupReactionListeners() {
 
         if (!(reaction instanceof MessageReaction)) return;
 
-        if (requiresSetup(reaction, user)) {
+        if (await requiresSetup(reaction, user)) {
             setupKarmaReactions(reaction, user, "remove");
         }
     });
@@ -55,7 +56,11 @@ export default function setupReactionListeners() {
 /**
  * Checks if the action requires setupKarmaReactions
  */
-function requiresSetup(reaction: MessageReaction, user: User | PartialUser) {
+async function requiresSetup(reaction: MessageReaction, user: User | PartialUser) {
+    if (!reaction?.message?.guild?.id) return false;
+    const settings = await getServerSettings(reaction?.message?.guild?.id);
+    if (!settings.karma_enabled) return;
+
     if (!reaction.emoji.name || !reaction.message.author) return false;
     if (KARMA_REACTIONS.includes(reaction.emoji.name) && user.id !== reaction.message.author.id) {
         return true;

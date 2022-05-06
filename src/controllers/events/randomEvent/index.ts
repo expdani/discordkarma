@@ -4,11 +4,12 @@ import {addItemToInventory} from "../../inventory/index";
 import {getAmountOfSecondsBetweenDates} from "../../../helpers";
 import {apolloClient} from "../../../apollo/index";
 import {GET_RANDOM_MESSAGE_EVENT} from "./gql";
-import {TypeRewards} from "src/types/randomEvent";
+import {TypeRewards} from "../../../types/randomEvent";
+import {getGlobalSettings, getServerSettings} from "../../settings/index";
 
 const PERCENT_CHANCE_PER_MESSAGE = 0.43;
 
-const EVENT_TIMEOUT = 90; // seconds
+const EVENT_TIMEOUT = 10; // seconds
 
 type TimeoutCache = {[serverID: string]: Date};
 
@@ -23,10 +24,18 @@ const SERVER_TIMEOUTS: TimeoutCache = {};
  */
 export default async function calculateRandomEvent(message: Message) {
     if (message.author.bot) return;
+    if (!message?.guild?.id) return;
+
+    const globalSettings = await getGlobalSettings();
+    if (!globalSettings.random_event.enabled) return;
 
     const n = Math.random() * 100;
 
-    if (n <= PERCENT_CHANCE_PER_MESSAGE) {
+    const chance = globalSettings.random_event.percent_change_per_message | PERCENT_CHANCE_PER_MESSAGE;
+    if (n <= chance) {
+        const settings = await getServerSettings(message.guild.id);
+        if (!settings.random_message_events_enabled) return;
+
         let guild: Guild | null = null;
         if (message.guild) guild = message.guild;
         else return;

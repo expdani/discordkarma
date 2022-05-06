@@ -1,5 +1,6 @@
 import {Message, MessageReaction, PartialUser, User} from "discord.js";
 import {VOTE_ENUM} from "../../types/karma";
+import {getServerSettings} from "../settings";
 import {updateKarma, initiateKarmaPost, removeKarmaPost} from "./user/index";
 
 const UPVOTE = ["upvote", "👍"];
@@ -9,6 +10,9 @@ const DOWNVOTE = ["downvote", "👎"];
  * Method that adds reactions to messages that contain a link or an attachment
  */
 export default async function addKarmaReactions(message: Message) {
+    if (!message?.guild?.id) return;
+    const settings = await getServerSettings(message?.guild?.id);
+    if (!settings.karma_enabled || !settings.karma_reactions) return;
     const content = message.content.toLowerCase();
     if (
         content.includes("https://") ||
@@ -45,6 +49,7 @@ export async function setupKarmaReactions(reaction: MessageReaction, user: User 
             await removeKarmaPost(user.id, message.guild?.id ?? "", message.id, message.author.id);
         }
     }
+
     if (DOWNVOTE.includes(reaction.emoji.name)) {
         await updateKarma(message.author.id, message.guild?.id ?? "", type === "add" ? -1 : 1);
         if (type === "add") {
