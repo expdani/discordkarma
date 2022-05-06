@@ -31,7 +31,8 @@ export default async function calculateRandomEvent(message: Message) {
 
     const n = Math.random() * 100;
 
-    const chance = globalSettings.random_event.percent_change_per_message | PERCENT_CHANCE_PER_MESSAGE;
+    const chance = globalSettings.random_event.percent_change_per_message || PERCENT_CHANCE_PER_MESSAGE;
+
     if (n <= chance) {
         const settings = await getServerSettings(message.guild.id);
         if (!settings.random_message_events_enabled) return;

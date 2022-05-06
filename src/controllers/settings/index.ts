@@ -11,7 +11,7 @@ export async function getServerSettings(server_id: string): Promise<TypeServerSe
         query: GET_SERVER_SETTINGS,
         variables: {server_id},
     });
-    console.log(data.getServerSettings);
+
     return data.getServerSettings;
 }
 
@@ -23,5 +23,5 @@ export async function getGlobalSettings(): Promise<TypeBotSettings> {
         query: GET_BOT_SETTINGS,
     });
 
-    return data.getBotSettings.settings.settings;
+    return data.getBotSettings.settings;
 }
