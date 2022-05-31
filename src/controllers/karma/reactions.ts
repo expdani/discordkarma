@@ -41,6 +41,7 @@ export async function setupKarmaReactions(reaction: MessageReaction, user: User 
     const message = reaction.message;
     if (!reaction.emoji.name) return;
     if (!message?.author?.id) return;
+    if (user.bot) return;
     if (UPVOTE.includes(reaction.emoji.name)) {
         await updateKarma(message.author.id, message.guild?.id ?? "", type === "add" ? 1 : -1);
         if (type === "add") {
