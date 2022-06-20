@@ -12,7 +12,7 @@
         "@types/dialogflow": "0.11.0",
         "@types/uuid": "7.0.0",
         "@types/ws": "^7.4.0",
-        "apollo": "^2.33.10",
+        "apollo": "^2.29.0",
         "apollo-boost": "^0.4.9",
         "array-shuffle": "^3.0.0",
         "cross-fetch": "^3.1.5",
